@@ -5,12 +5,9 @@
 // 	UnityEditor.PackageManager.UI.PackageItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // -------------------------------------------------------------------
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using TNRD.Reflectives;
-using UnityEditor.Experimental.GraphView;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -58,8 +55,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_StopSpinner_1;
 		private ReflectiveMethod method_GetSelectableItems_1;
 		private ReflectiveMethod method_GetVersionText_1;
-
 		public PackageItem(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageItem(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_mCurrentStateClass = CreateField<string>("mCurrentStateClass", BindingFlags.Instance | BindingFlags.NonPublic);
 			field_mFetchingDetail = CreateField<bool>("mFetchingDetail", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -99,7 +105,7 @@ namespace TNRD.PackageManager.Reflected
 			method_GetSelectableItems_1 = CreateMethod("GetSelectableItems", BindingFlags.Instance | BindingFlags.Public, null);
 			method_GetVersionText_1 = CreateMethod("GetVersionText", BindingFlags.Static | BindingFlags.Public, typeof(IPackageVersion),typeof(bool));
 		}
-
+		partial void Initialize();
 		public string mCurrentStateClass
 		{
 			get => field_mCurrentStateClass.GetValue();
@@ -112,17 +118,29 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IPackage package
 		{
-			get => new IPackage(property_package.GetValue());
+			get
+			{
+				object _temp = property_package.GetValue();
+				return _temp == null ? null : new IPackage(_temp);
+			}
 			set => property_package.SetValue(value.Instance);
 		}
 		public VisualState visualState
 		{
-			get => new VisualState(property_visualState.GetValue());
+			get
+			{
+				object _temp = property_visualState.GetValue();
+				return _temp == null ? null : new VisualState(_temp);
+			}
 			set => property_visualState.SetValue(value.Instance);
 		}
 		public IPackageVersion targetVersion
 		{
-			get => new IPackageVersion(property_targetVersion.GetValue());
+			get
+			{
+				object _temp = property_targetVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public VisualElement element
 		{
@@ -130,20 +148,36 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public PackageGroup packageGroup
 		{
-			get => new PackageGroup(property_packageGroup.GetValue());
+			get
+			{
+				object _temp = property_packageGroup.GetValue();
+				return _temp == null ? null : new PackageGroup(_temp);
+			}
 			set => property_packageGroup.SetValue(value.Instance);
 		}
 		public IPackageVersion selectedVersion
 		{
-			get => new IPackageVersion(property_selectedVersion.GetValue());
+			get
+			{
+				object _temp = property_selectedVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public IEnumerable<PackageVersionItem> versionItems
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageVersionItem>(property_versionItems);
+			get
+			{
+				object _temp = property_versionItems.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageVersionItem>(_temp);
+			}
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public Label nameLabel
@@ -172,11 +206,19 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public LoadingSpinner spinner
 		{
-			get => new LoadingSpinner(property_spinner.GetValue());
+			get
+			{
+				object _temp = property_spinner.GetValue();
+				return _temp == null ? null : new LoadingSpinner(_temp);
+			}
 		}
 		public ArrowToggle expander
 		{
-			get => new ArrowToggle(property_expander.GetValue());
+			get
+			{
+				object _temp = property_expander.GetValue();
+				return _temp == null ? null : new ArrowToggle(_temp);
+			}
 		}
 		public Label expanderHidden
 		{
@@ -248,11 +290,15 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IEnumerable<ISelectableItem> GetSelectableItems()
 		{
-			return ReflectiveUtilities.GenerateEnumerable<ISelectableItem>(method_GetSelectableItems_1.Invoke());
+			return Utilities.GenerateEnumerable<ISelectableItem>(method_GetSelectableItems_1.Invoke());
 		}
-		public String GetVersionText(IPackageVersion version,bool simplified)
+		public string GetVersionText(IPackageVersion version,bool simplified)
 		{
-			return (String) method_GetVersionText_1.Invoke(version,simplified);
+			return (string) method_GetVersionText_1.Invoke(version,simplified);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

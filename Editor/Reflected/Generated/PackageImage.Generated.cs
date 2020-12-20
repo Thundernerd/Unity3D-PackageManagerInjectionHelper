@@ -12,21 +12,34 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageImage : ReflectiveClass
 	{
-		private ReflectiveField<ImageType> field_type;
+		private ReflectiveField field_type;
 		private ReflectiveField<string> field_thumbnailUrl;
 		private ReflectiveField<string> field_url;
-
 		public PackageImage(object instance) : base(instance)
 		{
-			field_type = CreateField<ImageType>("type", BindingFlags.Instance | BindingFlags.Public);
+			Construct();
+			Initialize();
+		}
+		public PackageImage(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
+		{
+			field_type = CreateField("type", BindingFlags.Instance | BindingFlags.Public);
 			field_thumbnailUrl = CreateField<string>("thumbnailUrl", BindingFlags.Instance | BindingFlags.Public);
 			field_url = CreateField<string>("url", BindingFlags.Instance | BindingFlags.Public);
 		}
-
-		public PackageImage.ImageType type
+		partial void Initialize();
+		public PackageImage_ImageType type
 		{
-			get => ReflectiveUtilities.GetIntEnum<PackageImage.ImageType>(field_type);
-			set => field_type.SetValue((int) value);
+			get
+			{
+				object _temp = (int)field_type.GetValue();
+				return (PackageImage_ImageType)_temp;
+			}
+			set => field_type.SetValue((int)value);
 		}
 		public string thumbnailUrl
 		{
@@ -37,6 +50,10 @@ namespace TNRD.PackageManager.Reflected
 		{
 			get => field_url.GetValue();
 			set => field_url.SetValue(value);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageImage, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

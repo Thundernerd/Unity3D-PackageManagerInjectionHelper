@@ -19,8 +19,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveField<string> field_selectedVersionId;
 		private ReflectiveMethod method_Equals_1;
 		private ReflectiveMethod method_Clone_1;
-
 		public VisualState(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public VisualState(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_packageUniqueId = CreateField<string>("packageUniqueId", BindingFlags.Instance | BindingFlags.Public);
 			field_groupName = CreateField<string>("groupName", BindingFlags.Instance | BindingFlags.Public);
@@ -31,7 +40,7 @@ namespace TNRD.PackageManager.Reflected
 			method_Equals_1 = CreateMethod("Equals", BindingFlags.Instance | BindingFlags.Public, typeof(VisualState));
 			method_Clone_1 = CreateMethod("Clone", BindingFlags.Instance | BindingFlags.Public, null);
 		}
-
+		partial void Initialize();
 		public string packageUniqueId
 		{
 			get => field_packageUniqueId.GetValue();
@@ -62,13 +71,17 @@ namespace TNRD.PackageManager.Reflected
 			get => field_selectedVersionId.GetValue();
 			set => field_selectedVersionId.SetValue(value);
 		}
-		public Boolean Equals(VisualState other)
+		public bool Equals(VisualState other)
 		{
-			return (Boolean) method_Equals_1.Invoke(other);
+			return (bool) method_Equals_1.Invoke(other);
 		}
 		public VisualState Clone()
 		{
 			return new VisualState(method_Clone_1.Invoke());
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.VisualState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

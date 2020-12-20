@@ -30,8 +30,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_BuildStatusText_1;
 		private ReflectiveMethod method_SetDependencies_1;
 		private ReflectiveMethod method_ClearDependencies_1;
-
 		public PackageDependencies(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageDependencies(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_dependenciesContainer = CreateProperty<VisualElement>("dependenciesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -45,10 +54,14 @@ namespace TNRD.PackageManager.Reflected
 			method_SetDependencies_1 = CreateMethod("SetDependencies", BindingFlags.Instance | BindingFlags.Public, typeof(DependencyInfo[]));
 			method_ClearDependencies_1 = CreateMethod("ClearDependencies", BindingFlags.Instance | BindingFlags.NonPublic, null);
 		}
-
+		partial void Initialize();
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public VisualElement dependenciesContainer
@@ -75,13 +88,13 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return (Label) method_BuildLabel_1.Invoke(text,clazz);
 		}
-		public String BuildNameText(DependencyInfo dependency)
+		public string BuildNameText(DependencyInfo dependency)
 		{
-			return (String) method_BuildNameText_1.Invoke(dependency);
+			return (string) method_BuildNameText_1.Invoke(dependency);
 		}
-		public String BuildStatusText(DependencyInfo dependency)
+		public string BuildStatusText(DependencyInfo dependency)
 		{
-			return (String) method_BuildStatusText_1.Invoke(dependency);
+			return (string) method_BuildStatusText_1.Invoke(dependency);
 		}
 		public void SetDependencies(DependencyInfo[] dependencies)
 		{
@@ -90,6 +103,10 @@ namespace TNRD.PackageManager.Reflected
 		public void ClearDependencies()
 		{
 			method_ClearDependencies_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageDependencies, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

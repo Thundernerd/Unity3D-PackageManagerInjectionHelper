@@ -15,15 +15,28 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageToolbar : ReflectiveVisualElementClass
+	public sealed partial class PackageToolbar : ReflectiveClass
 	{
 		
-
 		public PackageToolbar(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageToolbar(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			
 		}
-
+		partial void Initialize();
 		
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageToolbar, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		}
 	}
 }

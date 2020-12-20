@@ -24,8 +24,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_UpdateProgress_1;
 		private ReflectiveMethod method_Start_1;
 		private ReflectiveMethod method_Stop_1;
-
 		public LoadingSpinner(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public LoadingSpinner(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_kRotationSpeed = CreateField<int>("kRotationSpeed", BindingFlags.Static | BindingFlags.NonPublic);
 			field_mRotation = CreateField<int>("mRotation", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -35,7 +44,7 @@ namespace TNRD.PackageManager.Reflected
 			method_Start_1 = CreateMethod("Start", BindingFlags.Instance | BindingFlags.Public, null);
 			method_Stop_1 = CreateMethod("Stop", BindingFlags.Instance | BindingFlags.Public, null);
 		}
-
+		partial void Initialize();
 		public int kRotationSpeed
 		{
 			get => field_kRotationSpeed.GetValue();
@@ -67,6 +76,10 @@ namespace TNRD.PackageManager.Reflected
 		public void Stop()
 		{
 			method_Stop_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.LoadingSpinner, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

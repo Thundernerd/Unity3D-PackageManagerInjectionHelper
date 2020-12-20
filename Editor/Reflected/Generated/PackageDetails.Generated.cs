@@ -14,6 +14,8 @@ using UnityEngine.UIElements;
 using UnityEngine.UIElements.StyleSheets;
 using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
+using Object = UnityEngine.Object;
+
 namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageDetails : ReflectiveClass
@@ -119,8 +121,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_ImportClick_1;
 		private ReflectiveMethod method_DownloadOrCancelClick_1;
 		private ReflectiveMethod method_GetTagLabel_1;
-
 		public PackageDetails(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageDetails(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_mPackage = CreateField("mPackage", BindingFlags.Instance | BindingFlags.NonPublic);
 			field_mVersion = CreateField("mVersion", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -206,7 +217,7 @@ namespace TNRD.PackageManager.Reflected
 			method_RefreshAddButton_1 = CreateMethod("RefreshAddButton", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_RefreshRemoveButton_1 = CreateMethod("RefreshRemoveButton", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_RefreshImportAndDownloadButtons_1 = CreateMethod("RefreshImportAndDownloadButtons", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetButtonText_1 = CreateMethod("GetButtonText", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageDetails.PackageAction),typeof(bool),typeof(SemVersion));
+			method_GetButtonText_1 = CreateMethod("GetButtonText", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageDetails_PackageAction),typeof(bool),typeof(SemVersion));
 			method_WarningLinkClick_1 = CreateMethod("WarningLinkClick", BindingFlags.Static | BindingFlags.NonPublic, null);
 			method_DescMoreClick_1 = CreateMethod("DescMoreClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_DescLessClick_1 = CreateMethod("DescLessClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
@@ -224,15 +235,23 @@ namespace TNRD.PackageManager.Reflected
 			method_DownloadOrCancelClick_1 = CreateMethod("DownloadOrCancelClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_GetTagLabel_1 = CreateMethod("GetTagLabel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
 		}
-
+		partial void Initialize();
 		public IPackage mPackage
 		{
-			get => new IPackage(field_mPackage.GetValue());
+			get
+			{
+				object _temp = field_mPackage.GetValue();
+				return _temp == null ? null : new IPackage(_temp);
+			}
 			set => field_mPackage.SetValue(value.Instance);
 		}
 		public IPackageVersion mVersion
 		{
-			get => new IPackageVersion(field_mVersion.GetValue());
+			get
+			{
+				object _temp = field_mVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 			set => field_mVersion.SetValue(value.Instance);
 		}
 		public string kEmptyDescriptionClass
@@ -272,21 +291,37 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IPackage package
 		{
-			get => new IPackage(property_package.GetValue());
+			get
+			{
+				object _temp = property_package.GetValue();
+				return _temp == null ? null : new IPackage(_temp);
+			}
 			set => property_package.SetValue(value.Instance);
 		}
 		public IPackageVersion displayVersion
 		{
-			get => new IPackageVersion(property_displayVersion.GetValue());
+			get
+			{
+				object _temp = property_displayVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 			set => property_displayVersion.SetValue(value.Instance);
 		}
 		public IPackageVersion targetVersion
 		{
-			get => new IPackageVersion(property_targetVersion.GetValue());
+			get
+			{
+				object _temp = property_targetVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public VisualElement detailDescContainer
@@ -323,7 +358,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public Alert detailError
 		{
-			get => new Alert(property_detailError.GetValue());
+			get
+			{
+				object _temp = property_detailError.GetValue();
+				return _temp == null ? null : new Alert(_temp);
+			}
 		}
 		public ScrollView detailScrollView
 		{
@@ -383,11 +422,19 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public PackageSampleList sampleList
 		{
-			get => new PackageSampleList(property_sampleList.GetValue());
+			get
+			{
+				object _temp = property_sampleList.GetValue();
+				return _temp == null ? null : new PackageSampleList(_temp);
+			}
 		}
 		public PackageDependencies dependencies
 		{
-			get => new PackageDependencies(property_dependencies.GetValue());
+			get
+			{
+				object _temp = property_dependencies.GetValue();
+				return _temp == null ? null : new PackageDependencies(_temp);
+			}
 		}
 		public VisualElement packageToolbarContainer
 		{
@@ -419,7 +466,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public ProgressBar downloadProgress
 		{
-			get => new ProgressBar(property_downloadProgress.GetValue());
+			get
+			{
+				object _temp = property_downloadProgress.GetValue();
+				return _temp == null ? null : new ProgressBar(_temp);
+			}
 		}
 		public VisualElement detailCategories
 		{
@@ -453,9 +504,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_OnEditorSelectionChanged_1.Invoke();
 		}
-		public UnityEngine.Object GetDisplayPackageManifestAsset()
+		public Object GetDisplayPackageManifestAsset()
 		{
-			return (UnityEngine.Object) method_GetDisplayPackageManifestAsset_1.Invoke();
+			return (Object) method_GetDisplayPackageManifestAsset_1.Invoke();
 		}
 		public void EditPackageManifestClick()
 		{
@@ -573,9 +624,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_RefreshImportAndDownloadButtons_1.Invoke();
 		}
-		public String GetButtonText(PackageDetails.PackageAction action,bool inProgress,SemVersion version)
+		public string GetButtonText(PackageDetails_PackageAction action,bool inProgress,SemVersion version)
 		{
-			return (String) method_GetButtonText_1.Invoke((int)action,inProgress,version);
+			return (string) method_GetButtonText_1.Invoke((int)action,inProgress,version);
 		}
 		public void WarningLinkClick()
 		{
@@ -597,13 +648,13 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_UpdateClick_1.Invoke();
 		}
-		public String GetPackageDashList(IEnumerable<IPackageVersion> versions,int maxListCount)
+		public string GetPackageDashList(IEnumerable<IPackageVersion> versions,int maxListCount)
 		{
-			return (String) method_GetPackageDashList_1.Invoke(versions,maxListCount);
+			return (string) method_GetPackageDashList_1.Invoke(versions,maxListCount);
 		}
-		public String GetDependentMessage(IPackageVersion version,IEnumerable<IPackageVersion> roots,int maxListCount)
+		public string GetDependentMessage(IPackageVersion version,IEnumerable<IPackageVersion> roots,int maxListCount)
 		{
-			return (String) method_GetDependentMessage_1.Invoke(version,roots,maxListCount);
+			return (string) method_GetDependentMessage_1.Invoke(version,roots,maxListCount);
 		}
 		public void RemoveClick()
 		{
@@ -640,6 +691,10 @@ namespace TNRD.PackageManager.Reflected
 		public Label GetTagLabel(string tag)
 		{
 			return (Label) method_GetTagLabel_1.Invoke(tag);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageDetails, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

@@ -33,8 +33,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_GetCurrentPage_1;
 		private ReflectiveMethod method_HasFetchedPageForFilterTab_1;
 		private ReflectiveMethod method_LoadMore_1;
-
 		public IPageManager(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public IPageManager(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			event_onSelectionChanged = CreateEvent("onSelectionChanged", BindingFlags.Instance | BindingFlags.Public);
 			event_onPageUpdate = CreateEvent("onPageUpdate", BindingFlags.Instance | BindingFlags.Public);
@@ -58,12 +67,8 @@ namespace TNRD.PackageManager.Reflected
 			method_GetCurrentPage_1 = CreateMethod("GetCurrentPage", BindingFlags.Instance | BindingFlags.Public, null);
 			method_HasFetchedPageForFilterTab_1 = CreateMethod("HasFetchedPageForFilterTab", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab?));
 			method_LoadMore_1 = CreateMethod("LoadMore", BindingFlags.Instance | BindingFlags.Public, null);
-
-			Initialize();
 		}
-
 		partial void Initialize();
-
 		/// <summary>
 		/// Event type: System.Action<IPackageVersion>
 		/// </summary>
@@ -152,9 +157,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return new VisualState(method_GetVisualState_1.Invoke(package));
 		}
-		public Boolean IsGroupExpanded(string groupName)
+		public bool IsGroupExpanded(string groupName)
 		{
-			return (Boolean) method_IsGroupExpanded_1.Invoke(groupName);
+			return (bool) method_IsGroupExpanded_1.Invoke(groupName);
 		}
 		public void SetGroupExpanded(string groupName,bool value)
 		{
@@ -174,11 +179,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public void Refresh(PackageFilterTab tab)
 		{
-			method_Refresh_1.Invoke(tab);
+			method_Refresh_1.Invoke((int)tab);
 		}
 		public void Refresh(RefreshOptions options)
 		{
-			method_Refresh_2.Invoke(options);
+			method_Refresh_2.Invoke((uint)options);
 		}
 		public void Fetch(string uniqueId)
 		{
@@ -188,13 +193,17 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return new IPage(method_GetCurrentPage_1.Invoke());
 		}
-		public Boolean HasFetchedPageForFilterTab(PackageFilterTab? tab)
+		public bool HasFetchedPageForFilterTab(PackageFilterTab? tab)
 		{
-			return (Boolean) method_HasFetchedPageForFilterTab_1.Invoke(tab);
+			return (bool) method_HasFetchedPageForFilterTab_1.Invoke(tab);
 		}
 		public void LoadMore()
 		{
 			method_LoadMore_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.IPageManager, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

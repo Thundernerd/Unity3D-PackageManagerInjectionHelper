@@ -18,18 +18,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveField field_sInstance;
 		private ReflectiveField<int> field_kDefaultPageSize;
 		private ReflectiveProperty property_instance;
-
 		public PageManager(object instance) : base(instance)
 		{
-			field_kUnityPackageGroupName = CreateField<string>("kUnityPackageGroupName", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kOtherPackageGroupName = CreateField<string>("kOtherPackageGroupName", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kCustomPackageGroupName = CreateField<string>("kCustomPackageGroupName", BindingFlags.Static | BindingFlags.NonPublic);
-			field_sInstance = CreateField("sInstance", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kDefaultPageSize = CreateField<int>("kDefaultPageSize", BindingFlags.Static | BindingFlags.Public);
-			property_instance = CreateProperty("instance", BindingFlags.Static | BindingFlags.Public);
+			Construct();
+			Initialize();
 		}
-		
 		public PageManager(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_kUnityPackageGroupName = CreateField<string>("kUnityPackageGroupName", BindingFlags.Static | BindingFlags.NonPublic);
 			field_kOtherPackageGroupName = CreateField<string>("kOtherPackageGroupName", BindingFlags.Static | BindingFlags.NonPublic);
@@ -38,7 +37,7 @@ namespace TNRD.PackageManager.Reflected
 			field_kDefaultPageSize = CreateField<int>("kDefaultPageSize", BindingFlags.Static | BindingFlags.Public);
 			property_instance = CreateProperty("instance", BindingFlags.Static | BindingFlags.Public);
 		}
-
+		partial void Initialize();
 		public string kUnityPackageGroupName
 		{
 			get => field_kUnityPackageGroupName.GetValue();
@@ -56,7 +55,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IPageManager sInstance
 		{
-			get => new IPageManager(field_sInstance.GetValue());
+			get
+			{
+				object _temp = field_sInstance.GetValue();
+				return _temp == null ? null : new IPageManager(_temp);
+			}
 			set => field_sInstance.SetValue(value.Instance);
 		}
 		public int kDefaultPageSize
@@ -66,7 +69,15 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IPageManager instance
 		{
-			get => new IPageManager(property_instance.GetValue());
+			get
+			{
+				object _temp = property_instance.GetValue();
+				return _temp == null ? null : new IPageManager(_temp);
+			}
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PageManager, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

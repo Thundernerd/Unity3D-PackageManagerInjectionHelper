@@ -15,7 +15,6 @@ using UnityEngine.UIElements.StyleSheets;
 using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 using UnityEditor.PackageManager;
-
 namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class Alert : ReflectiveClass
@@ -28,8 +27,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveProperty<Button> property_closeButton;
 		private ReflectiveMethod method_SetError_1;
 		private ReflectiveMethod method_ClearError_1;
-
 		public Alert(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public Alert(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_kPositionRightOriginal = CreateField<float>("kPositionRightOriginal", BindingFlags.Static | BindingFlags.NonPublic);
 			field_kPositionRightWithScroll = CreateField<float>("kPositionRightWithScroll", BindingFlags.Static | BindingFlags.NonPublic);
@@ -40,7 +48,7 @@ namespace TNRD.PackageManager.Reflected
 			method_SetError_1 = CreateMethod("SetError", BindingFlags.Instance | BindingFlags.Public, typeof(Error));
 			method_ClearError_1 = CreateMethod("ClearError", BindingFlags.Instance | BindingFlags.Public, null);
 		}
-
+		partial void Initialize();
 		public float kPositionRightOriginal
 		{
 			get => field_kPositionRightOriginal.GetValue();
@@ -58,7 +66,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public Label alertMessage
@@ -76,6 +88,10 @@ namespace TNRD.PackageManager.Reflected
 		public void ClearError()
 		{
 			method_ClearError_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.Alert, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

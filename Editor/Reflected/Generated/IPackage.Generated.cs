@@ -34,8 +34,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_AddError_1;
 		private ReflectiveMethod method_ClearErrors_1;
 		private ReflectiveMethod method_Clone_1;
-
 		public IPackage(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public IPackage(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			property_uniqueId = CreateProperty<string>("uniqueId", BindingFlags.Instance | BindingFlags.Public);
 			property_name = CreateProperty<string>("name", BindingFlags.Instance | BindingFlags.Public);
@@ -58,7 +67,7 @@ namespace TNRD.PackageManager.Reflected
 			method_ClearErrors_1 = CreateMethod("ClearErrors", BindingFlags.Instance | BindingFlags.Public, null);
 			method_Clone_1 = CreateMethod("Clone", BindingFlags.Instance | BindingFlags.Public, null);
 		}
-
+		partial void Initialize();
 		public string uniqueId
 		{
 			get => property_uniqueId.GetValue();
@@ -73,51 +82,91 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IVersionList versionList
 		{
-			get => new IVersionList(property_versionList.GetValue());
+			get
+			{
+				object _temp = property_versionList.GetValue();
+				return _temp == null ? null : new IVersionList(_temp);
+			}
 		}
 		public IEnumerable<IPackageVersion> versions
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackageVersion>(property_versions.GetValue());
+			get
+			{
+				object _temp = property_versions.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackageVersion>(_temp);
+			}
 		}
 		public IEnumerable<IPackageVersion> keyVersions
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackageVersion>(property_keyVersions.GetValue());
+			get
+			{
+				object _temp = property_keyVersions.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackageVersion>(_temp);
+			}
 		}
 		public IPackageVersion installedVersion
 		{
 			get
 			{
-				object value = property_installedVersion.GetValue();
-				return value == null ? null : new IPackageVersion(value);
+				object _temp = property_installedVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
 			}
 		}
 		public IPackageVersion latestVersion
 		{
-			get => new IPackageVersion(property_latestVersion.GetValue());
+			get
+			{
+				object _temp = property_latestVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public IPackageVersion latestPatch
 		{
-			get => new IPackageVersion(property_latestPatch.GetValue());
+			get
+			{
+				object _temp = property_latestPatch.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public IPackageVersion recommendedVersion
 		{
-			get => new IPackageVersion(property_recommendedVersion.GetValue());
+			get
+			{
+				object _temp = property_recommendedVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public IPackageVersion primaryVersion
 		{
-			get => new IPackageVersion(property_primaryVersion.GetValue());
+			get
+			{
+				object _temp = property_primaryVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public PackageProgress progress
 		{
-			get => new PackageProgress(property_progress.GetValue());
+			get
+			{
+				object _temp = (int)property_progress.GetValue();
+				return (PackageProgress)_temp;
+			}
 		}
 		public IEnumerable<PackageImage> images
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageImage>(property_images.GetValue());
+			get
+			{
+				object _temp = property_images.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageImage>(_temp);
+			}
 		}
 		public IEnumerable<PackageLink> links
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageLink>(property_links.GetValue());
+			get
+			{
+				object _temp = property_links.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageLink>(_temp);
+			}
 		}
 		public bool isDiscoverable
 		{
@@ -127,9 +176,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			get => property_errors.GetValue();
 		}
-		public Boolean Is(PackageType type)
+		public bool Is(PackageType type)
 		{
-			return (Boolean) method_Is_1.Invoke((int)type);
+			return (bool) method_Is_1.Invoke((int)type);
 		}
 		public void AddError(Error error)
 		{
@@ -142,6 +191,10 @@ namespace TNRD.PackageManager.Reflected
 		public IPackage Clone()
 		{
 			return new IPackage(method_Clone_1.Invoke());
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.IPackage, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

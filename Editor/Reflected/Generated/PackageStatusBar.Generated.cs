@@ -21,6 +21,7 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveField<string> field_kOfflineErrorMessage;
 		private ReflectiveField<string[]> field_mLastErrorMessages;
 		private ReflectiveProperty property_cache;
+		private ReflectiveProperty property_loadingSpinner;
 		private ReflectiveProperty<Label> property_errorIcon;
 		private ReflectiveProperty<Label> property_statusLabel;
 		private ReflectiveProperty<Button> property_refreshButton;
@@ -31,12 +32,22 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_SetUpdateTimeLabel_1;
 		private ReflectiveMethod method_UpdateStatusMessage_1;
 		private ReflectiveMethod method_SetStatusMessage_1;
-
 		public PackageStatusBar(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageStatusBar(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_kOfflineErrorMessage = CreateField<string>("kOfflineErrorMessage", BindingFlags.Static | BindingFlags.NonPublic);
 			field_mLastErrorMessages = CreateField<string[]>("mLastErrorMessages", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_loadingSpinner = CreateProperty("loadingSpinner", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_errorIcon = CreateProperty<Label>("errorIcon", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_statusLabel = CreateProperty<Label>("statusLabel", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_refreshButton = CreateProperty<Button>("refreshButton", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -46,9 +57,9 @@ namespace TNRD.PackageManager.Reflected
 			method_GetUpdateTimeLabel_1 = CreateMethod("GetUpdateTimeLabel", BindingFlags.Static | BindingFlags.NonPublic, typeof(long));
 			method_SetUpdateTimeLabel_1 = CreateMethod("SetUpdateTimeLabel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
 			method_UpdateStatusMessage_1 = CreateMethod("UpdateStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab));
-			method_SetStatusMessage_1 = CreateMethod("SetStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageStatusBar.StatusType),typeof(string));
+			method_SetStatusMessage_1 = CreateMethod("SetStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageStatusBar_StatusType),typeof(string));
 		}
-
+		partial void Initialize();
 		public string kOfflineErrorMessage
 		{
 			get => field_kOfflineErrorMessage.GetValue();
@@ -61,8 +72,20 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
+		}
+		public LoadingSpinner loadingSpinner
+		{
+			get
+			{
+				object _temp = property_loadingSpinner.GetValue();
+				return _temp == null ? null : new LoadingSpinner(_temp);
+			}
 		}
 		public Label errorIcon
 		{
@@ -88,9 +111,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_OnInternetReachabilityChange_1.Invoke(value);
 		}
-		public String GetUpdateTimeLabel(long timestamp)
+		public string GetUpdateTimeLabel(long timestamp)
 		{
-			return (String) method_GetUpdateTimeLabel_1.Invoke(timestamp);
+			return (string) method_GetUpdateTimeLabel_1.Invoke(timestamp);
 		}
 		public void SetUpdateTimeLabel(string lastUpdateTime)
 		{
@@ -100,9 +123,13 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_UpdateStatusMessage_1.Invoke((int)tab);
 		}
-		public void SetStatusMessage(PackageStatusBar.StatusType status,string message)
+		public void SetStatusMessage(PackageStatusBar_StatusType status,string message)
 		{
 			method_SetStatusMessage_1.Invoke((int)status,message);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageStatusBar, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

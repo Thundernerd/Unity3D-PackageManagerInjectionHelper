@@ -18,6 +18,7 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageGroup : ReflectiveClass
 	{
+		private ReflectiveEvent event_onGroupToggle;
 		private ReflectiveField<Action<bool>> field_onGroupToggle;
 		private ReflectiveField field_mCache;
 		private ReflectiveProperty<bool> property_expanded;
@@ -31,9 +32,19 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_AddPackageItem_2;
 		private ReflectiveMethod method_ClearPackageItems_1;
 		private ReflectiveMethod method_RemovePackageItem_1;
-
 		public PackageGroup(object instance) : base(instance)
 		{
+			Construct();
+			Initialize();
+		}
+		public PackageGroup(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
+		{
+			event_onGroupToggle = CreateEvent("onGroupToggle", BindingFlags.Instance | BindingFlags.Public);
 			field_onGroupToggle = CreateField<Action<bool>>("onGroupToggle", BindingFlags.Instance | BindingFlags.NonPublic);
 			field_mCache = CreateField("mCache", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_expanded = CreateProperty<bool>("expanded", BindingFlags.Instance | BindingFlags.Public);
@@ -48,7 +59,22 @@ namespace TNRD.PackageManager.Reflected
 			method_ClearPackageItems_1 = CreateMethod("ClearPackageItems", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_RemovePackageItem_1 = CreateMethod("RemovePackageItem", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageItem));
 		}
-
+		partial void Initialize();
+		/// <summary>
+		/// Event type: System.Action<bool>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnGroupToggle(Delegate @delegate)
+		{
+			return event_onGroupToggle.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<bool>
+		/// </summary>
+		public void UnsubscribeFromOnGroupToggle(Delegate @delegate)
+		{
+			event_onGroupToggle.Unsubscribe(@delegate);
+		}
 		public Action<bool> onGroupToggle
 		{
 			get => field_onGroupToggle.GetValue();
@@ -56,7 +82,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public VisualElementCache mCache
 		{
-			get => new VisualElementCache(field_mCache.GetValue());
+			get
+			{
+				object _temp = field_mCache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => field_mCache.SetValue(value.Instance);
 		}
 		public bool expanded
@@ -65,7 +95,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IEnumerable<PackageItem> packageItems
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageItem>(property_packageItems);
+			get
+			{
+				object _temp = property_packageItems.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageItem>(_temp);
+			}
 		}
 		public VisualElement groupContainer
 		{
@@ -79,9 +113,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			get => property_headerCaret.GetValue();
 		}
-		public Boolean Contains(ISelectableItem item)
+		public bool Contains(ISelectableItem item)
 		{
-			return (Boolean) method_Contains_1.Invoke(item);
+			return (bool) method_Contains_1.Invoke(item);
 		}
 		public void RefreshHeaderVisibility()
 		{
@@ -102,6 +136,10 @@ namespace TNRD.PackageManager.Reflected
 		public void RemovePackageItem(PackageItem item)
 		{
 			method_RemovePackageItem_1.Invoke(item);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageGroup, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

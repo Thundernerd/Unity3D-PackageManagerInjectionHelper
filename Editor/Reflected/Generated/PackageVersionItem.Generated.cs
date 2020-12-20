@@ -23,8 +23,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveProperty property_targetVersion;
 		private ReflectiveProperty<VisualElement> property_element;
 		private ReflectiveMethod method_RefreshLabel_1;
-
 		public PackageVersionItem(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageVersionItem(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			property_package = CreateProperty("package", BindingFlags.Instance | BindingFlags.Public);
 			property_version = CreateProperty("version", BindingFlags.Instance | BindingFlags.Public);
@@ -32,20 +41,32 @@ namespace TNRD.PackageManager.Reflected
 			property_element = CreateProperty<VisualElement>("element", BindingFlags.Instance | BindingFlags.Public);
 			method_RefreshLabel_1 = CreateMethod("RefreshLabel", BindingFlags.Instance | BindingFlags.NonPublic, null);
 		}
-
+		partial void Initialize();
 		public IPackage package
 		{
-			get => new IPackage(property_package.GetValue());
+			get
+			{
+				object _temp = property_package.GetValue();
+				return _temp == null ? null : new IPackage(_temp);
+			}
 			set => property_package.SetValue(value.Instance);
 		}
 		public IPackageVersion version
 		{
-			get => new IPackageVersion(property_version.GetValue());
+			get
+			{
+				object _temp = property_version.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 			set => property_version.SetValue(value.Instance);
 		}
 		public IPackageVersion targetVersion
 		{
-			get => new IPackageVersion(property_targetVersion.GetValue());
+			get
+			{
+				object _temp = property_targetVersion.GetValue();
+				return _temp == null ? null : new IPackageVersion(_temp);
+			}
 		}
 		public VisualElement element
 		{
@@ -54,6 +75,10 @@ namespace TNRD.PackageManager.Reflected
 		public void RefreshLabel()
 		{
 			method_RefreshLabel_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageVersionItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

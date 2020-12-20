@@ -46,8 +46,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveProperty property_sizes;
 		private ReflectiveProperty property_entitlements;
 		private ReflectiveMethod method_HasTag_1;
-
 		public IPackageVersion(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public IPackageVersion(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			property_name = CreateProperty<string>("name", BindingFlags.Instance | BindingFlags.Public);
 			property_displayName = CreateProperty<string>("displayName", BindingFlags.Instance | BindingFlags.Public);
@@ -80,9 +89,9 @@ namespace TNRD.PackageManager.Reflected
 			property_supportedVersions = CreateProperty("supportedVersions", BindingFlags.Instance | BindingFlags.Public);
 			property_sizes = CreateProperty("sizes", BindingFlags.Instance | BindingFlags.Public);
 			property_entitlements = CreateProperty("entitlements", BindingFlags.Instance | BindingFlags.Public);
-			method_HasTag_1 = CreateMethod("HasTag", BindingFlags.Instance | BindingFlags.Public);
+			method_HasTag_1 = CreateMethod("HasTag", BindingFlags.Instance | BindingFlags.Public, typeof(PackageTag));
 		}
-
+		partial void Initialize();
 		public string name
 		{
 			get => property_name.GetValue();
@@ -129,7 +138,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public SemVersion version
 		{
-			get => new SemVersion(property_version.GetValue());
+			get
+			{
+				object _temp = property_version.GetValue();
+				return _temp == null ? null : new SemVersion(_temp);
+			}
 		}
 		public DateTime? publishedDate
 		{
@@ -193,23 +206,43 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public SemVersion supportedVersion
 		{
-			get => new SemVersion(property_supportedVersion.GetValue());
+			get
+			{
+				object _temp = property_supportedVersion.GetValue();
+				return _temp == null ? null : new SemVersion(_temp);
+			}
 		}
 		public IEnumerable<SemVersion> supportedVersions
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<SemVersion>(property_supportedVersions);
+			get
+			{
+				object _temp = property_supportedVersions.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<SemVersion>(_temp);
+			}
 		}
 		public IEnumerable<PackageSizeInfo> sizes
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageSizeInfo>(property_sizes);
+			get
+			{
+				object _temp = property_sizes.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageSizeInfo>(_temp);
+			}
 		}
 		public EntitlementsInfo entitlements
 		{
-			get => new EntitlementsInfo(property_entitlements.GetValue());
+			get
+			{
+				object _temp = property_entitlements.GetValue();
+				return _temp == null ? null : new EntitlementsInfo(_temp);
+			}
 		}
-		public Boolean HasTag(PackageTag tag)
+		public bool HasTag(PackageTag tag)
 		{
-			return (Boolean) method_HasTag_1.Invoke((uint)tag);
+			return (bool) method_HasTag_1.Invoke((uint)tag);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.IPackageVersion, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

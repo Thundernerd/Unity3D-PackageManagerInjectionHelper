@@ -14,6 +14,15 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class IPackageDatabase : ReflectiveClass
 	{
+		private ReflectiveEvent event_onPackagesChanged;
+		private ReflectiveEvent event_onInstallSuccess;
+		private ReflectiveEvent event_onUninstallSuccess;
+		private ReflectiveEvent event_onPackageOperationStart;
+		private ReflectiveEvent event_onPackageOperationFinish;
+		private ReflectiveEvent event_onRefreshOperationStart;
+		private ReflectiveEvent event_onRefreshOperationFinish;
+		private ReflectiveEvent event_onRefreshOperationError;
+		private ReflectiveEvent event_onDownloadProgress;
 		private ReflectiveProperty<bool> property_isEmpty;
 		private ReflectiveProperty<bool> property_isInstallOrUninstallInProgress;
 		private ReflectiveProperty property_allPackages;
@@ -48,9 +57,27 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_GetDependentVersions_1;
 		private ReflectiveMethod method_GetRefreshTimestamp_1;
 		private ReflectiveMethod method_IsRefreshInProgress_1;
-
 		public IPackageDatabase(object instance) : base(instance)
 		{
+			Construct();
+			Initialize();
+		}
+		public IPackageDatabase(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
+		{
+			event_onPackagesChanged = CreateEvent("onPackagesChanged", BindingFlags.Instance | BindingFlags.Public);
+			event_onInstallSuccess = CreateEvent("onInstallSuccess", BindingFlags.Instance | BindingFlags.Public);
+			event_onUninstallSuccess = CreateEvent("onUninstallSuccess", BindingFlags.Instance | BindingFlags.Public);
+			event_onPackageOperationStart = CreateEvent("onPackageOperationStart", BindingFlags.Instance | BindingFlags.Public);
+			event_onPackageOperationFinish = CreateEvent("onPackageOperationFinish", BindingFlags.Instance | BindingFlags.Public);
+			event_onRefreshOperationStart = CreateEvent("onRefreshOperationStart", BindingFlags.Instance | BindingFlags.Public);
+			event_onRefreshOperationFinish = CreateEvent("onRefreshOperationFinish", BindingFlags.Instance | BindingFlags.Public);
+			event_onRefreshOperationError = CreateEvent("onRefreshOperationError", BindingFlags.Instance | BindingFlags.Public);
+			event_onDownloadProgress = CreateEvent("onDownloadProgress", BindingFlags.Instance | BindingFlags.Public);
 			property_isEmpty = CreateProperty<bool>("isEmpty", BindingFlags.Instance | BindingFlags.Public);
 			property_isInstallOrUninstallInProgress = CreateProperty<bool>("isInstallOrUninstallInProgress", BindingFlags.Instance | BindingFlags.Public);
 			property_allPackages = CreateProperty("allPackages", BindingFlags.Instance | BindingFlags.Public);
@@ -83,10 +110,145 @@ namespace TNRD.PackageManager.Reflected
 			method_GetPackageVersion_2 = CreateMethod("GetPackageVersion", BindingFlags.Instance | BindingFlags.Public, typeof(DependencyInfo));
 			method_GetPackageAndVersion_1 = CreateMethod("GetPackageAndVersion", BindingFlags.Instance | BindingFlags.Public, typeof(string),typeof(string),typeof(IPackage),typeof(IPackageVersion));
 			method_GetDependentVersions_1 = CreateMethod("GetDependentVersions", BindingFlags.Instance | BindingFlags.Public, typeof(IPackageVersion));
-			method_GetRefreshTimestamp_1 = CreateMethod("GetRefreshTimestamp", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab));
-			method_IsRefreshInProgress_1 = CreateMethod("IsRefreshInProgress", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab));
+			method_GetRefreshTimestamp_1 = CreateMethod("GetRefreshTimestamp", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab?));
+			method_IsRefreshInProgress_1 = CreateMethod("IsRefreshInProgress", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab?));
 		}
-
+		partial void Initialize();
+		/// <summary>
+		/// Event type: System.Action<IEnumerable<IPackage>, IEnumerable<IPackage>, IEnumerable<IPackage>, IEnumerable<IPackage>>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnPackagesChanged(Delegate @delegate)
+		{
+			return event_onPackagesChanged.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IEnumerable<IPackage>, IEnumerable<IPackage>, IEnumerable<IPackage>, IEnumerable<IPackage>>
+		/// </summary>
+		public void UnsubscribeFromOnPackagesChanged(Delegate @delegate)
+		{
+			event_onPackagesChanged.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage, IPackageVersion>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnInstallSuccess(Delegate @delegate)
+		{
+			return event_onInstallSuccess.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage, IPackageVersion>
+		/// </summary>
+		public void UnsubscribeFromOnInstallSuccess(Delegate @delegate)
+		{
+			event_onInstallSuccess.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnUninstallSuccess(Delegate @delegate)
+		{
+			return event_onUninstallSuccess.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		public void UnsubscribeFromOnUninstallSuccess(Delegate @delegate)
+		{
+			event_onUninstallSuccess.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnPackageOperationStart(Delegate @delegate)
+		{
+			return event_onPackageOperationStart.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		public void UnsubscribeFromOnPackageOperationStart(Delegate @delegate)
+		{
+			event_onPackageOperationStart.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnPackageOperationFinish(Delegate @delegate)
+		{
+			return event_onPackageOperationFinish.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage>
+		/// </summary>
+		public void UnsubscribeFromOnPackageOperationFinish(Delegate @delegate)
+		{
+			event_onPackageOperationFinish.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnRefreshOperationStart(Delegate @delegate)
+		{
+			return event_onRefreshOperationStart.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		public void UnsubscribeFromOnRefreshOperationStart(Delegate @delegate)
+		{
+			event_onRefreshOperationStart.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<PackageFilterTab>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnRefreshOperationFinish(Delegate @delegate)
+		{
+			return event_onRefreshOperationFinish.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<PackageFilterTab>
+		/// </summary>
+		public void UnsubscribeFromOnRefreshOperationFinish(Delegate @delegate)
+		{
+			event_onRefreshOperationFinish.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<Error>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnRefreshOperationError(Delegate @delegate)
+		{
+			return event_onRefreshOperationError.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<Error>
+		/// </summary>
+		public void UnsubscribeFromOnRefreshOperationError(Delegate @delegate)
+		{
+			event_onRefreshOperationError.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage, DownloadProgress>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnDownloadProgress(Delegate @delegate)
+		{
+			return event_onDownloadProgress.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<IPackage, DownloadProgress>
+		/// </summary>
+		public void UnsubscribeFromOnDownloadProgress(Delegate @delegate)
+		{
+			event_onDownloadProgress.Unsubscribe(@delegate);
+		}
 		public bool isEmpty
 		{
 			get => property_isEmpty.GetValue();
@@ -97,19 +259,35 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IEnumerable<IPackage> allPackages
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackage>(property_allPackages.GetValue());
+			get
+			{
+				object _temp = property_allPackages.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackage>(_temp);
+			}
 		}
 		public IEnumerable<IPackage> assetStorePackages
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackage>(property_assetStorePackages.GetValue());
+			get
+			{
+				object _temp = property_assetStorePackages.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackage>(_temp);
+			}
 		}
 		public IEnumerable<IPackage> upmPackages
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackage>(property_upmPackages.GetValue());
+			get
+			{
+				object _temp = property_upmPackages.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackage>(_temp);
+			}
 		}
 		public IEnumerable<IPackage> packagesInError
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<IPackage>(property_packagesInError.GetValue());
+			get
+			{
+				object _temp = property_packagesInError.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<IPackage>(_temp);
+			}
 		}
 		public void RegisterEvents()
 		{
@@ -123,13 +301,13 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_Reload_1.Invoke();
 		}
-		public Boolean IsUninstallInProgress(IPackage package)
+		public bool IsUninstallInProgress(IPackage package)
 		{
-			return (Boolean) method_IsUninstallInProgress_1.Invoke(package);
+			return (bool) method_IsUninstallInProgress_1.Invoke(package);
 		}
-		public Boolean IsInstallInProgress(IPackageVersion version)
+		public bool IsInstallInProgress(IPackageVersion version)
 		{
-			return (Boolean) method_IsInstallInProgress_1.Invoke(version);
+			return (bool) method_IsInstallInProgress_1.Invoke(version);
 		}
 		public void FetchExtraInfo(IPackageVersion version)
 		{
@@ -155,9 +333,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return new DownloadProgress(method_GetDownloadProgress_1.Invoke(version));
 		}
-		public Boolean IsDownloadInProgress(IPackageVersion version)
+		public bool IsDownloadInProgress(IPackageVersion version)
 		{
-			return (Boolean) method_IsDownloadInProgress_1.Invoke(version);
+			return (bool) method_IsDownloadInProgress_1.Invoke(version);
 		}
 		public void Download(IPackage package)
 		{
@@ -213,15 +391,19 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IEnumerable<IPackageVersion> GetDependentVersions(IPackageVersion version)
 		{
-			return ReflectiveUtilities.GenerateEnumerable<IPackageVersion>(version);
+			return Utilities.GenerateEnumerable<IPackageVersion>(method_GetDependentVersions_1.Invoke(version));
 		}
-		public Int64 GetRefreshTimestamp(PackageFilterTab tab)
+		public long GetRefreshTimestamp(PackageFilterTab? tab)
 		{
-			return (Int64) method_GetRefreshTimestamp_1.Invoke((int)tab);
+			return (long) method_GetRefreshTimestamp_1.Invoke(tab);
 		}
-		public Boolean IsRefreshInProgress(PackageFilterTab tab)
+		public bool IsRefreshInProgress(PackageFilterTab? tab)
 		{
-			return (Boolean) method_IsRefreshInProgress_1.Invoke((int)tab);
+			return (bool) method_IsRefreshInProgress_1.Invoke(tab);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.IPackageDatabase, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

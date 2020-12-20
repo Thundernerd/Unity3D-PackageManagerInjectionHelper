@@ -6,7 +6,6 @@
 // -------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using TNRD.Reflectives;
 using UnityEditor.PackageManager.UI;
@@ -23,8 +22,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_LoadMore_1;
 		private ReflectiveMethod method_Load_1;
 		private ReflectiveMethod method_GetGroupName_1;
-
 		public IPage(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public IPage(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			property_tab = CreateProperty("tab", BindingFlags.Instance | BindingFlags.Public);
 			property_isLoading = CreateProperty<bool>("isLoading", BindingFlags.Instance | BindingFlags.Public);
@@ -36,10 +44,14 @@ namespace TNRD.PackageManager.Reflected
 			method_Load_1 = CreateMethod("Load", BindingFlags.Instance | BindingFlags.Public, typeof(IPackage),typeof(IPackageVersion));
 			method_GetGroupName_1 = CreateMethod("GetGroupName", BindingFlags.Instance | BindingFlags.Public, typeof(IPackage));
 		}
-
+		partial void Initialize();
 		public PackageFilterTab tab
 		{
-			get => ReflectiveUtilities.GetIntEnum<PackageFilterTab>(property_tab);
+			get
+			{
+				object _temp = (int)property_tab.GetValue();
+				return (PackageFilterTab)_temp;
+			}
 		}
 		public bool isLoading
 		{
@@ -51,7 +63,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public List<VisualState> packageVisualStates
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<VisualState>(property_packageVisualStates);
+			get
+			{
+				object _temp = property_packageVisualStates.GetValue();
+				return _temp == null ? null : (List<VisualState>)Utilities.GenerateEnumerable<VisualState>(_temp);
+			}
 		}
 		public VisualState GetVisualState(string packageUniqueId)
 		{
@@ -69,9 +85,13 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_Load_1.Invoke(package,version);
 		}
-		public String GetGroupName(IPackage package)
+		public string GetGroupName(IPackage package)
 		{
-			return (String) method_GetGroupName_1.Invoke(package);
+			return (string) method_GetGroupName_1.Invoke(package);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.IPage, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

@@ -44,8 +44,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_SetupAdvancedMenu_1;
 		private ReflectiveMethod method_ToggleDependencies_1;
 		private ReflectiveMethod method_TogglePreviewPackages_1;
-
 		public PackageManagerToolbar(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public PackageManagerToolbar(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_mSearchTextChangeTimestamp = CreateField<long>("mSearchTextChangeTimestamp", BindingFlags.Instance | BindingFlags.NonPublic);
 			field_kSearchEventDelayTicks = CreateField<long>("kSearchEventDelayTicks", BindingFlags.Static | BindingFlags.NonPublic);
@@ -73,7 +82,7 @@ namespace TNRD.PackageManager.Reflected
 			method_ToggleDependencies_1 = CreateMethod("ToggleDependencies", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_TogglePreviewPackages_1 = CreateMethod("TogglePreviewPackages", BindingFlags.Instance | BindingFlags.NonPublic, null);
 		}
-
+		partial void Initialize();
 		public long mSearchTextChangeTimestamp
 		{
 			get => field_mSearchTextChangeTimestamp.GetValue();
@@ -94,7 +103,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public ToolbarMenu addMenu
@@ -141,9 +154,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_DelayedSearchEvent_1.Invoke();
 		}
-		public String GetFilterDisplayName(PackageFilterTab filter)
+		public string GetFilterDisplayName(PackageFilterTab filter)
 		{
-			return (String) method_GetFilterDisplayName_1.Invoke((int)filter);
+			return (string) method_GetFilterDisplayName_1.Invoke((int)filter);
 		}
 		public void SetFilter(PackageFilterTab filter)
 		{
@@ -176,6 +189,10 @@ namespace TNRD.PackageManager.Reflected
 		public void TogglePreviewPackages()
 		{
 			method_TogglePreviewPackages_1.Invoke();
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageManagerToolbar, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

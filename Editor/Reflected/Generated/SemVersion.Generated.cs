@@ -6,8 +6,8 @@
 // -------------------------------------------------------------------
 using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using TNRD.Reflectives;
 namespace TNRD.PackageManager.Reflected
 {
@@ -40,8 +40,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_op_GreaterThanOrEqual_1;
 		private ReflectiveMethod method_op_LessThan_1;
 		private ReflectiveMethod method_op_LessThanOrEqual_1;
-
 		public SemVersion(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public SemVersion(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_parseEx = CreateField<Regex>("parseEx", BindingFlags.Static | BindingFlags.NonPublic);
 			property_Major = CreateProperty<int>("Major", BindingFlags.Instance | BindingFlags.Public);
@@ -71,7 +80,7 @@ namespace TNRD.PackageManager.Reflected
 			method_op_LessThan_1 = CreateMethod("op_LessThan", BindingFlags.Static | BindingFlags.Public, typeof(SemVersion),typeof(SemVersion));
 			method_op_LessThanOrEqual_1 = CreateMethod("op_LessThanOrEqual", BindingFlags.Static | BindingFlags.Public, typeof(SemVersion),typeof(SemVersion));
 		}
-
+		partial void Initialize();
 		public Regex parseEx
 		{
 			get => field_parseEx.GetValue();
@@ -106,53 +115,53 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return new SemVersion(method_Parse_1.Invoke(version,strict));
 		}
-		public Boolean TryParse(string version,ref SemVersion semver,bool strict)
+		public bool TryParse(string version,ref SemVersion semver,bool strict)
 		{
-			return (Boolean) method_TryParse_1.Invoke(version,semver,strict);
+			return (bool) method_TryParse_1.Invoke(version,semver,strict);
 		}
-		public Boolean Equals(SemVersion versionA,SemVersion versionB)
+		public bool Equals(SemVersion versionA,SemVersion versionB)
 		{
-			return (Boolean) method_Equals_1.Invoke(versionA,versionB);
+			return (bool) method_Equals_1.Invoke(versionA,versionB);
 		}
-		public Int32 Compare(SemVersion versionA,SemVersion versionB)
+		public int Compare(SemVersion versionA,SemVersion versionB)
 		{
-			return (Int32) method_Compare_1.Invoke(versionA,versionB);
+			return (int) method_Compare_1.Invoke(versionA,versionB);
 		}
 		public SemVersion Change(int? major,int? minor,int? patch,string prerelease,string build)
 		{
 			return new SemVersion(method_Change_1.Invoke(major,minor,patch,prerelease,build));
 		}
-		public String ToString()
+		public string ToString()
 		{
-			return (String) method_ToString_1.Invoke();
+			return (string) method_ToString_1.Invoke();
 		}
-		public Int32 CompareTo(Object obj)
+		public int CompareTo(Object obj)
 		{
-			return (Int32) method_CompareTo_1.Invoke(obj);
+			return (int) method_CompareTo_1.Invoke(obj);
 		}
-		public Int32 CompareTo(SemVersion other)
+		public int CompareTo(SemVersion other)
 		{
-			return (Int32) method_CompareTo_2.Invoke(other);
+			return (int) method_CompareTo_2.Invoke(other);
 		}
-		public Boolean PrecedenceMatches(SemVersion other)
+		public bool PrecedenceMatches(SemVersion other)
 		{
-			return (Boolean) method_PrecedenceMatches_1.Invoke(other);
+			return (bool) method_PrecedenceMatches_1.Invoke(other);
 		}
-		public Int32 CompareByPrecedence(SemVersion other)
+		public int CompareByPrecedence(SemVersion other)
 		{
-			return (Int32) method_CompareByPrecedence_1.Invoke(other);
+			return (int) method_CompareByPrecedence_1.Invoke(other);
 		}
-		public Int32 CompareComponent(string a,string b,bool lower)
+		public int CompareComponent(string a,string b,bool lower)
 		{
-			return (Int32) method_CompareComponent_1.Invoke(a,b,lower);
+			return (int) method_CompareComponent_1.Invoke(a,b,lower);
 		}
-		public Boolean Equals(Object obj)
+		public bool Equals(Object obj)
 		{
-			return (Boolean) method_Equals_2.Invoke(obj);
+			return (bool) method_Equals_2.Invoke(obj);
 		}
-		public Int32 GetHashCode()
+		public int GetHashCode()
 		{
-			return (Int32) method_GetHashCode_1.Invoke();
+			return (int) method_GetHashCode_1.Invoke();
 		}
 		public void GetObjectData(SerializationInfo info,StreamingContext context)
 		{
@@ -162,29 +171,33 @@ namespace TNRD.PackageManager.Reflected
 		{
 			return new SemVersion(method_op_Implicit_1.Invoke(version));
 		}
-		public Boolean op_Equality(SemVersion left,SemVersion right)
+		public bool op_Equality(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_Equality_1.Invoke(left,right);
+			return (bool) method_op_Equality_1.Invoke(left,right);
 		}
-		public Boolean op_Inequality(SemVersion left,SemVersion right)
+		public bool op_Inequality(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_Inequality_1.Invoke(left,right);
+			return (bool) method_op_Inequality_1.Invoke(left,right);
 		}
-		public Boolean op_GreaterThan(SemVersion left,SemVersion right)
+		public bool op_GreaterThan(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_GreaterThan_1.Invoke(left,right);
+			return (bool) method_op_GreaterThan_1.Invoke(left,right);
 		}
-		public Boolean op_GreaterThanOrEqual(SemVersion left,SemVersion right)
+		public bool op_GreaterThanOrEqual(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_GreaterThanOrEqual_1.Invoke(left,right);
+			return (bool) method_op_GreaterThanOrEqual_1.Invoke(left,right);
 		}
-		public Boolean op_LessThan(SemVersion left,SemVersion right)
+		public bool op_LessThan(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_LessThan_1.Invoke(left,right);
+			return (bool) method_op_LessThan_1.Invoke(left,right);
 		}
-		public Boolean op_LessThanOrEqual(SemVersion left,SemVersion right)
+		public bool op_LessThanOrEqual(SemVersion left,SemVersion right)
 		{
-			return (Boolean) method_op_LessThanOrEqual_1.Invoke(left,right);
+			return (bool) method_op_LessThanOrEqual_1.Invoke(left,right);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.SemVersion, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

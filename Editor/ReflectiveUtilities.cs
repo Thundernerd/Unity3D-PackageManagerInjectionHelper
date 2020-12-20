@@ -71,15 +71,9 @@ namespace TNRD.PackageManager
             return items;
         }
 
-        public static Dictionary<TKey, TValue> GenerateDictionary<TKey, TValue>(ReflectiveField reflectiveField)
+        public static Dictionary<TKey, TValue> GenerateDictionary<TKey, TValue>(object data)
         {
-            IDictionary dict = (IDictionary) reflectiveField.GetValue();
-            return GenerateDictionary<TKey, TValue>(dict);
-        }
-
-        public static Dictionary<TKey, TValue> GenerateDictionary<TKey, TValue>(ReflectiveProperty reflectiveProperty)
-        {
-            IDictionary dict = (IDictionary) reflectiveProperty.GetValue();
+            IDictionary dict = (IDictionary) data;
             return GenerateDictionary<TKey, TValue>(dict);
         }
 

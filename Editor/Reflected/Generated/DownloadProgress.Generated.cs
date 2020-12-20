@@ -17,8 +17,17 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveField<ulong> field_current;
 		private ReflectiveField<ulong> field_total;
 		private ReflectiveField<string> field_message;
-
 		public DownloadProgress(object instance) : base(instance)
+		{
+			Construct();
+			Initialize();
+		}
+		public DownloadProgress(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
 		{
 			field_packageId = CreateField<string>("packageId", BindingFlags.Instance | BindingFlags.Public);
 			field_state = CreateField("state", BindingFlags.Instance | BindingFlags.Public);
@@ -26,16 +35,20 @@ namespace TNRD.PackageManager.Reflected
 			field_total = CreateField<ulong>("total", BindingFlags.Instance | BindingFlags.Public);
 			field_message = CreateField<string>("message", BindingFlags.Instance | BindingFlags.Public);
 		}
-
+		partial void Initialize();
 		public string packageId
 		{
 			get => field_packageId.GetValue();
 			set => field_packageId.SetValue(value);
 		}
-		public DownloadProgress.State state
+		public DownloadProgress_State state
 		{
-			get => ReflectiveUtilities.GetIntEnum<DownloadProgress.State>(field_state);
-			set => field_state.SetValue((int) value);
+			get
+			{
+				object _temp = (int)field_state.GetValue();
+				return (DownloadProgress_State)_temp;
+			}
+			set => field_state.SetValue((int)value);
 		}
 		public ulong current
 		{
@@ -51,6 +64,10 @@ namespace TNRD.PackageManager.Reflected
 		{
 			get => field_message.GetValue();
 			set => field_message.SetValue(value);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.DownloadProgress, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

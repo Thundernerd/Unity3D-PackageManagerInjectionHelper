@@ -18,6 +18,7 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageList : ReflectiveClass
 	{
+		private ReflectiveEvent event_onPackageListLoaded;
 		private ReflectiveField<string> field_kUnityPackageGroupDisplayName;
 		private ReflectiveField<double> field_kDelayBeforeCheck;
 		private ReflectiveField<bool> field_mPackageListLoaded;
@@ -76,9 +77,19 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_FindNextVisiblePackageItem_1;
 		private ReflectiveMethod method_ClearAll_1;
 		private ReflectiveMethod method_ShowResults_1;
-
 		public PackageList(object instance) : base(instance)
 		{
+			Construct();
+			Initialize();
+		}
+		public PackageList(Type type) : base(type)
+		{
+			Construct();
+			Initialize();
+		}
+		private void Construct()
+		{
+			event_onPackageListLoaded = CreateEvent("onPackageListLoaded", BindingFlags.Instance | BindingFlags.Public);
 			field_kUnityPackageGroupDisplayName = CreateField<string>("kUnityPackageGroupDisplayName", BindingFlags.Static | BindingFlags.NonPublic);
 			field_kDelayBeforeCheck = CreateField<double>("kDelayBeforeCheck", BindingFlags.Static | BindingFlags.NonPublic);
 			field_mPackageListLoaded = CreateField<bool>("mPackageListLoaded", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -138,7 +149,22 @@ namespace TNRD.PackageManager.Reflected
 			method_ClearAll_1 = CreateMethod("ClearAll", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_ShowResults_1 = CreateMethod("ShowResults", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
 		}
-
+		partial void Initialize();
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnPackageListLoaded(Delegate @delegate)
+		{
+			return event_onPackageListLoaded.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		public void UnsubscribeFromOnPackageListLoaded(Delegate @delegate)
+		{
+			event_onPackageListLoaded.Unsubscribe(@delegate);
+		}
 		public string kUnityPackageGroupDisplayName
 		{
 			get => field_kUnityPackageGroupDisplayName.GetValue();
@@ -166,7 +192,11 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public Dictionary<string, PackageItem> mPackageItemsLookup
 		{
-			get => ReflectiveUtilities.GenerateDictionary<string, PackageItem>(field_mPackageItemsLookup);
+			get
+			{
+				object _temp = field_mPackageItemsLookup.GetValue();
+				return _temp == null ? null : Utilities.GenerateDictionary<string, PackageItem>(_temp);
+			}
 		}
 		public double mTimestamp
 		{
@@ -175,15 +205,27 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public IEnumerable<PackageItem> packageItems
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageItem>(property_packageItems);
+			get
+			{
+				object _temp = property_packageItems.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageItem>(_temp);
+			}
 		}
 		public IEnumerable<PackageGroup> packageGroups
 		{
-			get => ReflectiveUtilities.GenerateEnumerable<PackageGroup>(property_packageGroups);
+			get
+			{
+				object _temp = property_packageGroups.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageGroup>(_temp);
+			}
 		}
 		public VisualElementCache cache
 		{
-			get => new VisualElementCache(property_cache.GetValue());
+			get
+			{
+				object _temp = property_cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
 			set => property_cache.SetValue(value.Instance);
 		}
 		public ScrollView scrollView
@@ -322,9 +364,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_AddOrUpdatePackageItem_1.Invoke(state,package);
 		}
-		public String GetGroupDisplayName(string groupName)
+		public string GetGroupDisplayName(string groupName)
 		{
-			return (String) method_GetGroupDisplayName_1.Invoke(groupName);
+			return (string) method_GetGroupDisplayName_1.Invoke(groupName);
 		}
 		public PackageGroup GetOrCreateGroup(string groupName)
 		{
@@ -354,9 +396,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_OnSelectionChanged_1.Invoke(newSelection);
 		}
-		public Boolean SelectNext(bool reverseOrder)
+		public bool SelectNext(bool reverseOrder)
 		{
-			return (Boolean) method_SelectNext_1.Invoke(reverseOrder);
+			return (bool) method_SelectNext_1.Invoke(reverseOrder);
 		}
 		public ISelectableItem FindNextVisibleSelectableItem(bool reverseOrder)
 		{
@@ -377,6 +419,10 @@ namespace TNRD.PackageManager.Reflected
 		public void ShowResults(bool scrollIfNeeded)
 		{
 			method_ShowResults_1.Invoke(scrollIfNeeded);
+		}
+		public static Type GetOriginalType()
+		{
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PackageList, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }
