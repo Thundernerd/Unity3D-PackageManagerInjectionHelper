@@ -2,7 +2,7 @@
 // 			AUTO-GENERATED
 //
 // 	Original:
-// 	UnityEditor.PackageManager.UI.IVersionList, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+// 	UnityEditor.PackageManager.UI.PlaceholderVersionList, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // -------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,9 @@ using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class IVersionList : ReflectiveClass
+	public sealed partial class PlaceholderVersionList : ReflectiveClass
 	{
+		private ReflectiveField<PlaceholderPackageVersion[]> field_mVersions;
 		private ReflectiveProperty property_all;
 		private ReflectiveProperty property_key;
 		private ReflectiveProperty property_installed;
@@ -22,18 +23,19 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveProperty property_importAvailable;
 		private ReflectiveProperty property_recommended;
 		private ReflectiveProperty property_primary;
-		public IVersionList(object instance) : base(instance)
+		public PlaceholderVersionList(object instance) : base(instance)
 		{
 			Construct();
 			Initialize();
 		}
-		public IVersionList(Type type) : base(type)
+		public PlaceholderVersionList(Type type) : base(type)
 		{
 			Construct();
 			Initialize();
 		}
 		private void Construct()
 		{
+			field_mVersions = CreateField<PlaceholderPackageVersion[]>("mVersions", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_all = CreateProperty("all", BindingFlags.Instance | BindingFlags.Public);
 			property_key = CreateProperty("key", BindingFlags.Instance | BindingFlags.Public);
 			property_installed = CreateProperty("installed", BindingFlags.Instance | BindingFlags.Public);
@@ -44,6 +46,11 @@ namespace TNRD.PackageManager.Reflected
 			property_primary = CreateProperty("primary", BindingFlags.Instance | BindingFlags.Public);
 		}
 		partial void Initialize();
+		public PlaceholderPackageVersion[] mVersions
+		{
+			get => field_mVersions.GetValue();
+			set => field_mVersions.SetValue(value);
+		}
 		public IEnumerable<IPackageVersion> all
 		{
 			get
@@ -110,7 +117,7 @@ namespace TNRD.PackageManager.Reflected
 		}
 		public static Type GetOriginalType()
 		{
-			return System.Type.GetType("UnityEditor.PackageManager.UI.IVersionList, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			return System.Type.GetType("UnityEditor.PackageManager.UI.PlaceholderVersionList, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		}
 	}
 }

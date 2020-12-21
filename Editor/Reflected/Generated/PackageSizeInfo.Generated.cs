@@ -7,6 +7,7 @@
 using System;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 namespace TNRD.PackageManager.Reflected
 {

@@ -7,6 +7,7 @@
 using System;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class IPageManager : ReflectiveClass

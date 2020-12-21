@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -195,7 +196,7 @@ namespace TNRD.PackageManager.Reflected
 			get
 			{
 				object _temp = field_mPackageItemsLookup.GetValue();
-				return _temp == null ? null : Utilities.GenerateDictionary<string, PackageItem>(_temp);
+				return _temp == null ? null : Utilities.GenerateDictionary<string,PackageItem>(_temp);
 			}
 		}
 		public double mTimestamp

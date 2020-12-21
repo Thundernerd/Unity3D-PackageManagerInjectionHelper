@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 using UnityEditor.UIElements;
 using UnityEngine;

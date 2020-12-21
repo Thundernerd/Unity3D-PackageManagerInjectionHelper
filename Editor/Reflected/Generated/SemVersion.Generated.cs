@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class SemVersion : ReflectiveClass

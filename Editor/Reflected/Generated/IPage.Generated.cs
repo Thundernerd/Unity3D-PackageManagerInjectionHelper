@@ -6,8 +6,10 @@
 // -------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 namespace TNRD.PackageManager.Reflected
 {
@@ -66,7 +68,7 @@ namespace TNRD.PackageManager.Reflected
 			get
 			{
 				object _temp = property_packageVisualStates.GetValue();
-				return _temp == null ? null : (List<VisualState>)Utilities.GenerateEnumerable<VisualState>(_temp);
+				return _temp == null ? null : Utilities.GenerateEnumerable<VisualState>(_temp).ToList();
 			}
 		}
 		public VisualState GetVisualState(string packageUniqueId)

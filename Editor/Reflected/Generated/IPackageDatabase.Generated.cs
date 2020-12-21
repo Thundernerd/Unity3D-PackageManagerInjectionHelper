@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TNRD.Reflectives;
-using UnityEditor.PackageManager.UI;
 using UnityEditor.PackageManager;
+using UnityEditor.PackageManager.UI;
 namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class IPackageDatabase : ReflectiveClass
