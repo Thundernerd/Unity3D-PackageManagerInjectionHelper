@@ -58,11 +58,11 @@ Once you have access to the element you receive access to a number of items in t
 | Name                  | Description                                                                                                                 |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | Root                  | The root visual element of the Package Manager Window. You should be able to access all child visual elements through here. |
-| PackageManagerToolbar | The Package Manager Toolbar is the toolbar that resides at the top of the Package Manager Window.                           |
-| PackageList           | The Package List is the list on the left side of the window that contains package groups and package items.                 |
-| PackageStatusBar      | The Package Status Bar is the bar on the bottom left of the window. This is where the refresh button resides.               |
-| PackageDetails        | The Package Details is the right part of the window that contains all the detailed information of the selected package.     |
-| PackageToolbar        | The Package Toolbar is the toolbar on the bottom right. Here you'll find buttons like download, install, and remove.        |
+| [PackageManagerToolbar](https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/wiki/PackageManagerToolbar) | The Package Manager Toolbar is the toolbar that resides at the top of the Package Manager Window.                           |
+| [PackageList](https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/wiki/PackageList)           | The Package List is the list on the left side of the window that contains package groups and package items.                 |
+| [PackageStatusBar](https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/wiki/PackageStatusBar)      | The Package Status Bar is the bar on the bottom left of the window. This is where the refresh button resides.               |
+| [PackageDetails](https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/wiki/PackageDetails)        | The Package Details is the right part of the window that contains all the detailed information of the selected package.     |
+| [PackageToolbar](https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/wiki/PackageToolbar)        | The Package Toolbar is the toolbar on the bottom right. Here you'll find buttons like download, install, and remove.        |
 
 Each of these items gives you access to a specific part of the Package Manager Window. However, all of these are automatically generated and based on reflection. Therefore there is no guarantee that this package will work across all versions of Unity.
 
