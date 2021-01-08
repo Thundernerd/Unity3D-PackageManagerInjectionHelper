@@ -1,17 +1,17 @@
-# Package Manager UI Injection Helper
+# Package Manager Injection Helper
 
 <p align="center">
-	<img alt="GitHub package.json version" src ="https://img.shields.io/github/package-json/v/Thundernerd/Unity3D-PackageManagerUIInjectionHelper" />
-	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerUIInjectionHelper/issues">
-		<img alt="GitHub issues" src ="https://img.shields.io/github/issues/Thundernerd/Unity3D-PackageManagerUIInjectionHelper" />
+	<img alt="GitHub package.json version" src ="https://img.shields.io/github/package-json/v/Thundernerd/Unity3D-PackageManagerInjectionHelper" />
+	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/issues">
+		<img alt="GitHub issues" src ="https://img.shields.io/github/issues/Thundernerd/Unity3D-PackageManagerInjectionHelper" />
 	</a>
-	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerUIInjectionHelper/pulls">
-		<img alt="GitHub pull requests" src ="https://img.shields.io/github/issues-pr/Thundernerd/Unity3D-PackageManagerUIInjectionHelper" />
+	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/pulls">
+		<img alt="GitHub pull requests" src ="https://img.shields.io/github/issues-pr/Thundernerd/Unity3D-PackageManagerInjectionHelper" />
 	</a>
-	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerUIInjectionHelper/blob/master/LICENSE.md">
-		<img alt="GitHub license" src ="https://img.shields.io/github/license/Thundernerd/Unity3D-PackageManagerUIInjectionHelper" />
+	<a href="https://github.com/Thundernerd/Unity3D-PackageManagerInjectionHelper/blob/master/LICENSE.md">
+		<img alt="GitHub license" src ="https://img.shields.io/github/license/Thundernerd/Unity3D-PackageManagerInjectionHelper" />
 	</a>
-	<img alt="GitHub last commit" src ="https://img.shields.io/github/last-commit/Thundernerd/Unity3D-PackageManagerUIInjectionHelper" />
+	<img alt="GitHub last commit" src ="https://img.shields.io/github/last-commit/Thundernerd/Unity3D-PackageManagerInjectionHelper" />
 </p>
 
 A set of classes that allow you to inject your own code into the Package Manager Window
@@ -69,7 +69,7 @@ Each of these items gives you access to a specific part of the Package Manager W
 Therefore I encourage people to submit issues whenever they find incompatibilities with a specific version, allowing me to generate a new set of classes for that specific version of Unity.
 
 ## Support
-**Package Manager UI Injection Helper ** is a small and open-source utility that I hope helps other people. It is by no means necessary but if you feel generous you can support me by donating.
+**Package Manager Injection Helper ** is a small and open-source utility that I hope helps other people. It is by no means necessary but if you feel generous you can support me by donating.
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J11GEYY)
 
