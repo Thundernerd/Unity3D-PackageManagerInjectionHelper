@@ -2,12 +2,15 @@
   "name": "net.tnrd.packagemanagerinjection",
   "version": "1.0.0",
   "displayName": "Package Manager UI Injection Helper",
-  "unity": "2019.1",
+  "unity": "2019.4",
   "keywords": [
-    "rect",
-    "editor",
-    "help",
-    "helper"
+    "package",
+    "manager",
+    "packman",
+    "inject",
+    "injection",
+    "helper",
+    "custom"
   ],
   "author": {
     "name": "TNRD",
@@ -15,6 +18,8 @@
     "url": "https://www.tnrd.net"
   },
   "dependencies": {
-    "net.tnrd.reflectives": "1.0.0"
-  }
+    "net.tnrd.reflectives": "1.0.1",
+    "net.tnrd.safeevent": "1.2.1"
+  },
+  "unityRelease": "16f1"
 }
