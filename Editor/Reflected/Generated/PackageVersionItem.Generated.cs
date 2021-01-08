@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageVersionItem : ReflectiveClass
+	public sealed partial class PackageVersionItem : ReflectiveVisualElementClass
 	{
 		private ReflectiveProperty property_package;
 		private ReflectiveProperty property_version;

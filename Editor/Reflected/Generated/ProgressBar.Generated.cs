@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class ProgressBar : ReflectiveClass
+	public sealed partial class ProgressBar : ReflectiveVisualElementClass
 	{
 		private ReflectiveProperty property_cache;
 		private ReflectiveProperty<Label> property_currentProgressBar;

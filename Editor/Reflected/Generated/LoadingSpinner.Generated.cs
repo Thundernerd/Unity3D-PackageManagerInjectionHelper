@@ -16,7 +16,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class LoadingSpinner : ReflectiveClass
+	public sealed partial class LoadingSpinner : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<int> field_kRotationSpeed;
 		private ReflectiveField<int> field_mRotation;

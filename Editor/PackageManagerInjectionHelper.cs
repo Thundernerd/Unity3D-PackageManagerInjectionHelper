@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using TNRD.Events;
 using UnityEditor;
 using UnityEditor.PackageManager.UI;
@@ -8,6 +9,10 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace TNRD.PackageManager
 {
+    /// <summary>
+    /// A Package Manager extension that injects an instance of <see cref="InjectedVisualElement"/> into the Package Manager Window
+    /// </summary>
+    [PublicAPI]
     public class PackageManagerInjectionHelper : IPackageManagerExtension
     {
         private static InjectedVisualElement instance;
@@ -17,20 +22,33 @@ namespace TNRD.PackageManager
         /// <summary>
         /// A visual element which gets injected into the Package Manager Window
         /// </summary>
+        [PublicAPI]
         public static InjectedVisualElement InjectedVisualElement => instance;
 
         /// <summary>
         /// Fires when the InjectedVisualElement gets injected into the Package Manager Window
         /// </summary>
+        [PublicAPI]
         public static event Action Injected
         {
-            add => injected += value;
+            add
+            {
+                if (injectedVisualElementInitialized)
+                {
+                    value.Invoke();
+                }
+                else
+                {
+                    injected += value;
+                }
+            }
             remove => injected -= value;
         }
 
         /// <summary>
         /// Is the InjectedVisualElement available for usage
         /// </summary>
+        [PublicAPI]
         public static bool IsAvailable => instance != null && injectedVisualElementInitialized;
 
         [InitializeOnLoadMethod]

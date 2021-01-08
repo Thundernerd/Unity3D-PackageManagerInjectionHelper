@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageList : ReflectiveClass
+	public sealed partial class PackageList : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_onPackageListLoaded;
 		private ReflectiveField<string> field_kUnityPackageGroupDisplayName;

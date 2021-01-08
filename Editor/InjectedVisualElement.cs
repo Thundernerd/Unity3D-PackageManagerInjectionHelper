@@ -1,30 +1,62 @@
 using System;
+using JetBrains.Annotations;
 using TNRD.Events;
 using TNRD.PackageManager.Reflected;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace TNRD.PackageManager
 {
+    /// <summary>
+    /// A visual element that gets added to the Package Manager Window through an IPackageManagerExtension
+    /// </summary>
+    [PublicAPI]
     public class InjectedVisualElement : VisualElement
     {
-        private VisualElementCache cache;
-
         internal bool IsInitialized;
         private SafeEvent initialized;
 
-        public event Action Initialized
+        internal event Action Initialized
         {
             add => initialized += value;
             remove => initialized -= value;
         }
 
+        /// <summary>
+        /// The root Visual Element of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
         public VisualElement Root { get; private set; }
 
-        public PackageManagerToolbar PackageManagerToolbar => new PackageManagerToolbar(Root.Q("topMenuToolbar"));//.Get("topMenuToolbar"));
+        /// <summary>
+        /// Reflected Package Manager Toolbar section of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
+        public PackageManagerToolbar PackageManagerToolbar => new PackageManagerToolbar(Root.Q("topMenuToolbar"));
+
+        /// <summary>
+        /// Reflected Package List section of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
         public PackageList PackageList => new PackageList(Root.Q("packageList"));
+
+        /// <summary>
+        /// Reflected Package Status Bar section of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
         public PackageStatusBar PackageStatusBar => new PackageStatusBar(Root.Q("packageStatusBar"));
+
+        /// <summary>
+        /// Reflected Package Details section of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
         public PackageDetails PackageDetails => new PackageDetails(Root.Q("packageDetails"));
+
+        /// <summary>
+        /// Reflected Package Toolbar section of the Package Manager Window
+        /// </summary>
+        [PublicAPI]
         public PackageToolbar PackageToolbar => new PackageToolbar(Root.Q("packageToolbar"));
 
         public InjectedVisualElement()
@@ -40,8 +72,6 @@ namespace TNRD.PackageManager
             {
                 Root = Root.parent;
             }
-
-            cache = new VisualElementCache(Root);
 
             initialized.Invoke();
             IsInitialized = true;

@@ -19,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageDetails : ReflectiveClass
+	public sealed partial class PackageDetails : ReflectiveVisualElementClass
 	{
 		private ReflectiveField field_mPackage;
 		private ReflectiveField field_mVersion;

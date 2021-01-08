@@ -18,7 +18,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageManagerToolbar : ReflectiveClass
+	public sealed partial class PackageManagerToolbar : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<long> field_mSearchTextChangeTimestamp;
 		private ReflectiveField<long> field_kSearchEventDelayTicks;

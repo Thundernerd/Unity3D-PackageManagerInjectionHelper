@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageStatusBar : ReflectiveClass
+	public sealed partial class PackageStatusBar : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<string> field_kOfflineErrorMessage;
 		private ReflectiveField<string[]> field_mLastErrorMessages;

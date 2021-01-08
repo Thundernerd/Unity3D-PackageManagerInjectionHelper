@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageGroup : ReflectiveClass
+	public sealed partial class PackageGroup : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_onGroupToggle;
 		private ReflectiveField<Action<bool>> field_onGroupToggle;
