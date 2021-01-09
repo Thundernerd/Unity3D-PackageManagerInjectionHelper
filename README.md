@@ -69,7 +69,7 @@ Each of these items gives you access to a specific part of the Package Manager W
 Therefore I encourage people to submit issues whenever they find incompatibilities with a specific version, allowing me to generate a new set of classes for that specific version of Unity.
 
 ## Support
-**Package Manager Injection Helper ** is a small and open-source utility that I hope helps other people. It is by no means necessary but if you feel generous you can support me by donating.
+**Package Manager Injection Helper** is a small and open-source utility that I hope helps other people. It is by no means necessary but if you feel generous you can support me by donating.
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J11GEYY)
 
