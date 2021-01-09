@@ -33,31 +33,31 @@ namespace TNRD.PackageManager
         /// Reflected Package Manager Toolbar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageManagerToolbar PackageManagerToolbar => new PackageManagerToolbar(Root.Q("topMenuToolbar"));
+        public PackageManagerToolbar PackageManagerToolbar => Root == null ? null : new PackageManagerToolbar(Root.Q("topMenuToolbar"));
 
         /// <summary>
         /// Reflected Package List section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageList PackageList => new PackageList(Root.Q("packageList"));
+        public PackageList PackageList => Root == null ? null : new PackageList(Root.Q("packageList"));
 
         /// <summary>
         /// Reflected Package Status Bar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageStatusBar PackageStatusBar => new PackageStatusBar(Root.Q("packageStatusBar"));
+        public PackageStatusBar PackageStatusBar => Root == null ? null : new PackageStatusBar(Root.Q("packageStatusBar"));
 
         /// <summary>
         /// Reflected Package Details section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageDetails PackageDetails => new PackageDetails(Root.Q("packageDetails"));
+        public PackageDetails PackageDetails => Root == null ? null : new PackageDetails(Root.Q("packageDetails"));
 
         /// <summary>
         /// Reflected Package Toolbar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageToolbar PackageToolbar => new PackageToolbar(Root.Q("packageToolbar"));
+        public PackageToolbar PackageToolbar => Root == null ? null : new PackageToolbar(Root.Q("packageToolbar"));
 
         public InjectedVisualElement()
         {
