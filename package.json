@@ -1,6 +1,6 @@
 {
   "name": "net.tnrd.packagemanagerinjection",
-  "version": "2019.2.21",
+  "version": "1.0.2+2019221f1",
   "displayName": "Package Manager Injection Helper",
   "description": "A set of classes that allow you to inject your own code into the Package Manager Window",
   "unity": "2019.2",
