@@ -20,16 +20,19 @@ namespace TNRD.PackageManager.Injection
 
             string outputPath = Path.Combine(Application.dataPath, "TNRD", "Package Manager", "Injection", unityVersion);
 
-            if (Directory.Exists(outputPath) && File.Exists(Path.Combine(outputPath, "PackageManagerInjectionHelper.cs")))
+            if (Directory.Exists(outputPath) && Directory.GetFiles(outputPath, "PackageManagerInjectionHelper.cs", SearchOption.AllDirectories).Length == 1)
             {
                 return;
             }
 
             string injectionDirectoryPath = Path.Combine(Application.dataPath, "TNRD", "Package Manager", "Injection");
-            string[] directories = Directory.GetDirectories(injectionDirectoryPath);
-            foreach (string directory in directories)
+            if (Directory.Exists(injectionDirectoryPath))
             {
-                Directory.Delete(directory, true);
+                string[] directories = Directory.GetDirectories(injectionDirectoryPath);
+                foreach (string directory in directories)
+                {
+                    Directory.Delete(directory, true);
+                }
             }
 
             string fullPath = Path.GetFullPath(zipPath);
