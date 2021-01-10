@@ -20,7 +20,7 @@ using Object = UnityEngine.Object;
 
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageManagerToolbar : ReflectiveClass
+	public sealed partial class PackageManagerToolbar : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_OnFilterChange;
 		private ReflectiveEvent event_OnTogglePreviewChange;

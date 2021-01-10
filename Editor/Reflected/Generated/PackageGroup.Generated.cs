@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageGroup : ReflectiveClass
+	public sealed partial class PackageGroup : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<VisualElement> field_root;
 		private ReflectiveField field_Origin;

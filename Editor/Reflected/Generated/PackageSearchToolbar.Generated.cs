@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageSearchToolbar : ReflectiveClass
+	public sealed partial class PackageSearchToolbar : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_OnFocusChange;
 		private ReflectiveEvent event_OnSearchChange;

@@ -16,7 +16,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class Alert : ReflectiveClass
+	public sealed partial class Alert : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<VisualElement> field_root;
 		private ReflectiveField<float> field_originalPositionRight;

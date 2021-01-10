@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageToolbar : ReflectiveClass
+	public sealed partial class PackageToolbar : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<VisualElement> field_root;
 		private ReflectiveProperty property_Cache;

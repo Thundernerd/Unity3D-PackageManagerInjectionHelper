@@ -16,7 +16,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class ArrowToggle : ReflectiveClass
+	public sealed partial class ArrowToggle : ReflectiveVisualElementClass
 	{
 		private ReflectiveField<bool> field_Expanded;
 		private ReflectiveMethod method_Toggle_1;

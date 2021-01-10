@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageDetails : ReflectiveClass
+	public sealed partial class PackageDetails : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_OnCloseError;
 		private ReflectiveEvent event_OnOperationError;

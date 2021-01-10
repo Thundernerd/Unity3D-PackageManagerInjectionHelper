@@ -17,7 +17,7 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageStatusBar : ReflectiveClass
+	public sealed partial class PackageStatusBar : ReflectiveVisualElementClass
 	{
 		private ReflectiveEvent event_OnCheckInternetReachability;
 		private ReflectiveField<VisualElement> field_root;
