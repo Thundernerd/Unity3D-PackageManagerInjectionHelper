@@ -1,9 +1,6 @@
 {
-    "name": "TNRD.PackageManager.Injection",
-    "references": [
-        "TNRD.Reflectives",
-        "TNRD.SafeEvent"
-    ],
+    "name": "TNRD.PackageManager.Injection.Installer",
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -11,7 +8,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
