@@ -33,7 +33,7 @@ namespace TNRD.PackageManager
         /// Reflected Package Manager Toolbar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageManagerToolbar PackageManagerToolbar => Root == null ? null : new PackageManagerToolbar(Root.Q("topMenuToolbar"));
+        public PackageManagerToolbar PackageManagerToolbar => Root == null ? null : new PackageManagerToolbar(Root.Q("toolbarContainer"));
         
         /// <summary>
         /// Reflected Package List section of the Package Manager Window
@@ -51,13 +51,13 @@ namespace TNRD.PackageManager
         /// Reflected Package Details section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageDetails PackageDetails => Root == null ? null : new PackageDetails(Root.Q("packageDetails"));
+        public PackageDetails PackageDetails => Root == null ? null : new PackageDetails(Root.Q("detailsGroup"));
         
         /// <summary>
         /// Reflected Package Toolbar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
-        public PackageToolbar PackageToolbar => Root == null ? null : new PackageToolbar(Root.Q("packageToolbar"));
+        public PackageToolbar PackageToolbar => Root == null ? null : new PackageToolbar(Root.Q("packageToolBar"));
 
         public InjectedVisualElement()
         {
