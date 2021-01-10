@@ -34,25 +34,25 @@ namespace TNRD.PackageManager
         /// </summary>
         [PublicAPI]
         public PackageManagerToolbar PackageManagerToolbar => Root == null ? null : new PackageManagerToolbar(Root.Q("topMenuToolbar"));
-
+        
         /// <summary>
         /// Reflected Package List section of the Package Manager Window
         /// </summary>
         [PublicAPI]
         public PackageList PackageList => Root == null ? null : new PackageList(Root.Q("packageList"));
-
+        
         /// <summary>
         /// Reflected Package Status Bar section of the Package Manager Window
         /// </summary>
         [PublicAPI]
         public PackageStatusBar PackageStatusBar => Root == null ? null : new PackageStatusBar(Root.Q("packageStatusBar"));
-
+        
         /// <summary>
         /// Reflected Package Details section of the Package Manager Window
         /// </summary>
         [PublicAPI]
         public PackageDetails PackageDetails => Root == null ? null : new PackageDetails(Root.Q("packageDetails"));
-
+        
         /// <summary>
         /// Reflected Package Toolbar section of the Package Manager Window
         /// </summary>

@@ -6,7 +6,6 @@
 // -------------------------------------------------------------------
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using TNRD.Reflectives;
 using UnityEditor.PackageManager;
@@ -33,7 +32,6 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_CompareComponent_1;
 		private ReflectiveMethod method_Equals_2;
 		private ReflectiveMethod method_GetHashCode_1;
-		private ReflectiveMethod method_GetObjectData_1;
 		private ReflectiveMethod method_op_Implicit_1;
 		private ReflectiveMethod method_op_Equality_1;
 		private ReflectiveMethod method_op_Inequality_1;
@@ -72,7 +70,6 @@ namespace TNRD.PackageManager.Reflected
 			method_CompareComponent_1 = CreateMethod("CompareComponent", BindingFlags.Static | BindingFlags.NonPublic, typeof(string),typeof(string),typeof(bool));
 			method_Equals_2 = CreateMethod("Equals", BindingFlags.Instance | BindingFlags.Public, typeof(Object));
 			method_GetHashCode_1 = CreateMethod("GetHashCode", BindingFlags.Instance | BindingFlags.Public, null);
-			method_GetObjectData_1 = CreateMethod("GetObjectData", BindingFlags.Instance | BindingFlags.Public, typeof(SerializationInfo),typeof(StreamingContext));
 			method_op_Implicit_1 = CreateMethod("op_Implicit", BindingFlags.Static | BindingFlags.Public, typeof(string));
 			method_op_Equality_1 = CreateMethod("op_Equality", BindingFlags.Static | BindingFlags.Public, typeof(SemVersion),typeof(SemVersion));
 			method_op_Inequality_1 = CreateMethod("op_Inequality", BindingFlags.Static | BindingFlags.Public, typeof(SemVersion),typeof(SemVersion));
@@ -163,10 +160,6 @@ namespace TNRD.PackageManager.Reflected
 		public int GetHashCode()
 		{
 			return (int) method_GetHashCode_1.Invoke();
-		}
-		public void GetObjectData(SerializationInfo info,StreamingContext context)
-		{
-			method_GetObjectData_1.Invoke(info,context);
 		}
 		public SemVersion op_Implicit(string version)
 		{

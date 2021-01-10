@@ -14,8 +14,8 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class VisualElementCache : ReflectiveClass
 	{
-		private ReflectiveField<Dictionary<string, VisualElement>> field_mCache;
-		private ReflectiveField<VisualElement> field_mRoot;
+		private ReflectiveField<Dictionary<string, VisualElement>> field_Cache;
+		private ReflectiveField<VisualElement> field_Root;
 		private ReflectiveMethod method_Create_1;
 		private ReflectiveMethod method_Get_1;
 		public VisualElementCache(object instance) : base(instance)
@@ -30,21 +30,21 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mCache = CreateField<Dictionary<string, VisualElement>>("mCache", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mRoot = CreateField<VisualElement>("mRoot", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_Create_1 = CreateMethod("Create", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
+			field_Cache = CreateField<Dictionary<string, VisualElement>>("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Root = CreateField<VisualElement>("Root", BindingFlags.Instance | BindingFlags.NonPublic);
+			method_Create_1 = CreateMethod("Create", BindingFlags.Instance | BindingFlags.Public, typeof(string));
 			method_Get_1 = CreateMethod("Get", BindingFlags.Instance | BindingFlags.Public, typeof(string));
 		}
 		partial void Initialize();
-		public Dictionary<string, VisualElement> mCache
+		public Dictionary<string, VisualElement> Cache
 		{
-			get => field_mCache.GetValue();
-			set => field_mCache.SetValue(value);
+			get => field_Cache.GetValue();
+			set => field_Cache.SetValue(value);
 		}
-		public VisualElement mRoot
+		public VisualElement Root
 		{
-			get => field_mRoot.GetValue();
-			set => field_mRoot.SetValue(value);
+			get => field_Root.GetValue();
+			set => field_Root.SetValue(value);
 		}
 		public T Create<T>(string query)
 		{

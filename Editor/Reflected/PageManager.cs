@@ -6,10 +6,10 @@ namespace TNRD.PackageManager.Reflected
         /// Creates a static instance of the Page Manager
         /// </summary>
         /// <returns></returns>
-        public static IPageManager GetInstance()
-        {
-            PageManager pageManager = new PageManager(GetOriginalType());
-            return pageManager.instance;
-        }
+        // public static IPageManager GetInstance()
+        // {
+        //     PageManager pageManager = new PageManager(GetOriginalType());
+        //     return pageManager.instance;
+        // }
     }
 }

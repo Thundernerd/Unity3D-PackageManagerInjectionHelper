@@ -16,10 +16,9 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class ArrowToggle : ReflectiveVisualElementClass
+	public sealed partial class ArrowToggle : ReflectiveClass
 	{
-		private ReflectiveField<bool> field_mExpanded;
-		private ReflectiveProperty<bool> property_expanded;
+		private ReflectiveField<bool> field_Expanded;
 		private ReflectiveMethod method_Toggle_1;
 		public ArrowToggle(object instance) : base(instance)
 		{
@@ -33,20 +32,14 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mExpanded = CreateField<bool>("mExpanded", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_expanded = CreateProperty<bool>("expanded", BindingFlags.Instance | BindingFlags.Public);
+			field_Expanded = CreateField<bool>("Expanded", BindingFlags.Instance | BindingFlags.NonPublic);
 			method_Toggle_1 = CreateMethod("Toggle", BindingFlags.Instance | BindingFlags.Public, null);
 		}
 		partial void Initialize();
-		public bool mExpanded
+		public bool Expanded
 		{
-			get => field_mExpanded.GetValue();
-			set => field_mExpanded.SetValue(value);
-		}
-		public bool expanded
-		{
-			get => property_expanded.GetValue();
-			set => property_expanded.SetValue(value);
+			get => field_Expanded.GetValue();
+			set => field_Expanded.SetValue(value);
 		}
 		public void Toggle()
 		{

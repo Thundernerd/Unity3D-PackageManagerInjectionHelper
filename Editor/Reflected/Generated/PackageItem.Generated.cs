@@ -19,43 +19,52 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageItem : ReflectiveClass
 	{
-		private ReflectiveField<string> field_mCurrentStateClass;
-		private ReflectiveField<bool> field_mFetchingDetail;
+		private ReflectiveField<int> field_ListItemSpacing;
+		private ReflectiveField<int> field_ListItemMaxHeight;
+		private ReflectiveField field_Selection;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField<string> field_currentStateClass;
 		private ReflectiveProperty property_package;
-		private ReflectiveProperty property_visualState;
-		private ReflectiveProperty property_targetVersion;
-		private ReflectiveProperty<VisualElement> property_element;
-		private ReflectiveProperty property_packageGroup;
-		private ReflectiveProperty property_selectedVersion;
-		private ReflectiveProperty property_versionItems;
-		private ReflectiveProperty property_cache;
-		private ReflectiveProperty<Label> property_nameLabel;
-		private ReflectiveProperty<Label> property_stateLabel;
-		private ReflectiveProperty<Label> property_versionLabel;
-		private ReflectiveProperty<Label> property_seeAllVersionsLabel;
-		private ReflectiveProperty<VisualElement> property_versionToolbar;
-		private ReflectiveProperty<VisualElement> property_itemLabel;
-		private ReflectiveProperty property_spinner;
-		private ReflectiveProperty property_expander;
-		private ReflectiveProperty<Label> property_expanderHidden;
-		private ReflectiveProperty<VisualElement> property_versionsContainer;
-		private ReflectiveProperty<ScrollView> property_versionList;
-		private ReflectiveMethod method_BecomesVisible_1;
-		private ReflectiveMethod method_UpdateVisualState_1;
-		private ReflectiveMethod method_SetPackage_1;
-		private ReflectiveMethod method_UpdateStatusIcon_1;
-		private ReflectiveMethod method_RefreshVersions_1;
-		private ReflectiveMethod method_FixVersionListStyle_1;
-		private ReflectiveMethod method_RefreshSelection_1;
+		private ReflectiveProperty property_Versions;
+		private ReflectiveProperty property_SelectionManager;
+		private ReflectiveProperty property_AdditionalVersions;
+		private ReflectiveProperty<bool> property_IsExpanded;
+		private ReflectiveProperty property_TargetVersion;
+		private ReflectiveProperty<VisualElement> property_Element;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<Label> property_NameLabel;
+		private ReflectiveProperty<Label> property_StateLabel;
+		private ReflectiveProperty<Label> property_VersionLabel;
+		private ReflectiveProperty<Label> property_SeeAllVersions;
+		private ReflectiveProperty<Label> property_NoVersions;
+		private ReflectiveProperty<VisualElement> property_VersionToolbar;
+		private ReflectiveProperty<VisualElement> property_PackageContainer;
+		private ReflectiveProperty<VisualElement> property_ItemLabel;
+		private ReflectiveProperty property_Spinner;
+		private ReflectiveProperty<VisualElement> property_SpinnerContainer;
+		private ReflectiveProperty property_Expander;
+		private ReflectiveProperty<Label> property_ExpanderHidden;
+		private ReflectiveProperty<VisualElement> property_ItemVersions;
+		private ReflectiveProperty<ScrollView> property_VersionList;
 		private ReflectiveMethod method_SelectMainItem_1;
-		private ReflectiveMethod method_ToggleExpansion_1;
-		private ReflectiveMethod method_SetExpanded_1;
-		private ReflectiveMethod method_UpdateExpanderUI_1;
+		private ReflectiveMethod method_SetExpandInternal_1;
+		private ReflectiveMethod method_SetExpand_1;
+		private ReflectiveMethod method_ExpandToggle_1;
+		private ReflectiveMethod method_SetSelected_1;
+		private ReflectiveMethod method_SetItem_1;
+		private ReflectiveMethod method_SetDisplayName_1;
+		private ReflectiveMethod method_OnPackageChanged_1;
+		private ReflectiveMethod method_RefreshVersions_1;
+		private ReflectiveMethod method_IsKeyVersion_1;
+		private ReflectiveMethod method_RefreshSelection_1;
 		private ReflectiveMethod method_SeeAllVersionsClick_1;
+		private ReflectiveMethod method_SetSeeAllVersions_1;
+		private ReflectiveMethod method_OnPackageUpdate_1;
 		private ReflectiveMethod method_StartSpinner_1;
 		private ReflectiveMethod method_StopSpinner_1;
-		private ReflectiveMethod method_GetSelectableItems_1;
-		private ReflectiveMethod method_GetVersionText_1;
+		private ReflectiveMethod method_GetSelectionList_1;
+		private ReflectiveMethod method_GetIconStateId_1;
+		private ReflectiveMethod method_GetIconStateId_2;
 		public PackageItem(object instance) : base(instance)
 		{
 			Construct();
@@ -68,218 +77,261 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mCurrentStateClass = CreateField<string>("mCurrentStateClass", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mFetchingDetail = CreateField<bool>("mFetchingDetail", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_ListItemSpacing = CreateField<int>("ListItemSpacing", BindingFlags.Static | BindingFlags.Public);
+			field_ListItemMaxHeight = CreateField<int>("ListItemMaxHeight", BindingFlags.Static | BindingFlags.Public);
+			field_Selection = CreateField("Selection", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_currentStateClass = CreateField<string>("currentStateClass", BindingFlags.Instance | BindingFlags.NonPublic);
 			property_package = CreateProperty("package", BindingFlags.Instance | BindingFlags.Public);
-			property_visualState = CreateProperty("visualState", BindingFlags.Instance | BindingFlags.Public);
-			property_targetVersion = CreateProperty("targetVersion", BindingFlags.Instance | BindingFlags.Public);
-			property_element = CreateProperty<VisualElement>("element", BindingFlags.Instance | BindingFlags.Public);
-			property_packageGroup = CreateProperty("packageGroup", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_selectedVersion = CreateProperty("selectedVersion", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_versionItems = CreateProperty("versionItems", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_nameLabel = CreateProperty<Label>("nameLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_stateLabel = CreateProperty<Label>("stateLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_versionLabel = CreateProperty<Label>("versionLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_seeAllVersionsLabel = CreateProperty<Label>("seeAllVersionsLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_versionToolbar = CreateProperty<VisualElement>("versionToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_itemLabel = CreateProperty<VisualElement>("itemLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_spinner = CreateProperty("spinner", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_expander = CreateProperty("expander", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_expanderHidden = CreateProperty<Label>("expanderHidden", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_versionsContainer = CreateProperty<VisualElement>("versionsContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_versionList = CreateProperty<ScrollView>("versionList", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_BecomesVisible_1 = CreateMethod("BecomesVisible", BindingFlags.Instance | BindingFlags.Public, null);
-			method_UpdateVisualState_1 = CreateMethod("UpdateVisualState", BindingFlags.Instance | BindingFlags.Public, typeof(VisualState));
-			method_SetPackage_1 = CreateMethod("SetPackage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackage));
-			method_UpdateStatusIcon_1 = CreateMethod("UpdateStatusIcon", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshVersions_1 = CreateMethod("RefreshVersions", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_FixVersionListStyle_1 = CreateMethod("FixVersionListStyle", BindingFlags.Instance | BindingFlags.NonPublic, typeof(List<IPackageVersion>));
-			method_RefreshSelection_1 = CreateMethod("RefreshSelection", BindingFlags.Instance | BindingFlags.Public, null);
+			property_Versions = CreateProperty("Versions", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SelectionManager = CreateProperty("SelectionManager", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_AdditionalVersions = CreateProperty("AdditionalVersions", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_IsExpanded = CreateProperty<bool>("IsExpanded", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_TargetVersion = CreateProperty("TargetVersion", BindingFlags.Instance | BindingFlags.Public);
+			property_Element = CreateProperty<VisualElement>("Element", BindingFlags.Instance | BindingFlags.Public);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_NameLabel = CreateProperty<Label>("NameLabel", BindingFlags.Instance | BindingFlags.Public);
+			property_StateLabel = CreateProperty<Label>("StateLabel", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_VersionLabel = CreateProperty<Label>("VersionLabel", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SeeAllVersions = CreateProperty<Label>("SeeAllVersions", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_NoVersions = CreateProperty<Label>("NoVersions", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_VersionToolbar = CreateProperty<VisualElement>("VersionToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageContainer = CreateProperty<VisualElement>("PackageContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ItemLabel = CreateProperty<VisualElement>("ItemLabel", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Spinner = CreateProperty("Spinner", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SpinnerContainer = CreateProperty<VisualElement>("SpinnerContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Expander = CreateProperty("Expander", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ExpanderHidden = CreateProperty<Label>("ExpanderHidden", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ItemVersions = CreateProperty<VisualElement>("ItemVersions", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_VersionList = CreateProperty<ScrollView>("VersionList", BindingFlags.Instance | BindingFlags.NonPublic);
 			method_SelectMainItem_1 = CreateMethod("SelectMainItem", BindingFlags.Instance | BindingFlags.Public, null);
-			method_ToggleExpansion_1 = CreateMethod("ToggleExpansion", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_SetExpanded_1 = CreateMethod("SetExpanded", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
-			method_UpdateExpanderUI_1 = CreateMethod("UpdateExpanderUI", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
+			method_SetExpandInternal_1 = CreateMethod("SetExpandInternal", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
+			method_SetExpand_1 = CreateMethod("SetExpand", BindingFlags.Instance | BindingFlags.Public, typeof(bool));
+			method_ExpandToggle_1 = CreateMethod("ExpandToggle", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetSelected_1 = CreateMethod("SetSelected", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
+			method_SetItem_1 = CreateMethod("SetItem", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Package));
+			method_SetDisplayName_1 = CreateMethod("SetDisplayName", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
+			method_OnPackageChanged_1 = CreateMethod("OnPackageChanged", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_RefreshVersions_1 = CreateMethod("RefreshVersions", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_IsKeyVersion_1 = CreateMethod("IsKeyVersion", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo));
+			method_RefreshSelection_1 = CreateMethod("RefreshSelection", BindingFlags.Instance | BindingFlags.Public, null);
 			method_SeeAllVersionsClick_1 = CreateMethod("SeeAllVersionsClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetSeeAllVersions_1 = CreateMethod("SetSeeAllVersions", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
+			method_OnPackageUpdate_1 = CreateMethod("OnPackageUpdate", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_StartSpinner_1 = CreateMethod("StartSpinner", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_StopSpinner_1 = CreateMethod("StopSpinner", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetSelectableItems_1 = CreateMethod("GetSelectableItems", BindingFlags.Instance | BindingFlags.Public, null);
-			method_GetVersionText_1 = CreateMethod("GetVersionText", BindingFlags.Static | BindingFlags.Public, typeof(IPackageVersion),typeof(bool));
+			method_GetSelectionList_1 = CreateMethod("GetSelectionList", BindingFlags.Instance | BindingFlags.Public, null);
+			method_GetIconStateId_1 = CreateMethod("GetIconStateId", BindingFlags.Static | BindingFlags.Public, typeof(PackageInfo));
+			method_GetIconStateId_2 = CreateMethod("GetIconStateId", BindingFlags.Static | BindingFlags.Public, typeof(PackageState));
 		}
 		partial void Initialize();
-		public string mCurrentStateClass
+		public int ListItemSpacing
 		{
-			get => field_mCurrentStateClass.GetValue();
-			set => field_mCurrentStateClass.SetValue(value);
+			get => field_ListItemSpacing.GetValue();
+			set => field_ListItemSpacing.SetValue(value);
 		}
-		public bool mFetchingDetail
+		public int ListItemMaxHeight
 		{
-			get => field_mFetchingDetail.GetValue();
-			set => field_mFetchingDetail.SetValue(value);
+			get => field_ListItemMaxHeight.GetValue();
+			set => field_ListItemMaxHeight.SetValue(value);
 		}
-		public IPackage package
+		public Selection Selection
+		{
+			get
+			{
+				object _temp = field_Selection.GetValue();
+				return _temp == null ? null : new Selection(_temp);
+			}
+			set => field_Selection.SetValue(value.Instance);
+		}
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public string currentStateClass
+		{
+			get => field_currentStateClass.GetValue();
+			set => field_currentStateClass.SetValue(value);
+		}
+		public Package package
 		{
 			get
 			{
 				object _temp = property_package.GetValue();
-				return _temp == null ? null : new IPackage(_temp);
+				return _temp == null ? null : new Package(_temp);
 			}
 			set => property_package.SetValue(value.Instance);
 		}
-		public VisualState visualState
+		public IEnumerable<PackageVersionLabel> Versions
 		{
 			get
 			{
-				object _temp = property_visualState.GetValue();
-				return _temp == null ? null : new VisualState(_temp);
-			}
-			set => property_visualState.SetValue(value.Instance);
-		}
-		public IPackageVersion targetVersion
-		{
-			get
-			{
-				object _temp = property_targetVersion.GetValue();
-				return _temp == null ? null : new IPackageVersion(_temp);
+				object _temp = property_Versions.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageVersionLabel>(_temp);
 			}
 		}
-		public VisualElement element
-		{
-			get => property_element.GetValue();
-		}
-		public PackageGroup packageGroup
+		public ElementSelection SelectionManager
 		{
 			get
 			{
-				object _temp = property_packageGroup.GetValue();
-				return _temp == null ? null : new PackageGroup(_temp);
+				object _temp = property_SelectionManager.GetValue();
+				return _temp == null ? null : new ElementSelection(_temp);
 			}
-			set => property_packageGroup.SetValue(value.Instance);
+			set => property_SelectionManager.SetValue(value.Instance);
 		}
-		public IPackageVersion selectedVersion
+		public IEnumerable<PackageInfo> AdditionalVersions
 		{
 			get
 			{
-				object _temp = property_selectedVersion.GetValue();
-				return _temp == null ? null : new IPackageVersion(_temp);
+				object _temp = property_AdditionalVersions.GetValue();
+				return _temp == null ? null : Utilities.GenerateEnumerable<PackageInfo>(_temp);
 			}
 		}
-		public IEnumerable<PackageVersionItem> versionItems
+		public bool IsExpanded
+		{
+			get => property_IsExpanded.GetValue();
+		}
+		public PackageInfo TargetVersion
 		{
 			get
 			{
-				object _temp = property_versionItems.GetValue();
-				return _temp == null ? null : Utilities.GenerateEnumerable<PackageVersionItem>(_temp);
+				object _temp = property_TargetVersion.GetValue();
+				return _temp == null ? null : new PackageInfo(_temp);
 			}
 		}
-		public VisualElementCache cache
+		public VisualElement Element
+		{
+			get => property_Element.GetValue();
+		}
+		public VisualElementCache Cache
 		{
 			get
 			{
-				object _temp = property_cache.GetValue();
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => property_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public Label nameLabel
+		public Label NameLabel
 		{
-			get => property_nameLabel.GetValue();
+			get => property_NameLabel.GetValue();
 		}
-		public Label stateLabel
+		public Label StateLabel
 		{
-			get => property_stateLabel.GetValue();
+			get => property_StateLabel.GetValue();
 		}
-		public Label versionLabel
+		public Label VersionLabel
 		{
-			get => property_versionLabel.GetValue();
+			get => property_VersionLabel.GetValue();
 		}
-		public Label seeAllVersionsLabel
+		public Label SeeAllVersions
 		{
-			get => property_seeAllVersionsLabel.GetValue();
+			get => property_SeeAllVersions.GetValue();
 		}
-		public VisualElement versionToolbar
+		public Label NoVersions
 		{
-			get => property_versionToolbar.GetValue();
+			get => property_NoVersions.GetValue();
 		}
-		public VisualElement itemLabel
+		public VisualElement VersionToolbar
 		{
-			get => property_itemLabel.GetValue();
+			get => property_VersionToolbar.GetValue();
 		}
-		public LoadingSpinner spinner
+		public VisualElement PackageContainer
+		{
+			get => property_PackageContainer.GetValue();
+		}
+		public VisualElement ItemLabel
+		{
+			get => property_ItemLabel.GetValue();
+		}
+		public LoadingSpinner Spinner
 		{
 			get
 			{
-				object _temp = property_spinner.GetValue();
+				object _temp = property_Spinner.GetValue();
 				return _temp == null ? null : new LoadingSpinner(_temp);
 			}
 		}
-		public ArrowToggle expander
+		public VisualElement SpinnerContainer
+		{
+			get => property_SpinnerContainer.GetValue();
+		}
+		public ArrowToggle Expander
 		{
 			get
 			{
-				object _temp = property_expander.GetValue();
+				object _temp = property_Expander.GetValue();
 				return _temp == null ? null : new ArrowToggle(_temp);
 			}
 		}
-		public Label expanderHidden
+		public Label ExpanderHidden
 		{
-			get => property_expanderHidden.GetValue();
+			get => property_ExpanderHidden.GetValue();
 		}
-		public VisualElement versionsContainer
+		public VisualElement ItemVersions
 		{
-			get => property_versionsContainer.GetValue();
+			get => property_ItemVersions.GetValue();
 		}
-		public ScrollView versionList
+		public ScrollView VersionList
 		{
-			get => property_versionList.GetValue();
-		}
-		public void BecomesVisible()
-		{
-			method_BecomesVisible_1.Invoke();
-		}
-		public void UpdateVisualState(VisualState newVisualState)
-		{
-			method_UpdateVisualState_1.Invoke(newVisualState);
-		}
-		public void SetPackage(IPackage package)
-		{
-			method_SetPackage_1.Invoke(package);
-		}
-		public void UpdateStatusIcon()
-		{
-			method_UpdateStatusIcon_1.Invoke();
-		}
-		public void RefreshVersions()
-		{
-			method_RefreshVersions_1.Invoke();
-		}
-		public void FixVersionListStyle(List<IPackageVersion> versions)
-		{
-			method_FixVersionListStyle_1.Invoke(versions);
-		}
-		public void RefreshSelection()
-		{
-			method_RefreshSelection_1.Invoke();
+			get => property_VersionList.GetValue();
 		}
 		public void SelectMainItem()
 		{
 			method_SelectMainItem_1.Invoke();
 		}
-		public void ToggleExpansion()
+		public void SetExpandInternal(bool value)
 		{
-			method_ToggleExpansion_1.Invoke();
+			method_SetExpandInternal_1.Invoke(value);
 		}
-		public void SetExpanded(bool value)
+		public void SetExpand(bool value)
 		{
-			method_SetExpanded_1.Invoke(value);
+			method_SetExpand_1.Invoke(value);
 		}
-		public void UpdateExpanderUI(bool expanded)
+		public void ExpandToggle()
 		{
-			method_UpdateExpanderUI_1.Invoke(expanded);
+			method_ExpandToggle_1.Invoke();
+		}
+		public void SetSelected(bool value)
+		{
+			method_SetSelected_1.Invoke(value);
+		}
+		public void SetItem(Package package)
+		{
+			method_SetItem_1.Invoke(package);
+		}
+		public void SetDisplayName(string displayName)
+		{
+			method_SetDisplayName_1.Invoke(displayName);
+		}
+		public void OnPackageChanged()
+		{
+			method_OnPackageChanged_1.Invoke();
+		}
+		public void RefreshVersions()
+		{
+			method_RefreshVersions_1.Invoke();
+		}
+		public bool IsKeyVersion(PackageInfo packageInfo)
+		{
+			return (bool) method_IsKeyVersion_1.Invoke(packageInfo);
+		}
+		public void RefreshSelection()
+		{
+			method_RefreshSelection_1.Invoke();
 		}
 		public void SeeAllVersionsClick()
 		{
 			method_SeeAllVersionsClick_1.Invoke();
+		}
+		public void SetSeeAllVersions(bool value)
+		{
+			method_SetSeeAllVersions_1.Invoke(value);
+		}
+		public void OnPackageUpdate()
+		{
+			method_OnPackageUpdate_1.Invoke();
 		}
 		public void StartSpinner()
 		{
@@ -289,13 +341,17 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_StopSpinner_1.Invoke();
 		}
-		public IEnumerable<ISelectableItem> GetSelectableItems()
+		public IEnumerable<IPackageSelection> GetSelectionList()
 		{
-			return Utilities.GenerateEnumerable<ISelectableItem>(method_GetSelectableItems_1.Invoke());
+			return Utilities.GenerateEnumerable<IPackageSelection>(method_GetSelectionList_1.Invoke());
 		}
-		public string GetVersionText(IPackageVersion version,bool simplified)
+		public string GetIconStateId(PackageInfo packageInfo)
 		{
-			return (string) method_GetVersionText_1.Invoke(version,simplified);
+			return (string) method_GetIconStateId_1.Invoke(packageInfo);
+		}
+		public string GetIconStateId(PackageState state)
+		{
+			return (string) method_GetIconStateId_2.Invoke((int)state);
 		}
 		public static Type GetOriginalType()
 		{

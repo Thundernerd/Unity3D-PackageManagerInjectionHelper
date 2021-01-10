@@ -15,102 +15,71 @@ using UnityEngine.UIElements;
 using UnityEngine.UIElements.StyleSheets;
 using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
-using Object = UnityEngine.Object;
-
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageDetails : ReflectiveVisualElementClass
+	public sealed partial class PackageDetails : ReflectiveClass
 	{
-		private ReflectiveField field_mPackage;
-		private ReflectiveField field_mVersion;
-		private ReflectiveField<string> field_kEmptyDescriptionClass;
-		private ReflectiveField<string[]> field_kPackageActionVerbs;
-		private ReflectiveField<string[]> field_kPackageActionInProgressVerbs;
-		private ReflectiveField<PackageTag[]> field_kVisibleTags;
-		private ReflectiveField<Texture2D> field_sLoadingTexture;
+		private ReflectiveEvent event_OnCloseError;
+		private ReflectiveEvent event_OnOperationError;
+		private ReflectiveField field_OnCloseError;
+		private ReflectiveField field_OnOperationError;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField field_package;
+		private ReflectiveField<string> field_emptyDescriptionClass;
+		private ReflectiveField field_DisplayPackage;
+		private ReflectiveField field_Selection;
+		private ReflectiveField field_Collection;
+		private ReflectiveField<string[]> field_PackageActionVerbs;
+		private ReflectiveField<string[]> field_PackageActionInProgressVerbs;
 		private ReflectiveField<int> field_MaxDependentList;
-		private ReflectiveField<bool> field_mDescriptionExpanded;
-		private ReflectiveProperty property_package;
-		private ReflectiveProperty property_displayVersion;
-		private ReflectiveProperty property_targetVersion;
-		private ReflectiveProperty property_cache;
-		private ReflectiveProperty<VisualElement> property_detailDescContainer;
-		private ReflectiveProperty<VisualElement> property_detailNameContainer;
-		private ReflectiveProperty<Label> property_detailName;
-		private ReflectiveProperty<Label> property_detailDesc;
-		private ReflectiveProperty<Button> property_detailDescMore;
-		private ReflectiveProperty<Button> property_detailDescLess;
-		private ReflectiveProperty<VisualElement> property_detailLinksContainer;
-		private ReflectiveProperty<VisualElement> property_detailLinks;
-		private ReflectiveProperty property_detailError;
-		private ReflectiveProperty<ScrollView> property_detailScrollView;
-		private ReflectiveProperty<VisualElement> property_detailContainer;
-		private ReflectiveProperty<Label> property_detailTitle;
-		private ReflectiveProperty<Label> property_detailVersion;
-		private ReflectiveProperty<VisualElement> property_detailDateContainer;
-		private ReflectiveProperty<Label> property_detailDate;
-		private ReflectiveProperty<VisualElement> property_detailAuthorContainer;
-		private ReflectiveProperty<Label> property_detailAuthorText;
-		private ReflectiveProperty<Button> property_detailAuthorLink;
-		private ReflectiveProperty<VisualElement> property_detailRegistryContainer;
-		private ReflectiveProperty<VisualElement> property_detailRegistryWarning;
-		private ReflectiveProperty<Button> property_detailWarningLink;
-		private ReflectiveProperty<Label> property_detailRegistryName;
-		private ReflectiveProperty<VisualElement> property_customContainer;
-		private ReflectiveProperty property_sampleList;
-		private ReflectiveProperty property_dependencies;
-		private ReflectiveProperty<VisualElement> property_packageToolbarContainer;
-		private ReflectiveProperty<VisualElement> property_packageToolbarLeftArea;
-		private ReflectiveProperty<Button> property_updateButton;
-		private ReflectiveProperty<Button> property_removeButton;
-		private ReflectiveProperty<Button> property_importButton;
-		private ReflectiveProperty<Button> property_downloadButton;
-		private ReflectiveProperty<Button> property_editButton;
-		private ReflectiveProperty property_downloadProgress;
-		private ReflectiveProperty<VisualElement> property_detailCategories;
-		private ReflectiveProperty<VisualElement> property_detailUnityVersionsContainer;
-		private ReflectiveProperty<Label> property_detailUnityVersions;
-		private ReflectiveProperty<VisualElement> property_detailSizesContainer;
-		private ReflectiveProperty<VisualElement> property_detailSizes;
-		private ReflectiveProperty<VisualElement> property_detailImagesContainer;
-		private ReflectiveProperty<VisualElement> property_detailImages;
-		private ReflectiveMethod method_OnEditorSelectionChanged_1;
-		private ReflectiveMethod method_GetDisplayPackageManifestAsset_1;
-		private ReflectiveMethod method_EditPackageManifestClick_1;
-		private ReflectiveMethod method_OnEnable_1;
-		private ReflectiveMethod method_OnDisable_1;
-		private ReflectiveMethod method_OnDownloadProgress_1;
+		private ReflectiveProperty property_TargetVersion;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<Label> property_DetailDesc;
+		private ReflectiveProperty<Button> property_UpdateButton;
+		private ReflectiveProperty<Button> property_RemoveButton;
+		private ReflectiveProperty<Button> property_ViewDocButton;
+		private ReflectiveProperty<VisualElement> property_DocumentationContainer;
+		private ReflectiveProperty<Button> property_ViewChangelogButton;
+		private ReflectiveProperty<VisualElement> property_ChangelogContainer;
+		private ReflectiveProperty<Button> property_ViewLicenses;
+		private ReflectiveProperty<VisualElement> property_ViewLicensesContainer;
+		private ReflectiveProperty property_DetailError;
+		private ReflectiveProperty<ScrollView> property_DetailScrollView;
+		private ReflectiveProperty<VisualElement> property_DetailContainer;
+		private ReflectiveProperty<Label> property_DetailModuleReference;
+		private ReflectiveProperty<Label> property_DetailVersion;
+		private ReflectiveProperty<Label> property_DetailAuthor;
+		private ReflectiveProperty<Label> property_VerifyLabel;
+		private ReflectiveProperty<VisualElement> property_CustomContainer;
+		private ReflectiveProperty property_SampleList;
+		private ReflectiveProperty property_Dependencies;
+		private ReflectiveProperty<VisualElement> property_PackageToolbarContainer;
+		private ReflectiveProperty<Button> property_UpdateBuiltIn;
 		private ReflectiveMethod method_SetContentVisibility_1;
+		private ReflectiveMethod method_SetCollection_1;
+		private ReflectiveMethod method_SetSelection_1;
 		private ReflectiveMethod method_OnSelectionChanged_1;
-		private ReflectiveMethod method_RefreshDependencies_1;
+		private ReflectiveMethod method_OnEnterPanel_1;
+		private ReflectiveMethod method_OnLeavePanel_1;
+		private ReflectiveMethod method_ShowDependencies_1;
 		private ReflectiveMethod method_SetUpdateVisibility_1;
-		private ReflectiveMethod method_RefreshExtensions_1;
-		private ReflectiveMethod method_SetDisplayVersion_1;
-		private ReflectiveMethod method_DescriptionGeometryChangeEvent_1;
-		private ReflectiveMethod method_RefreshDescription_1;
-		private ReflectiveMethod method_RefreshAuthor_1;
-		private ReflectiveMethod method_RefreshRegistry_1;
-		private ReflectiveMethod method_RefreshPublishedDate_1;
-		private ReflectiveMethod method_RefreshCategories_1;
-		private ReflectiveMethod method_RefreshLinks_1;
-		private ReflectiveMethod method_RefreshSupportedUnityVersions_1;
-		private ReflectiveMethod method_RefreshSizeInfo_1;
-		private ReflectiveMethod method_ClearSupportingImages_1;
-		private ReflectiveMethod method_RefreshSupportingImages_1;
+		private ReflectiveMethod method_SetDisplayPackage_1;
 		private ReflectiveMethod method_SetPackage_1;
-		private ReflectiveMethod method_OnPackagesUpdated_1;
-		private ReflectiveMethod method_RefreshErrorDisplay_1;
-		private ReflectiveMethod method_OnOperationStartOrFinish_1;
-		private ReflectiveMethod method_RefreshPackageActionButtons_1;
+		private ReflectiveMethod method_OnLatestPackageInfoFetched_1;
+		private ReflectiveMethod method_ShowDisplayPackage_1;
+		private ReflectiveMethod method_SetError_1;
+		private ReflectiveMethod method_OnAddOperation_1;
+		private ReflectiveMethod method_OnAddOperationError_1;
+		private ReflectiveMethod method_OnAddOperationSuccess_1;
+		private ReflectiveMethod method_OnRemoveOperation_1;
+		private ReflectiveMethod method_OnRemoveOperationError_1;
+		private ReflectiveMethod method_OnRemoveOperationSuccess_1;
 		private ReflectiveMethod method_RefreshAddButton_1;
 		private ReflectiveMethod method_RefreshRemoveButton_1;
-		private ReflectiveMethod method_RefreshImportAndDownloadButtons_1;
+		private ReflectiveMethod method_CheckCompilationStatus_1;
 		private ReflectiveMethod method_GetButtonText_1;
-		private ReflectiveMethod method_WarningLinkClick_1;
-		private ReflectiveMethod method_DescMoreClick_1;
-		private ReflectiveMethod method_DescLessClick_1;
-		private ReflectiveMethod method_AuthorClick_1;
 		private ReflectiveMethod method_UpdateClick_1;
+		private ReflectiveMethod method_CloseAndUpdate_1;
 		private ReflectiveMethod method_GetPackageDashList_1;
 		private ReflectiveMethod method_GetDependentMessage_1;
 		private ReflectiveMethod method_RemoveClick_1;
@@ -119,9 +88,7 @@ namespace TNRD.PackageManager.Reflected
 		private ReflectiveMethod method_ViewDocClick_1;
 		private ReflectiveMethod method_ViewChangelogClick_1;
 		private ReflectiveMethod method_ViewLicensesClick_1;
-		private ReflectiveMethod method_ImportClick_1;
-		private ReflectiveMethod method_DownloadOrCancelClick_1;
-		private ReflectiveMethod method_GetTagLabel_1;
+		private ReflectiveMethod method_GetTag_1;
 		public PackageDetails(object instance) : base(instance)
 		{
 			Construct();
@@ -134,484 +101,347 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mPackage = CreateField("mPackage", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mVersion = CreateField("mVersion", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_kEmptyDescriptionClass = CreateField<string>("kEmptyDescriptionClass", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kPackageActionVerbs = CreateField<string[]>("kPackageActionVerbs", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kPackageActionInProgressVerbs = CreateField<string[]>("kPackageActionInProgressVerbs", BindingFlags.Static | BindingFlags.NonPublic);
-			field_kVisibleTags = CreateField<PackageTag[]>("kVisibleTags", BindingFlags.Static | BindingFlags.NonPublic);
-			field_sLoadingTexture = CreateField<Texture2D>("sLoadingTexture", BindingFlags.Static | BindingFlags.NonPublic);
+			event_OnCloseError = CreateEvent("OnCloseError", BindingFlags.Instance | BindingFlags.Public);
+			event_OnOperationError = CreateEvent("OnOperationError", BindingFlags.Instance | BindingFlags.Public);
+			field_OnCloseError = CreateField("OnCloseError", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_OnOperationError = CreateField("OnOperationError", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_package = CreateField("package", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_emptyDescriptionClass = CreateField<string>("emptyDescriptionClass", BindingFlags.Static | BindingFlags.NonPublic);
+			field_DisplayPackage = CreateField("DisplayPackage", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Selection = CreateField("Selection", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Collection = CreateField("Collection", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_PackageActionVerbs = CreateField<string[]>("PackageActionVerbs", BindingFlags.Static | BindingFlags.NonPublic);
+			field_PackageActionInProgressVerbs = CreateField<string[]>("PackageActionInProgressVerbs", BindingFlags.Static | BindingFlags.NonPublic);
 			field_MaxDependentList = CreateField<int>("MaxDependentList", BindingFlags.Static | BindingFlags.NonPublic);
-			field_mDescriptionExpanded = CreateField<bool>("mDescriptionExpanded", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_package = CreateProperty("package", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_displayVersion = CreateProperty("displayVersion", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_targetVersion = CreateProperty("targetVersion", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDescContainer = CreateProperty<VisualElement>("detailDescContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailNameContainer = CreateProperty<VisualElement>("detailNameContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailName = CreateProperty<Label>("detailName", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDesc = CreateProperty<Label>("detailDesc", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDescMore = CreateProperty<Button>("detailDescMore", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDescLess = CreateProperty<Button>("detailDescLess", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailLinksContainer = CreateProperty<VisualElement>("detailLinksContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailLinks = CreateProperty<VisualElement>("detailLinks", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailError = CreateProperty("detailError", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailScrollView = CreateProperty<ScrollView>("detailScrollView", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailContainer = CreateProperty<VisualElement>("detailContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailTitle = CreateProperty<Label>("detailTitle", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailVersion = CreateProperty<Label>("detailVersion", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDateContainer = CreateProperty<VisualElement>("detailDateContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailDate = CreateProperty<Label>("detailDate", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailAuthorContainer = CreateProperty<VisualElement>("detailAuthorContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailAuthorText = CreateProperty<Label>("detailAuthorText", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailAuthorLink = CreateProperty<Button>("detailAuthorLink", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailRegistryContainer = CreateProperty<VisualElement>("detailRegistryContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailRegistryWarning = CreateProperty<VisualElement>("detailRegistryWarning", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailWarningLink = CreateProperty<Button>("detailWarningLink", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailRegistryName = CreateProperty<Label>("detailRegistryName", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_customContainer = CreateProperty<VisualElement>("customContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_sampleList = CreateProperty("sampleList", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_dependencies = CreateProperty("dependencies", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageToolbarContainer = CreateProperty<VisualElement>("packageToolbarContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageToolbarLeftArea = CreateProperty<VisualElement>("packageToolbarLeftArea", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_updateButton = CreateProperty<Button>("updateButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_removeButton = CreateProperty<Button>("removeButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_importButton = CreateProperty<Button>("importButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_downloadButton = CreateProperty<Button>("downloadButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_editButton = CreateProperty<Button>("editButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_downloadProgress = CreateProperty("downloadProgress", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailCategories = CreateProperty<VisualElement>("detailCategories", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailUnityVersionsContainer = CreateProperty<VisualElement>("detailUnityVersionsContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailUnityVersions = CreateProperty<Label>("detailUnityVersions", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailSizesContainer = CreateProperty<VisualElement>("detailSizesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailSizes = CreateProperty<VisualElement>("detailSizes", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailImagesContainer = CreateProperty<VisualElement>("detailImagesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_detailImages = CreateProperty<VisualElement>("detailImages", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_OnEditorSelectionChanged_1 = CreateMethod("OnEditorSelectionChanged", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetDisplayPackageManifestAsset_1 = CreateMethod("GetDisplayPackageManifestAsset", BindingFlags.Instance | BindingFlags.Public, null);
-			method_EditPackageManifestClick_1 = CreateMethod("EditPackageManifestClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_OnEnable_1 = CreateMethod("OnEnable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnDisable_1 = CreateMethod("OnDisable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnDownloadProgress_1 = CreateMethod("OnDownloadProgress", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackage),typeof(DownloadProgress));
+			property_TargetVersion = CreateProperty("TargetVersion", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailDesc = CreateProperty<Label>("DetailDesc", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_UpdateButton = CreateProperty<Button>("UpdateButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_RemoveButton = CreateProperty<Button>("RemoveButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ViewDocButton = CreateProperty<Button>("ViewDocButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DocumentationContainer = CreateProperty<VisualElement>("DocumentationContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ViewChangelogButton = CreateProperty<Button>("ViewChangelogButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ChangelogContainer = CreateProperty<VisualElement>("ChangelogContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ViewLicenses = CreateProperty<Button>("ViewLicenses", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ViewLicensesContainer = CreateProperty<VisualElement>("ViewLicensesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailError = CreateProperty("DetailError", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailScrollView = CreateProperty<ScrollView>("DetailScrollView", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailContainer = CreateProperty<VisualElement>("DetailContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailModuleReference = CreateProperty<Label>("DetailModuleReference", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailVersion = CreateProperty<Label>("DetailVersion", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_DetailAuthor = CreateProperty<Label>("DetailAuthor", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_VerifyLabel = CreateProperty<Label>("VerifyLabel", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_CustomContainer = CreateProperty<VisualElement>("CustomContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SampleList = CreateProperty("SampleList", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Dependencies = CreateProperty("Dependencies", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageToolbarContainer = CreateProperty<VisualElement>("PackageToolbarContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_UpdateBuiltIn = CreateProperty<Button>("UpdateBuiltIn", BindingFlags.Instance | BindingFlags.NonPublic);
 			method_SetContentVisibility_1 = CreateMethod("SetContentVisibility", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
-			method_OnSelectionChanged_1 = CreateMethod("OnSelectionChanged", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackageVersion));
-			method_RefreshDependencies_1 = CreateMethod("RefreshDependencies", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetCollection_1 = CreateMethod("SetCollection", BindingFlags.Instance | BindingFlags.Public, typeof(PackageCollection));
+			method_SetSelection_1 = CreateMethod("SetSelection", BindingFlags.Instance | BindingFlags.Public, typeof(Selection));
+			method_OnSelectionChanged_1 = CreateMethod("OnSelectionChanged", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IEnumerable<PackageVersion>));
+			method_OnEnterPanel_1 = CreateMethod("OnEnterPanel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(AttachToPanelEvent));
+			method_OnLeavePanel_1 = CreateMethod("OnLeavePanel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(DetachFromPanelEvent));
+			method_ShowDependencies_1 = CreateMethod("ShowDependencies", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_SetUpdateVisibility_1 = CreateMethod("SetUpdateVisibility", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
-			method_RefreshExtensions_1 = CreateMethod("RefreshExtensions", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackageVersion));
-			method_SetDisplayVersion_1 = CreateMethod("SetDisplayVersion", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackageVersion));
-			method_DescriptionGeometryChangeEvent_1 = CreateMethod("DescriptionGeometryChangeEvent", BindingFlags.Instance | BindingFlags.NonPublic, typeof(GeometryChangedEvent));
-			method_RefreshDescription_1 = CreateMethod("RefreshDescription", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshAuthor_1 = CreateMethod("RefreshAuthor", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshRegistry_1 = CreateMethod("RefreshRegistry", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshPublishedDate_1 = CreateMethod("RefreshPublishedDate", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshCategories_1 = CreateMethod("RefreshCategories", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshLinks_1 = CreateMethod("RefreshLinks", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshSupportedUnityVersions_1 = CreateMethod("RefreshSupportedUnityVersions", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshSizeInfo_1 = CreateMethod("RefreshSizeInfo", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_ClearSupportingImages_1 = CreateMethod("ClearSupportingImages", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshSupportingImages_1 = CreateMethod("RefreshSupportingImages", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_SetPackage_1 = CreateMethod("SetPackage", BindingFlags.Instance | BindingFlags.Public, typeof(IPackage),typeof(IPackageVersion));
-			method_OnPackagesUpdated_1 = CreateMethod("OnPackagesUpdated", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IEnumerable<IPackage>));
-			method_RefreshErrorDisplay_1 = CreateMethod("RefreshErrorDisplay", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_OnOperationStartOrFinish_1 = CreateMethod("OnOperationStartOrFinish", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackage));
-			method_RefreshPackageActionButtons_1 = CreateMethod("RefreshPackageActionButtons", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetDisplayPackage_1 = CreateMethod("SetDisplayPackage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo),typeof(Error));
+			method_SetPackage_1 = CreateMethod("SetPackage", BindingFlags.Instance | BindingFlags.Public, typeof(Package),typeof(PackageInfo));
+			method_OnLatestPackageInfoFetched_1 = CreateMethod("OnLatestPackageInfoFetched", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo),typeof(bool));
+			method_ShowDisplayPackage_1 = CreateMethod("ShowDisplayPackage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo));
+			method_SetError_1 = CreateMethod("SetError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Error));
+			method_OnAddOperationError_1 = CreateMethod("OnAddOperationError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Error));
+			method_OnAddOperationSuccess_1 = CreateMethod("OnAddOperationSuccess", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo));
+			method_OnRemoveOperationError_1 = CreateMethod("OnRemoveOperationError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Error));
+			method_OnRemoveOperationSuccess_1 = CreateMethod("OnRemoveOperationSuccess", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo));
 			method_RefreshAddButton_1 = CreateMethod("RefreshAddButton", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_RefreshRemoveButton_1 = CreateMethod("RefreshRemoveButton", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RefreshImportAndDownloadButtons_1 = CreateMethod("RefreshImportAndDownloadButtons", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetButtonText_1 = CreateMethod("GetButtonText", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageDetails_PackageAction),typeof(bool),typeof(SemVersion));
-			method_WarningLinkClick_1 = CreateMethod("WarningLinkClick", BindingFlags.Static | BindingFlags.NonPublic, null);
-			method_DescMoreClick_1 = CreateMethod("DescMoreClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_DescLessClick_1 = CreateMethod("DescLessClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_AuthorClick_1 = CreateMethod("AuthorClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_CheckCompilationStatus_1 = CreateMethod("CheckCompilationStatus", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_GetButtonText_1 = CreateMethod("GetButtonText", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageAction),typeof(bool),typeof(SemVersion));
 			method_UpdateClick_1 = CreateMethod("UpdateClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetPackageDashList_1 = CreateMethod("GetPackageDashList", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IEnumerable<IPackageVersion>),typeof(int));
-			method_GetDependentMessage_1 = CreateMethod("GetDependentMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackageVersion),typeof(IEnumerable<IPackageVersion>),typeof(int));
+			method_CloseAndUpdate_1 = CreateMethod("CloseAndUpdate", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_GetPackageDashList_1 = CreateMethod("GetPackageDashList", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IEnumerable<PackageInfo>),typeof(int));
+			method_GetDependentMessage_1 = CreateMethod("GetDependentMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageInfo),typeof(IEnumerable<PackageInfo>),typeof(int));
 			method_RemoveClick_1 = CreateMethod("RemoveClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_ViewOfflineUrl_1 = CreateMethod("ViewOfflineUrl", BindingFlags.Static | BindingFlags.NonPublic, typeof(IPackageVersion),typeof(Func<IPackageVersion, bool, string>),typeof(string));
-			method_ViewUrl_1 = CreateMethod("ViewUrl", BindingFlags.Static | BindingFlags.NonPublic, typeof(IPackageVersion),typeof(Func<IPackageVersion, bool, string>),typeof(string));
+			method_ViewOfflineUrl_1 = CreateMethod("ViewOfflineUrl", BindingFlags.Static | BindingFlags.NonPublic, typeof(PackageInfo),typeof(Func<bool, string>),typeof(string));
+			method_ViewUrl_1 = CreateMethod("ViewUrl", BindingFlags.Static | BindingFlags.NonPublic, typeof(PackageInfo),typeof(Func<bool, string>),typeof(string));
 			method_ViewDocClick_1 = CreateMethod("ViewDocClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_ViewChangelogClick_1 = CreateMethod("ViewChangelogClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_ViewLicensesClick_1 = CreateMethod("ViewLicensesClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_ImportClick_1 = CreateMethod("ImportClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_DownloadOrCancelClick_1 = CreateMethod("DownloadOrCancelClick", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetTagLabel_1 = CreateMethod("GetTagLabel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
+			method_GetTag_1 = CreateMethod("GetTag", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageTag));
 		}
 		partial void Initialize();
-		public IPackage mPackage
+		/// <summary>
+		/// Event type: System.Action<Package>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnCloseError(Delegate @delegate)
+		{
+			return event_OnCloseError.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<Package>
+		/// </summary>
+		public void UnsubscribeFromOnCloseError(Delegate @delegate)
+		{
+			event_OnCloseError.Unsubscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<Package, Error>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnOperationError(Delegate @delegate)
+		{
+			return event_OnOperationError.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action<Package, Error>
+		/// </summary>
+		public void UnsubscribeFromOnOperationError(Delegate @delegate)
+		{
+			event_OnOperationError.Unsubscribe(@delegate);
+		}
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public Package package
 		{
 			get
 			{
-				object _temp = field_mPackage.GetValue();
-				return _temp == null ? null : new IPackage(_temp);
+				object _temp = field_package.GetValue();
+				return _temp == null ? null : new Package(_temp);
 			}
-			set => field_mPackage.SetValue(value.Instance);
+			set => field_package.SetValue(value.Instance);
 		}
-		public IPackageVersion mVersion
+		public string emptyDescriptionClass
+		{
+			get => field_emptyDescriptionClass.GetValue();
+			set => field_emptyDescriptionClass.SetValue(value);
+		}
+		public PackageInfo DisplayPackage
 		{
 			get
 			{
-				object _temp = field_mVersion.GetValue();
-				return _temp == null ? null : new IPackageVersion(_temp);
+				object _temp = field_DisplayPackage.GetValue();
+				return _temp == null ? null : new PackageInfo(_temp);
 			}
-			set => field_mVersion.SetValue(value.Instance);
+			set => field_DisplayPackage.SetValue(value.Instance);
 		}
-		public string kEmptyDescriptionClass
+		public Selection Selection
 		{
-			get => field_kEmptyDescriptionClass.GetValue();
-			set => field_kEmptyDescriptionClass.SetValue(value);
+			get
+			{
+				object _temp = field_Selection.GetValue();
+				return _temp == null ? null : new Selection(_temp);
+			}
+			set => field_Selection.SetValue(value.Instance);
 		}
-		public string[] kPackageActionVerbs
+		public PackageCollection Collection
 		{
-			get => field_kPackageActionVerbs.GetValue();
-			set => field_kPackageActionVerbs.SetValue(value);
+			get
+			{
+				object _temp = field_Collection.GetValue();
+				return _temp == null ? null : new PackageCollection(_temp);
+			}
+			set => field_Collection.SetValue(value.Instance);
 		}
-		public string[] kPackageActionInProgressVerbs
+		public string[] PackageActionVerbs
 		{
-			get => field_kPackageActionInProgressVerbs.GetValue();
-			set => field_kPackageActionInProgressVerbs.SetValue(value);
+			get => field_PackageActionVerbs.GetValue();
+			set => field_PackageActionVerbs.SetValue(value);
 		}
-		public PackageTag[] kVisibleTags
+		public string[] PackageActionInProgressVerbs
 		{
-			get => field_kVisibleTags.GetValue();
-			set => field_kVisibleTags.SetValue(value);
-		}
-		public Texture2D sLoadingTexture
-		{
-			get => field_sLoadingTexture.GetValue();
-			set => field_sLoadingTexture.SetValue(value);
+			get => field_PackageActionInProgressVerbs.GetValue();
+			set => field_PackageActionInProgressVerbs.SetValue(value);
 		}
 		public int MaxDependentList
 		{
 			get => field_MaxDependentList.GetValue();
 			set => field_MaxDependentList.SetValue(value);
 		}
-		public bool mDescriptionExpanded
-		{
-			get => field_mDescriptionExpanded.GetValue();
-			set => field_mDescriptionExpanded.SetValue(value);
-		}
-		public IPackage package
+		public PackageInfo TargetVersion
 		{
 			get
 			{
-				object _temp = property_package.GetValue();
-				return _temp == null ? null : new IPackage(_temp);
-			}
-			set => property_package.SetValue(value.Instance);
-		}
-		public IPackageVersion displayVersion
-		{
-			get
-			{
-				object _temp = property_displayVersion.GetValue();
-				return _temp == null ? null : new IPackageVersion(_temp);
-			}
-			set => property_displayVersion.SetValue(value.Instance);
-		}
-		public IPackageVersion targetVersion
-		{
-			get
-			{
-				object _temp = property_targetVersion.GetValue();
-				return _temp == null ? null : new IPackageVersion(_temp);
+				object _temp = property_TargetVersion.GetValue();
+				return _temp == null ? null : new PackageInfo(_temp);
 			}
 		}
-		public VisualElementCache cache
+		public VisualElementCache Cache
 		{
 			get
 			{
-				object _temp = property_cache.GetValue();
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => property_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public VisualElement detailDescContainer
+		public Label DetailDesc
 		{
-			get => property_detailDescContainer.GetValue();
+			get => property_DetailDesc.GetValue();
 		}
-		public VisualElement detailNameContainer
+		public Button UpdateButton
 		{
-			get => property_detailNameContainer.GetValue();
+			get => property_UpdateButton.GetValue();
 		}
-		public Label detailName
+		public Button RemoveButton
 		{
-			get => property_detailName.GetValue();
+			get => property_RemoveButton.GetValue();
 		}
-		public Label detailDesc
+		public Button ViewDocButton
 		{
-			get => property_detailDesc.GetValue();
+			get => property_ViewDocButton.GetValue();
 		}
-		public Button detailDescMore
+		public VisualElement DocumentationContainer
 		{
-			get => property_detailDescMore.GetValue();
+			get => property_DocumentationContainer.GetValue();
 		}
-		public Button detailDescLess
+		public Button ViewChangelogButton
 		{
-			get => property_detailDescLess.GetValue();
+			get => property_ViewChangelogButton.GetValue();
 		}
-		public VisualElement detailLinksContainer
+		public VisualElement ChangelogContainer
 		{
-			get => property_detailLinksContainer.GetValue();
+			get => property_ChangelogContainer.GetValue();
 		}
-		public VisualElement detailLinks
+		public Button ViewLicenses
 		{
-			get => property_detailLinks.GetValue();
+			get => property_ViewLicenses.GetValue();
 		}
-		public Alert detailError
+		public VisualElement ViewLicensesContainer
+		{
+			get => property_ViewLicensesContainer.GetValue();
+		}
+		public Alert DetailError
 		{
 			get
 			{
-				object _temp = property_detailError.GetValue();
+				object _temp = property_DetailError.GetValue();
 				return _temp == null ? null : new Alert(_temp);
 			}
 		}
-		public ScrollView detailScrollView
+		public ScrollView DetailScrollView
 		{
-			get => property_detailScrollView.GetValue();
+			get => property_DetailScrollView.GetValue();
 		}
-		public VisualElement detailContainer
+		public VisualElement DetailContainer
 		{
-			get => property_detailContainer.GetValue();
+			get => property_DetailContainer.GetValue();
 		}
-		public Label detailTitle
+		public Label DetailModuleReference
 		{
-			get => property_detailTitle.GetValue();
+			get => property_DetailModuleReference.GetValue();
 		}
-		public Label detailVersion
+		public Label DetailVersion
 		{
-			get => property_detailVersion.GetValue();
+			get => property_DetailVersion.GetValue();
 		}
-		public VisualElement detailDateContainer
+		public Label DetailAuthor
 		{
-			get => property_detailDateContainer.GetValue();
+			get => property_DetailAuthor.GetValue();
 		}
-		public Label detailDate
+		public Label VerifyLabel
 		{
-			get => property_detailDate.GetValue();
+			get => property_VerifyLabel.GetValue();
 		}
-		public VisualElement detailAuthorContainer
+		public VisualElement CustomContainer
 		{
-			get => property_detailAuthorContainer.GetValue();
+			get => property_CustomContainer.GetValue();
 		}
-		public Label detailAuthorText
-		{
-			get => property_detailAuthorText.GetValue();
-		}
-		public Button detailAuthorLink
-		{
-			get => property_detailAuthorLink.GetValue();
-		}
-		public VisualElement detailRegistryContainer
-		{
-			get => property_detailRegistryContainer.GetValue();
-		}
-		public VisualElement detailRegistryWarning
-		{
-			get => property_detailRegistryWarning.GetValue();
-		}
-		public Button detailWarningLink
-		{
-			get => property_detailWarningLink.GetValue();
-		}
-		public Label detailRegistryName
-		{
-			get => property_detailRegistryName.GetValue();
-		}
-		public VisualElement customContainer
-		{
-			get => property_customContainer.GetValue();
-		}
-		public PackageSampleList sampleList
+		public PackageSampleList SampleList
 		{
 			get
 			{
-				object _temp = property_sampleList.GetValue();
+				object _temp = property_SampleList.GetValue();
 				return _temp == null ? null : new PackageSampleList(_temp);
 			}
 		}
-		public PackageDependencies dependencies
+		public PackageDependencies Dependencies
 		{
 			get
 			{
-				object _temp = property_dependencies.GetValue();
+				object _temp = property_Dependencies.GetValue();
 				return _temp == null ? null : new PackageDependencies(_temp);
 			}
 		}
-		public VisualElement packageToolbarContainer
+		public VisualElement PackageToolbarContainer
 		{
-			get => property_packageToolbarContainer.GetValue();
+			get => property_PackageToolbarContainer.GetValue();
 		}
-		public VisualElement packageToolbarLeftArea
+		public Button UpdateBuiltIn
 		{
-			get => property_packageToolbarLeftArea.GetValue();
-		}
-		public Button updateButton
-		{
-			get => property_updateButton.GetValue();
-		}
-		public Button removeButton
-		{
-			get => property_removeButton.GetValue();
-		}
-		public Button importButton
-		{
-			get => property_importButton.GetValue();
-		}
-		public Button downloadButton
-		{
-			get => property_downloadButton.GetValue();
-		}
-		public Button editButton
-		{
-			get => property_editButton.GetValue();
-		}
-		public ProgressBar downloadProgress
-		{
-			get
-			{
-				object _temp = property_downloadProgress.GetValue();
-				return _temp == null ? null : new ProgressBar(_temp);
-			}
-		}
-		public VisualElement detailCategories
-		{
-			get => property_detailCategories.GetValue();
-		}
-		public VisualElement detailUnityVersionsContainer
-		{
-			get => property_detailUnityVersionsContainer.GetValue();
-		}
-		public Label detailUnityVersions
-		{
-			get => property_detailUnityVersions.GetValue();
-		}
-		public VisualElement detailSizesContainer
-		{
-			get => property_detailSizesContainer.GetValue();
-		}
-		public VisualElement detailSizes
-		{
-			get => property_detailSizes.GetValue();
-		}
-		public VisualElement detailImagesContainer
-		{
-			get => property_detailImagesContainer.GetValue();
-		}
-		public VisualElement detailImages
-		{
-			get => property_detailImages.GetValue();
-		}
-		public void OnEditorSelectionChanged()
-		{
-			method_OnEditorSelectionChanged_1.Invoke();
-		}
-		public Object GetDisplayPackageManifestAsset()
-		{
-			return (Object) method_GetDisplayPackageManifestAsset_1.Invoke();
-		}
-		public void EditPackageManifestClick()
-		{
-			method_EditPackageManifestClick_1.Invoke();
-		}
-		public void OnEnable()
-		{
-			method_OnEnable_1.Invoke();
-		}
-		public void OnDisable()
-		{
-			method_OnDisable_1.Invoke();
-		}
-		public void OnDownloadProgress(IPackage package,DownloadProgress progress)
-		{
-			method_OnDownloadProgress_1.Invoke(package,progress);
+			get => property_UpdateBuiltIn.GetValue();
 		}
 		public void SetContentVisibility(bool visible)
 		{
 			method_SetContentVisibility_1.Invoke(visible);
 		}
-		public void OnSelectionChanged(IPackageVersion version)
+		public void SetCollection(PackageCollection collection)
 		{
-			method_OnSelectionChanged_1.Invoke(version);
+			method_SetCollection_1.Invoke(collection);
 		}
-		public void RefreshDependencies()
+		public void SetSelection(Selection selection)
 		{
-			method_RefreshDependencies_1.Invoke();
+			method_SetSelection_1.Invoke(selection);
+		}
+		public void OnSelectionChanged(IEnumerable<PackageVersion> selected)
+		{
+			method_OnSelectionChanged_1.Invoke(selected);
+		}
+		public void OnEnterPanel(AttachToPanelEvent e)
+		{
+			method_OnEnterPanel_1.Invoke(e);
+		}
+		public void OnLeavePanel(DetachFromPanelEvent e)
+		{
+			method_OnLeavePanel_1.Invoke(e);
+		}
+		public void ShowDependencies()
+		{
+			method_ShowDependencies_1.Invoke();
 		}
 		public void SetUpdateVisibility(bool value)
 		{
 			method_SetUpdateVisibility_1.Invoke(value);
 		}
-		public void RefreshExtensions(IPackageVersion version)
+		public void SetDisplayPackage(PackageInfo packageInfo,Error packageError)
 		{
-			method_RefreshExtensions_1.Invoke(version);
+			method_SetDisplayPackage_1.Invoke(packageInfo,packageError);
 		}
-		public void SetDisplayVersion(IPackageVersion version)
+		public void SetPackage(Package package,PackageInfo displayPackage)
 		{
-			method_SetDisplayVersion_1.Invoke(version);
+			method_SetPackage_1.Invoke(package,displayPackage);
 		}
-		public void DescriptionGeometryChangeEvent(GeometryChangedEvent evt)
+		public void OnLatestPackageInfoFetched(PackageInfo fetched,bool isDefaultVersion)
 		{
-			method_DescriptionGeometryChangeEvent_1.Invoke(evt);
+			method_OnLatestPackageInfoFetched_1.Invoke(fetched,isDefaultVersion);
 		}
-		public void RefreshDescription()
+		public void ShowDisplayPackage(PackageInfo displayPackage)
 		{
-			method_RefreshDescription_1.Invoke();
+			method_ShowDisplayPackage_1.Invoke(displayPackage);
 		}
-		public void RefreshAuthor()
+		public void SetError(Error error)
 		{
-			method_RefreshAuthor_1.Invoke();
+			method_SetError_1.Invoke(error);
 		}
-		public void RefreshRegistry()
+		public void OnAddOperationError(Error error)
 		{
-			method_RefreshRegistry_1.Invoke();
+			method_OnAddOperationError_1.Invoke(error);
 		}
-		public void RefreshPublishedDate()
+		public void OnAddOperationSuccess(PackageInfo packageInfo)
 		{
-			method_RefreshPublishedDate_1.Invoke();
+			method_OnAddOperationSuccess_1.Invoke(packageInfo);
 		}
-		public void RefreshCategories()
+		public void OnRemoveOperationError(Error error)
 		{
-			method_RefreshCategories_1.Invoke();
+			method_OnRemoveOperationError_1.Invoke(error);
 		}
-		public void RefreshLinks()
+		public void OnRemoveOperationSuccess(PackageInfo packageInfo)
 		{
-			method_RefreshLinks_1.Invoke();
-		}
-		public void RefreshSupportedUnityVersions()
-		{
-			method_RefreshSupportedUnityVersions_1.Invoke();
-		}
-		public void RefreshSizeInfo()
-		{
-			method_RefreshSizeInfo_1.Invoke();
-		}
-		public void ClearSupportingImages()
-		{
-			method_ClearSupportingImages_1.Invoke();
-		}
-		public void RefreshSupportingImages()
-		{
-			method_RefreshSupportingImages_1.Invoke();
-		}
-		public void SetPackage(IPackage package,IPackageVersion version)
-		{
-			method_SetPackage_1.Invoke(package,version);
-		}
-		public void OnPackagesUpdated(IEnumerable<IPackage> updatedPackages)
-		{
-			method_OnPackagesUpdated_1.Invoke(updatedPackages);
-		}
-		public void RefreshErrorDisplay()
-		{
-			method_RefreshErrorDisplay_1.Invoke();
-		}
-		public void OnOperationStartOrFinish(IPackage package)
-		{
-			method_OnOperationStartOrFinish_1.Invoke(package);
-		}
-		public void RefreshPackageActionButtons()
-		{
-			method_RefreshPackageActionButtons_1.Invoke();
+			method_OnRemoveOperationSuccess_1.Invoke(packageInfo);
 		}
 		public void RefreshAddButton()
 		{
@@ -621,53 +451,41 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_RefreshRemoveButton_1.Invoke();
 		}
-		public void RefreshImportAndDownloadButtons()
+		public void CheckCompilationStatus()
 		{
-			method_RefreshImportAndDownloadButtons_1.Invoke();
+			method_CheckCompilationStatus_1.Invoke();
 		}
-		public string GetButtonText(PackageDetails_PackageAction action,bool inProgress,SemVersion version)
+		public string GetButtonText(PackageAction action,bool inProgress,SemVersion version)
 		{
 			return (string) method_GetButtonText_1.Invoke((int)action,inProgress,version);
-		}
-		public void WarningLinkClick()
-		{
-			method_WarningLinkClick_1.Invoke();
-		}
-		public void DescMoreClick()
-		{
-			method_DescMoreClick_1.Invoke();
-		}
-		public void DescLessClick()
-		{
-			method_DescLessClick_1.Invoke();
-		}
-		public void AuthorClick()
-		{
-			method_AuthorClick_1.Invoke();
 		}
 		public void UpdateClick()
 		{
 			method_UpdateClick_1.Invoke();
 		}
-		public string GetPackageDashList(IEnumerable<IPackageVersion> versions,int maxListCount)
+		public void CloseAndUpdate()
 		{
-			return (string) method_GetPackageDashList_1.Invoke(versions,maxListCount);
+			method_CloseAndUpdate_1.Invoke();
 		}
-		public string GetDependentMessage(IPackageVersion version,IEnumerable<IPackageVersion> roots,int maxListCount)
+		public string GetPackageDashList(IEnumerable<PackageInfo> packageInfos,int maxListCount)
 		{
-			return (string) method_GetDependentMessage_1.Invoke(version,roots,maxListCount);
+			return (string) method_GetPackageDashList_1.Invoke(packageInfos,maxListCount);
+		}
+		public string GetDependentMessage(PackageInfo packageInfo,IEnumerable<PackageInfo> roots,int maxListCount)
+		{
+			return (string) method_GetDependentMessage_1.Invoke(packageInfo,roots,maxListCount);
 		}
 		public void RemoveClick()
 		{
 			method_RemoveClick_1.Invoke();
 		}
-		public void ViewOfflineUrl(IPackageVersion version,Func<IPackageVersion, bool, string> getUrl,string messageOnNotFound)
+		public void ViewOfflineUrl(PackageInfo packageInfo,Func<bool, string> getUrl,string messageOnNotFound)
 		{
-			method_ViewOfflineUrl_1.Invoke(version,getUrl,messageOnNotFound);
+			method_ViewOfflineUrl_1.Invoke(packageInfo,getUrl,messageOnNotFound);
 		}
-		public void ViewUrl(IPackageVersion version,Func<IPackageVersion, bool, string> getUrl,string messageOnNotFound)
+		public void ViewUrl(PackageInfo packageInfo,Func<bool, string> getUrl,string messageOnNotFound)
 		{
-			method_ViewUrl_1.Invoke(version,getUrl,messageOnNotFound);
+			method_ViewUrl_1.Invoke(packageInfo,getUrl,messageOnNotFound);
 		}
 		public void ViewDocClick()
 		{
@@ -681,17 +499,9 @@ namespace TNRD.PackageManager.Reflected
 		{
 			method_ViewLicensesClick_1.Invoke();
 		}
-		public void ImportClick()
+		public VisualElement GetTag(PackageTag tag)
 		{
-			method_ImportClick_1.Invoke();
-		}
-		public void DownloadOrCancelClick()
-		{
-			method_DownloadOrCancelClick_1.Invoke();
-		}
-		public Label GetTagLabel(string tag)
-		{
-			return (Label) method_GetTagLabel_1.Invoke(tag);
+			return (VisualElement) method_GetTag_1.Invoke((int)tag);
 		}
 		public static Type GetOriginalType()
 		{

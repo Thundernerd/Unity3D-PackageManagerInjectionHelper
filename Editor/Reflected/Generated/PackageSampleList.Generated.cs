@@ -17,14 +17,15 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageSampleList : ReflectiveVisualElementClass
+	public sealed partial class PackageSampleList : ReflectiveClass
 	{
-		private ReflectiveProperty property_cache;
-		private ReflectiveProperty<VisualElement> property_importStatusContainer;
-		private ReflectiveProperty<VisualElement> property_nameLabelContainer;
-		private ReflectiveProperty<VisualElement> property_sizeLabelContainer;
-		private ReflectiveProperty<VisualElement> property_importButtonContainer;
-		private ReflectiveMethod method_SetPackageVersion_1;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<VisualElement> property_ImportStatusContainer;
+		private ReflectiveProperty<VisualElement> property_NameLabelContainer;
+		private ReflectiveProperty<VisualElement> property_SizeLabelContainer;
+		private ReflectiveProperty<VisualElement> property_ImportButtonContainer;
+		private ReflectiveMethod method_SetPackage_1;
 		public PackageSampleList(object instance) : base(instance)
 		{
 			Construct();
@@ -37,42 +38,48 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_importStatusContainer = CreateProperty<VisualElement>("importStatusContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_nameLabelContainer = CreateProperty<VisualElement>("nameLabelContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_sizeLabelContainer = CreateProperty<VisualElement>("sizeLabelContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_importButtonContainer = CreateProperty<VisualElement>("importButtonContainer", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_SetPackageVersion_1 = CreateMethod("SetPackageVersion", BindingFlags.Instance | BindingFlags.Public, typeof(IPackageVersion));
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ImportStatusContainer = CreateProperty<VisualElement>("ImportStatusContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_NameLabelContainer = CreateProperty<VisualElement>("NameLabelContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SizeLabelContainer = CreateProperty<VisualElement>("SizeLabelContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ImportButtonContainer = CreateProperty<VisualElement>("ImportButtonContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			method_SetPackage_1 = CreateMethod("SetPackage", BindingFlags.Instance | BindingFlags.Public, typeof(PackageInfo));
 		}
 		partial void Initialize();
-		public VisualElementCache cache
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public VisualElementCache Cache
 		{
 			get
 			{
-				object _temp = property_cache.GetValue();
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => property_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public VisualElement importStatusContainer
+		public VisualElement ImportStatusContainer
 		{
-			get => property_importStatusContainer.GetValue();
+			get => property_ImportStatusContainer.GetValue();
 		}
-		public VisualElement nameLabelContainer
+		public VisualElement NameLabelContainer
 		{
-			get => property_nameLabelContainer.GetValue();
+			get => property_NameLabelContainer.GetValue();
 		}
-		public VisualElement sizeLabelContainer
+		public VisualElement SizeLabelContainer
 		{
-			get => property_sizeLabelContainer.GetValue();
+			get => property_SizeLabelContainer.GetValue();
 		}
-		public VisualElement importButtonContainer
+		public VisualElement ImportButtonContainer
 		{
-			get => property_importButtonContainer.GetValue();
+			get => property_ImportButtonContainer.GetValue();
 		}
-		public void SetPackageVersion(IPackageVersion version)
+		public void SetPackage(PackageInfo package)
 		{
-			method_SetPackageVersion_1.Invoke(version);
+			method_SetPackage_1.Invoke(package);
 		}
 		public static Type GetOriginalType()
 		{

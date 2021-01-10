@@ -17,22 +17,22 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageGroup : ReflectiveVisualElementClass
+	public sealed partial class PackageGroup : ReflectiveClass
 	{
-		private ReflectiveEvent event_onGroupToggle;
-		private ReflectiveField<Action<bool>> field_onGroupToggle;
-		private ReflectiveField field_mCache;
-		private ReflectiveProperty<bool> property_expanded;
-		private ReflectiveProperty property_packageItems;
-		private ReflectiveProperty<VisualElement> property_groupContainer;
-		private ReflectiveProperty<VisualElement> property_headerContainer;
-		private ReflectiveProperty<Toggle> property_headerCaret;
-		private ReflectiveMethod method_Contains_1;
-		private ReflectiveMethod method_RefreshHeaderVisibility_1;
-		private ReflectiveMethod method_AddPackageItem_1;
-		private ReflectiveMethod method_AddPackageItem_2;
-		private ReflectiveMethod method_ClearPackageItems_1;
-		private ReflectiveMethod method_RemovePackageItem_1;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField field_Origin;
+		private ReflectiveField field_Selection;
+		private ReflectiveField field_previousGroup;
+		private ReflectiveField field_nextGroup;
+		private ReflectiveField field_firstPackage;
+		private ReflectiveField field_lastPackage;
+		private ReflectiveProperty property_PackageItems;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<VisualElement> property_List;
+		private ReflectiveProperty<Label> property_HeaderTitle;
+		private ReflectiveMethod method_GetSelectionList_1;
+		private ReflectiveMethod method_AddPackage_1;
+		private ReflectiveMethod method_ReorderPackageItems_1;
 		public PackageGroup(object instance) : base(instance)
 		{
 			Construct();
@@ -45,98 +45,117 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			event_onGroupToggle = CreateEvent("onGroupToggle", BindingFlags.Instance | BindingFlags.Public);
-			field_onGroupToggle = CreateField<Action<bool>>("onGroupToggle", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mCache = CreateField("mCache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_expanded = CreateProperty<bool>("expanded", BindingFlags.Instance | BindingFlags.Public);
-			property_packageItems = CreateProperty("packageItems", BindingFlags.Instance | BindingFlags.Public);
-			property_groupContainer = CreateProperty<VisualElement>("groupContainer", BindingFlags.Instance | BindingFlags.Public);
-			property_headerContainer = CreateProperty<VisualElement>("headerContainer", BindingFlags.Instance | BindingFlags.Public);
-			property_headerCaret = CreateProperty<Toggle>("headerCaret", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_Contains_1 = CreateMethod("Contains", BindingFlags.Instance | BindingFlags.Public, typeof(ISelectableItem));
-			method_RefreshHeaderVisibility_1 = CreateMethod("RefreshHeaderVisibility", BindingFlags.Instance | BindingFlags.Public, null);
-			method_AddPackageItem_1 = CreateMethod("AddPackageItem", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IPackage),typeof(VisualState));
-			method_AddPackageItem_2 = CreateMethod("AddPackageItem", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageItem));
-			method_ClearPackageItems_1 = CreateMethod("ClearPackageItems", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_RemovePackageItem_1 = CreateMethod("RemovePackageItem", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageItem));
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Origin = CreateField("Origin", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Selection = CreateField("Selection", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_previousGroup = CreateField("previousGroup", BindingFlags.Instance | BindingFlags.Public);
+			field_nextGroup = CreateField("nextGroup", BindingFlags.Instance | BindingFlags.Public);
+			field_firstPackage = CreateField("firstPackage", BindingFlags.Instance | BindingFlags.Public);
+			field_lastPackage = CreateField("lastPackage", BindingFlags.Instance | BindingFlags.Public);
+			property_PackageItems = CreateProperty("PackageItems", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_List = CreateProperty<VisualElement>("List", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_HeaderTitle = CreateProperty<Label>("HeaderTitle", BindingFlags.Instance | BindingFlags.NonPublic);
+			method_GetSelectionList_1 = CreateMethod("GetSelectionList", BindingFlags.Instance | BindingFlags.Public, null);
+			method_AddPackage_1 = CreateMethod("AddPackage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Package));
+			method_ReorderPackageItems_1 = CreateMethod("ReorderPackageItems", BindingFlags.Instance | BindingFlags.NonPublic, null);
 		}
 		partial void Initialize();
-		/// <summary>
-		/// Event type: System.Action<bool>
-		/// </summary>
-		/// <returns>Delegate to be used for unsubscribing</returns>
-		public Delegate SubscribeToOnGroupToggle(Delegate @delegate)
+		public VisualElement root
 		{
-			return event_onGroupToggle.Subscribe(@delegate);
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
 		}
-		/// <summary>
-		/// Event type: System.Action<bool>
-		/// </summary>
-		public void UnsubscribeFromOnGroupToggle(Delegate @delegate)
-		{
-			event_onGroupToggle.Unsubscribe(@delegate);
-		}
-		public Action<bool> onGroupToggle
-		{
-			get => field_onGroupToggle.GetValue();
-			set => field_onGroupToggle.SetValue(value);
-		}
-		public VisualElementCache mCache
+		public PackageGroupOrigins Origin
 		{
 			get
 			{
-				object _temp = field_mCache.GetValue();
-				return _temp == null ? null : new VisualElementCache(_temp);
+				object _temp = (int)field_Origin.GetValue();
+				return (PackageGroupOrigins)_temp;
 			}
-			set => field_mCache.SetValue(value.Instance);
+			set => field_Origin.SetValue((int)value);
 		}
-		public bool expanded
-		{
-			get => property_expanded.GetValue();
-		}
-		public IEnumerable<PackageItem> packageItems
+		public Selection Selection
 		{
 			get
 			{
-				object _temp = property_packageItems.GetValue();
+				object _temp = field_Selection.GetValue();
+				return _temp == null ? null : new Selection(_temp);
+			}
+			set => field_Selection.SetValue(value.Instance);
+		}
+		public PackageGroup previousGroup
+		{
+			get
+			{
+				object _temp = field_previousGroup.GetValue();
+				return _temp == null ? null : new PackageGroup(_temp);
+			}
+			set => field_previousGroup.SetValue(value.Instance);
+		}
+		public PackageGroup nextGroup
+		{
+			get
+			{
+				object _temp = field_nextGroup.GetValue();
+				return _temp == null ? null : new PackageGroup(_temp);
+			}
+			set => field_nextGroup.SetValue(value.Instance);
+		}
+		public PackageItem firstPackage
+		{
+			get
+			{
+				object _temp = field_firstPackage.GetValue();
+				return _temp == null ? null : new PackageItem(_temp);
+			}
+			set => field_firstPackage.SetValue(value.Instance);
+		}
+		public PackageItem lastPackage
+		{
+			get
+			{
+				object _temp = field_lastPackage.GetValue();
+				return _temp == null ? null : new PackageItem(_temp);
+			}
+			set => field_lastPackage.SetValue(value.Instance);
+		}
+		public IEnumerable<PackageItem> PackageItems
+		{
+			get
+			{
+				object _temp = property_PackageItems.GetValue();
 				return _temp == null ? null : Utilities.GenerateEnumerable<PackageItem>(_temp);
 			}
 		}
-		public VisualElement groupContainer
+		public VisualElementCache Cache
 		{
-			get => property_groupContainer.GetValue();
+			get
+			{
+				object _temp = property_Cache.GetValue();
+				return _temp == null ? null : new VisualElementCache(_temp);
+			}
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public VisualElement headerContainer
+		public VisualElement List
 		{
-			get => property_headerContainer.GetValue();
+			get => property_List.GetValue();
 		}
-		public Toggle headerCaret
+		public Label HeaderTitle
 		{
-			get => property_headerCaret.GetValue();
+			get => property_HeaderTitle.GetValue();
 		}
-		public bool Contains(ISelectableItem item)
+		public IEnumerable<IPackageSelection> GetSelectionList()
 		{
-			return (bool) method_Contains_1.Invoke(item);
+			return Utilities.GenerateEnumerable<IPackageSelection>(method_GetSelectionList_1.Invoke());
 		}
-		public void RefreshHeaderVisibility()
+		public PackageItem AddPackage(Package package)
 		{
-			method_RefreshHeaderVisibility_1.Invoke();
+			return new PackageItem(method_AddPackage_1.Invoke(package));
 		}
-		public PackageItem AddPackageItem(IPackage package,VisualState state)
+		public void ReorderPackageItems()
 		{
-			return new PackageItem(method_AddPackageItem_1.Invoke(package,state));
-		}
-		public void AddPackageItem(PackageItem item)
-		{
-			method_AddPackageItem_2.Invoke(item);
-		}
-		public void ClearPackageItems()
-		{
-			method_ClearPackageItems_1.Invoke();
-		}
-		public void RemovePackageItem(PackageItem item)
-		{
-			method_RemovePackageItem_1.Invoke(item);
+			method_ReorderPackageItems_1.Invoke();
 		}
 		public static Type GetOriginalType()
 		{

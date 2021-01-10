@@ -8,41 +8,42 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TNRD.Reflectives;
+using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.StyleSheets;
 using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
+using Object = UnityEngine.Object;
+
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageManagerToolbar : ReflectiveVisualElementClass
+	public sealed partial class PackageManagerToolbar : ReflectiveClass
 	{
-		private ReflectiveField<long> field_mSearchTextChangeTimestamp;
-		private ReflectiveField<long> field_kSearchEventDelayTicks;
-		private ReflectiveProperty<bool> property_HasPackageCustom;
-		private ReflectiveProperty<bool> property_HasPackageInScopeRegistries;
-		private ReflectiveProperty property_cache;
-		private ReflectiveProperty<ToolbarMenu> property_addMenu;
-		private ReflectiveProperty<ToolbarMenu> property_filterMenu;
-		private ReflectiveProperty<ToolbarMenu> property_advancedMenu;
-		private ReflectiveProperty<ToolbarSearchField> property_searchToolbar;
-		private ReflectiveMethod method_OnEnable_1;
-		private ReflectiveMethod method_OnDisable_1;
-		private ReflectiveMethod method_FocusOnSearch_1;
-		private ReflectiveMethod method_OnPackagesChanged_1;
-		private ReflectiveMethod method_SetCurrentSearch_1;
-		private ReflectiveMethod method_OnSearchTextChanged_1;
-		private ReflectiveMethod method_DelayedSearchEvent_1;
+		private ReflectiveEvent event_OnFilterChange;
+		private ReflectiveEvent event_OnTogglePreviewChange;
+		private ReflectiveEvent event_OnToggleDependenciesChange;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField field_OnFilterChange;
+		private ReflectiveField<Action> field_OnTogglePreviewChange;
+		private ReflectiveField<Action> field_OnToggleDependenciesChange;
+		private ReflectiveField field_selectedFilter;
+		private ReflectiveField field_AddFromIdField;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<Label> property_AddButton;
+		private ReflectiveProperty<Label> property_FilterButton;
+		private ReflectiveProperty<Label> property_AdvancedButton;
+		private ReflectiveProperty property_SearchToolbar;
+		private ReflectiveProperty property_AddFromIdField;
+		private ReflectiveMethod method_GrabFocus_1;
+		private ReflectiveMethod method_SetEnabled_1;
 		private ReflectiveMethod method_GetFilterDisplayName_1;
 		private ReflectiveMethod method_SetFilter_1;
-		private ReflectiveMethod method_SetFilterFromMenu_1;
-		private ReflectiveMethod method_SetupAddMenu_1;
-		private ReflectiveMethod method_AddFilterTabToDropdownMenu_1;
-		private ReflectiveMethod method_SetupFilterMenu_1;
-		private ReflectiveMethod method_SetupAdvancedMenu_1;
+		private ReflectiveMethod method_OnAddButtonMouseDown_1;
+		private ReflectiveMethod method_OnFilterButtonMouseDown_1;
+		private ReflectiveMethod method_OnAdvancedButtonMouseDown_1;
 		private ReflectiveMethod method_ToggleDependencies_1;
 		private ReflectiveMethod method_TogglePreviewPackages_1;
 		public PackageManagerToolbar(object instance) : base(instance)
@@ -57,131 +58,166 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mSearchTextChangeTimestamp = CreateField<long>("mSearchTextChangeTimestamp", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_kSearchEventDelayTicks = CreateField<long>("kSearchEventDelayTicks", BindingFlags.Static | BindingFlags.NonPublic);
-			property_HasPackageCustom = CreateProperty<bool>("HasPackageCustom", BindingFlags.Static | BindingFlags.NonPublic);
-			property_HasPackageInScopeRegistries = CreateProperty<bool>("HasPackageInScopeRegistries", BindingFlags.Static | BindingFlags.NonPublic);
-			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_addMenu = CreateProperty<ToolbarMenu>("addMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_filterMenu = CreateProperty<ToolbarMenu>("filterMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_advancedMenu = CreateProperty<ToolbarMenu>("advancedMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_searchToolbar = CreateProperty<ToolbarSearchField>("searchToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_OnEnable_1 = CreateMethod("OnEnable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnDisable_1 = CreateMethod("OnDisable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_FocusOnSearch_1 = CreateMethod("FocusOnSearch", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnPackagesChanged_1 = CreateMethod("OnPackagesChanged", BindingFlags.Instance | BindingFlags.NonPublic, typeof(IEnumerable<IPackage>),typeof(IEnumerable<IPackage>),typeof(IEnumerable<IPackage>),typeof(IEnumerable<IPackage>));
-			method_SetCurrentSearch_1 = CreateMethod("SetCurrentSearch", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
-			method_OnSearchTextChanged_1 = CreateMethod("OnSearchTextChanged", BindingFlags.Instance | BindingFlags.NonPublic, typeof(ChangeEvent<string>));
-			method_DelayedSearchEvent_1 = CreateMethod("DelayedSearchEvent", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_GetFilterDisplayName_1 = CreateMethod("GetFilterDisplayName", BindingFlags.Static | BindingFlags.NonPublic, typeof(PackageFilterTab));
-			method_SetFilter_1 = CreateMethod("SetFilter", BindingFlags.Instance | BindingFlags.Public, typeof(PackageFilterTab));
-			method_SetFilterFromMenu_1 = CreateMethod("SetFilterFromMenu", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab));
-			method_SetupAddMenu_1 = CreateMethod("SetupAddMenu", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_AddFilterTabToDropdownMenu_1 = CreateMethod("AddFilterTabToDropdownMenu", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab),typeof(Action<DropdownMenuAction>),typeof(Func<DropdownMenuAction, DropdownMenuAction.Status>));
-			method_SetupFilterMenu_1 = CreateMethod("SetupFilterMenu", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_SetupAdvancedMenu_1 = CreateMethod("SetupAdvancedMenu", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			event_OnFilterChange = CreateEvent("OnFilterChange", BindingFlags.Instance | BindingFlags.Public);
+			event_OnTogglePreviewChange = CreateEvent("OnTogglePreviewChange", BindingFlags.Instance | BindingFlags.Public);
+			event_OnToggleDependenciesChange = CreateEvent("OnToggleDependenciesChange", BindingFlags.Static | BindingFlags.Public);
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_OnFilterChange = CreateField("OnFilterChange", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_OnTogglePreviewChange = CreateField<Action>("OnTogglePreviewChange", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_OnToggleDependenciesChange = CreateField<Action>("OnToggleDependenciesChange", BindingFlags.Static | BindingFlags.NonPublic);
+			field_selectedFilter = CreateField("selectedFilter", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_AddFromIdField = CreateField("AddFromIdField", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_AddButton = CreateProperty<Label>("AddButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_FilterButton = CreateProperty<Label>("FilterButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_AdvancedButton = CreateProperty<Label>("AdvancedButton", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_SearchToolbar = CreateProperty("SearchToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_AddFromIdField = CreateProperty("AddFromIdField", BindingFlags.Instance | BindingFlags.NonPublic);
+			method_GrabFocus_1 = CreateMethod("GrabFocus", BindingFlags.Instance | BindingFlags.Public, null);
+			method_SetEnabled_1 = CreateMethod("SetEnabled", BindingFlags.Instance | BindingFlags.Public, typeof(bool));
+			method_GetFilterDisplayName_1 = CreateMethod("GetFilterDisplayName", BindingFlags.Static | BindingFlags.NonPublic, typeof(PackageFilter));
+			method_SetFilter_1 = CreateMethod("SetFilter", BindingFlags.Instance | BindingFlags.Public, typeof(Object));
+			method_OnAddButtonMouseDown_1 = CreateMethod("OnAddButtonMouseDown", BindingFlags.Instance | BindingFlags.NonPublic, typeof(MouseDownEvent));
+			method_OnFilterButtonMouseDown_1 = CreateMethod("OnFilterButtonMouseDown", BindingFlags.Instance | BindingFlags.NonPublic, typeof(MouseDownEvent));
+			method_OnAdvancedButtonMouseDown_1 = CreateMethod("OnAdvancedButtonMouseDown", BindingFlags.Instance | BindingFlags.NonPublic, typeof(MouseDownEvent));
 			method_ToggleDependencies_1 = CreateMethod("ToggleDependencies", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_TogglePreviewPackages_1 = CreateMethod("TogglePreviewPackages", BindingFlags.Instance | BindingFlags.NonPublic, null);
 		}
 		partial void Initialize();
-		public long mSearchTextChangeTimestamp
+		/// <summary>
+		/// Event type: System.Action<PackageFilter>
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnFilterChange(Delegate @delegate)
 		{
-			get => field_mSearchTextChangeTimestamp.GetValue();
-			set => field_mSearchTextChangeTimestamp.SetValue(value);
+			return event_OnFilterChange.Subscribe(@delegate);
 		}
-		public long kSearchEventDelayTicks
+		/// <summary>
+		/// Event type: System.Action<PackageFilter>
+		/// </summary>
+		public void UnsubscribeFromOnFilterChange(Delegate @delegate)
 		{
-			get => field_kSearchEventDelayTicks.GetValue();
-			set => field_kSearchEventDelayTicks.SetValue(value);
+			event_OnFilterChange.Unsubscribe(@delegate);
 		}
-		public bool HasPackageCustom
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnTogglePreviewChange(Delegate @delegate)
 		{
-			get => property_HasPackageCustom.GetValue();
+			return event_OnTogglePreviewChange.Subscribe(@delegate);
 		}
-		public bool HasPackageInScopeRegistries
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		public void UnsubscribeFromOnTogglePreviewChange(Delegate @delegate)
 		{
-			get => property_HasPackageInScopeRegistries.GetValue();
+			event_OnTogglePreviewChange.Unsubscribe(@delegate);
 		}
-		public VisualElementCache cache
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnToggleDependenciesChange(Delegate @delegate)
+		{
+			return event_OnToggleDependenciesChange.Subscribe(@delegate);
+		}
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		public void UnsubscribeFromOnToggleDependenciesChange(Delegate @delegate)
+		{
+			event_OnToggleDependenciesChange.Unsubscribe(@delegate);
+		}
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public Action OnTogglePreviewChange
+		{
+			get => field_OnTogglePreviewChange.GetValue();
+			set => field_OnTogglePreviewChange.SetValue(value);
+		}
+		public Action OnToggleDependenciesChange
+		{
+			get => field_OnToggleDependenciesChange.GetValue();
+			set => field_OnToggleDependenciesChange.SetValue(value);
+		}
+		public PackageFilter selectedFilter
 		{
 			get
 			{
-				object _temp = property_cache.GetValue();
+				object _temp = (int)field_selectedFilter.GetValue();
+				return (PackageFilter)_temp;
+			}
+			set => field_selectedFilter.SetValue((int)value);
+		}
+		public PackageAddFromIdField AddFromIdField
+		{
+			get
+			{
+				object _temp = field_AddFromIdField.GetValue();
+				return _temp == null ? null : new PackageAddFromIdField(_temp);
+			}
+			set => field_AddFromIdField.SetValue(value.Instance);
+		}
+		public VisualElementCache Cache
+		{
+			get
+			{
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => property_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public ToolbarMenu addMenu
+		public Label AddButton
 		{
-			get => property_addMenu.GetValue();
+			get => property_AddButton.GetValue();
 		}
-		public ToolbarMenu filterMenu
+		public Label FilterButton
 		{
-			get => property_filterMenu.GetValue();
+			get => property_FilterButton.GetValue();
 		}
-		public ToolbarMenu advancedMenu
+		public Label AdvancedButton
 		{
-			get => property_advancedMenu.GetValue();
+			get => property_AdvancedButton.GetValue();
 		}
-		public ToolbarSearchField searchToolbar
+		public PackageSearchToolbar SearchToolbar
 		{
-			get => property_searchToolbar.GetValue();
+			get
+			{
+				object _temp = property_SearchToolbar.GetValue();
+				return _temp == null ? null : new PackageSearchToolbar(_temp);
+			}
 		}
-		public void OnEnable()
+		public void GrabFocus()
 		{
-			method_OnEnable_1.Invoke();
+			method_GrabFocus_1.Invoke();
 		}
-		public void OnDisable()
+		public void SetEnabled(bool enable)
 		{
-			method_OnDisable_1.Invoke();
+			method_SetEnabled_1.Invoke(enable);
 		}
-		public void FocusOnSearch()
-		{
-			method_FocusOnSearch_1.Invoke();
-		}
-		public void OnPackagesChanged(IEnumerable<IPackage> added,IEnumerable<IPackage> removed,IEnumerable<IPackage> preUpdate,IEnumerable<IPackage> postUpdate)
-		{
-			method_OnPackagesChanged_1.Invoke(added,removed,preUpdate,postUpdate);
-		}
-		public void SetCurrentSearch(string text)
-		{
-			method_SetCurrentSearch_1.Invoke(text);
-		}
-		public void OnSearchTextChanged(ChangeEvent<string> evt)
-		{
-			method_OnSearchTextChanged_1.Invoke(evt);
-		}
-		public void DelayedSearchEvent()
-		{
-			method_DelayedSearchEvent_1.Invoke();
-		}
-		public string GetFilterDisplayName(PackageFilterTab filter)
+		public string GetFilterDisplayName(PackageFilter filter)
 		{
 			return (string) method_GetFilterDisplayName_1.Invoke((int)filter);
 		}
-		public void SetFilter(PackageFilterTab filter)
+		public void SetFilter(Object obj)
 		{
-			method_SetFilter_1.Invoke((int)filter);
+			method_SetFilter_1.Invoke(obj);
 		}
-		public void SetFilterFromMenu(PackageFilterTab filter)
+		public void OnAddButtonMouseDown(MouseDownEvent evt)
 		{
-			method_SetFilterFromMenu_1.Invoke((int)filter);
+			method_OnAddButtonMouseDown_1.Invoke(evt);
 		}
-		public void SetupAddMenu()
+		public void OnFilterButtonMouseDown(MouseDownEvent evt)
 		{
-			method_SetupAddMenu_1.Invoke();
+			method_OnFilterButtonMouseDown_1.Invoke(evt);
 		}
-		public void AddFilterTabToDropdownMenu(PackageFilterTab tab,Action<DropdownMenuAction> action,Func<DropdownMenuAction, DropdownMenuAction.Status> actionStatusCallback)
+		public void OnAdvancedButtonMouseDown(MouseDownEvent evt)
 		{
-			method_AddFilterTabToDropdownMenu_1.Invoke((int)tab,action,actionStatusCallback);
-		}
-		public void SetupFilterMenu()
-		{
-			method_SetupFilterMenu_1.Invoke();
-		}
-		public void SetupAdvancedMenu()
-		{
-			method_SetupAdvancedMenu_1.Invoke();
+			method_OnAdvancedButtonMouseDown_1.Invoke(evt);
 		}
 		public void ToggleDependencies()
 		{

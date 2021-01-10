@@ -16,12 +16,11 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class LoadingSpinner : ReflectiveVisualElementClass
+	public sealed partial class LoadingSpinner : ReflectiveClass
 	{
-		private ReflectiveField<int> field_kRotationSpeed;
-		private ReflectiveField<int> field_mRotation;
-		private ReflectiveField<double> field_mLastRotationTime;
-		private ReflectiveProperty<bool> property_started;
+		private ReflectiveField<int> field_rotation;
+		private ReflectiveProperty<bool> property_InvertColor;
+		private ReflectiveProperty<bool> property_Started;
 		private ReflectiveMethod method_UpdateProgress_1;
 		private ReflectiveMethod method_Start_1;
 		private ReflectiveMethod method_Stop_1;
@@ -37,34 +36,28 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_kRotationSpeed = CreateField<int>("kRotationSpeed", BindingFlags.Static | BindingFlags.NonPublic);
-			field_mRotation = CreateField<int>("mRotation", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mLastRotationTime = CreateField<double>("mLastRotationTime", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_started = CreateProperty<bool>("started", BindingFlags.Instance | BindingFlags.Public);
+			field_rotation = CreateField<int>("rotation", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_InvertColor = CreateProperty<bool>("InvertColor", BindingFlags.Instance | BindingFlags.Public);
+			property_Started = CreateProperty<bool>("Started", BindingFlags.Instance | BindingFlags.Public);
 			method_UpdateProgress_1 = CreateMethod("UpdateProgress", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_Start_1 = CreateMethod("Start", BindingFlags.Instance | BindingFlags.Public, null);
 			method_Stop_1 = CreateMethod("Stop", BindingFlags.Instance | BindingFlags.Public, null);
 		}
 		partial void Initialize();
-		public int kRotationSpeed
+		public int rotation
 		{
-			get => field_kRotationSpeed.GetValue();
-			set => field_kRotationSpeed.SetValue(value);
+			get => field_rotation.GetValue();
+			set => field_rotation.SetValue(value);
 		}
-		public int mRotation
+		public bool InvertColor
 		{
-			get => field_mRotation.GetValue();
-			set => field_mRotation.SetValue(value);
+			get => property_InvertColor.GetValue();
+			set => property_InvertColor.SetValue(value);
 		}
-		public double mLastRotationTime
+		public bool Started
 		{
-			get => field_mLastRotationTime.GetValue();
-			set => field_mLastRotationTime.SetValue(value);
-		}
-		public bool started
-		{
-			get => property_started.GetValue();
-			set => property_started.SetValue(value);
+			get => property_Started.GetValue();
+			set => property_Started.SetValue(value);
 		}
 		public void UpdateProgress()
 		{

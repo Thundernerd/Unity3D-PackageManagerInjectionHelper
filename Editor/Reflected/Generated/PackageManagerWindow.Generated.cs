@@ -17,32 +17,37 @@ namespace TNRD.PackageManager.Reflected
 {
 	public sealed partial class PackageManagerWindow : ReflectiveClass
 	{
-		private ReflectiveField<string> field_mPackageToSelectOnLoaded;
-		private ReflectiveField field_mFilterToSelectAfterLoad;
-		private ReflectiveField<float> field_mSplitPaneLeftWidth;
-		private ReflectiveField field_sWindow;
-		private ReflectiveField field_cache;
-		private ReflectiveProperty property_packageList;
-		private ReflectiveProperty property_packageDetails;
-		private ReflectiveProperty property_packageManagerToolbar;
-		private ReflectiveProperty property_packageStatusbar;
-		private ReflectiveProperty property_mainContainer;
+		private ReflectiveField field_Collection;
+		private ReflectiveField field_SearchFilter;
+		private ReflectiveField field_SelectionManager;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField<string> field_PackageToSelectAfterLoad;
+		private ReflectiveField<bool> field_SkipFetchCacheForAllWindows;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty property_PackageList;
+		private ReflectiveProperty property_PackageDetails;
+		private ReflectiveProperty property_PackageManagerToolbar;
+		private ReflectiveProperty property_PackageStatusbar;
 		private ReflectiveMethod method_OnEnable_1;
-		private ReflectiveMethod method_OnAttachToPanel_1;
-		private ReflectiveMethod method_OnDetachFromPanel_1;
-		private ReflectiveMethod method_OnValidateCommandEvent_1;
-		private ReflectiveMethod method_OnExecuteCommandEvent_1;
-		private ReflectiveMethod method_OnFocusChanged_1;
 		private ReflectiveMethod method_OnDisable_1;
-		private ReflectiveMethod method_OnDestroy_1;
-		private ReflectiveMethod method_OnRefreshOperationFinish_1;
-		private ReflectiveMethod method_OnRefreshOperationStart_1;
-		private ReflectiveMethod method_DisableToolbarIfRefreshInProgress_1;
-		private ReflectiveMethod method_OnRefreshOperationError_1;
-		private ReflectiveMethod method_OpenURL_1;
-		private ReflectiveMethod method_OpenPackageManager_1;
-		private ReflectiveMethod method_OnPackageManagerResolve_1;
-		private ReflectiveMethod method_SelectPackageAndFilter_1;
+		private ReflectiveMethod method_SetupCollection_1;
+		private ReflectiveMethod method_SetupStatusbar_1;
+		private ReflectiveMethod method_SetupToolbar_1;
+		private ReflectiveMethod method_SetupSearchToolbar_1;
+		private ReflectiveMethod method_SetupPackageList_1;
+		private ReflectiveMethod method_SetupPackageDetails_1;
+		private ReflectiveMethod method_SetupSelection_1;
+		private ReflectiveMethod method_OnCloseError_1;
+		private ReflectiveMethod method_OnOperationError_1;
+		private ReflectiveMethod method_OnTogglePreviewChange_1;
+		private ReflectiveMethod method_OnFilterChange_1;
+		private ReflectiveMethod method_OnCheckInternetReachability_1;
+		private ReflectiveMethod method_OnListFocusChange_1;
+		private ReflectiveMethod method_OnToolbarFocusChange_1;
+		private ReflectiveMethod method_OnSearchChange_1;
+		private ReflectiveMethod method_OnPackagesLoaded_1;
+		private ReflectiveMethod method_FetchListOfflineCacheForAllWindows_1;
+		private ReflectiveMethod method_ShowPackageManagerWindow_1;
 		public PackageManagerWindow(object instance) : base(instance)
 		{
 			Construct();
@@ -55,174 +60,201 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_mPackageToSelectOnLoaded = CreateField<string>("mPackageToSelectOnLoaded", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mFilterToSelectAfterLoad = CreateField("mFilterToSelectAfterLoad", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_mSplitPaneLeftWidth = CreateField<float>("mSplitPaneLeftWidth", BindingFlags.Instance | BindingFlags.NonPublic);
-			field_sWindow = CreateField("sWindow", BindingFlags.Static | BindingFlags.NonPublic);
-			field_cache = CreateField("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageList = CreateProperty("packageList", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageDetails = CreateProperty("packageDetails", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageManagerToolbar = CreateProperty("packageManagerToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_packageStatusbar = CreateProperty("packageStatusbar", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_mainContainer = CreateProperty("mainContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_Collection = CreateField("Collection", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_SearchFilter = CreateField("SearchFilter", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_SelectionManager = CreateField("SelectionManager", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_PackageToSelectAfterLoad = CreateField<string>("PackageToSelectAfterLoad", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_SkipFetchCacheForAllWindows = CreateField<bool>("SkipFetchCacheForAllWindows", BindingFlags.Static | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageList = CreateProperty("PackageList", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageDetails = CreateProperty("PackageDetails", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageManagerToolbar = CreateProperty("PackageManagerToolbar", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_PackageStatusbar = CreateProperty("PackageStatusbar", BindingFlags.Instance | BindingFlags.NonPublic);
 			method_OnEnable_1 = CreateMethod("OnEnable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnAttachToPanel_1 = CreateMethod("OnAttachToPanel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(AttachToPanelEvent));
-			method_OnDetachFromPanel_1 = CreateMethod("OnDetachFromPanel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(DetachFromPanelEvent));
-			method_OnValidateCommandEvent_1 = CreateMethod("OnValidateCommandEvent", BindingFlags.Instance | BindingFlags.NonPublic, typeof(ValidateCommandEvent));
-			method_OnExecuteCommandEvent_1 = CreateMethod("OnExecuteCommandEvent", BindingFlags.Instance | BindingFlags.NonPublic, typeof(ExecuteCommandEvent));
-			method_OnFocusChanged_1 = CreateMethod("OnFocusChanged", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
 			method_OnDisable_1 = CreateMethod("OnDisable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnDestroy_1 = CreateMethod("OnDestroy", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnRefreshOperationFinish_1 = CreateMethod("OnRefreshOperationFinish", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab));
-			method_OnRefreshOperationStart_1 = CreateMethod("OnRefreshOperationStart", BindingFlags.Instance | BindingFlags.NonPublic, null);
-			method_DisableToolbarIfRefreshInProgress_1 = CreateMethod("DisableToolbarIfRefreshInProgress", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab?));
-			method_OnRefreshOperationError_1 = CreateMethod("OnRefreshOperationError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Error));
-			method_OpenURL_1 = CreateMethod("OpenURL", BindingFlags.Static | BindingFlags.NonPublic, typeof(string));
-			method_OpenPackageManager_1 = CreateMethod("OpenPackageManager", BindingFlags.Static | BindingFlags.NonPublic, typeof(string));
-			method_OnPackageManagerResolve_1 = CreateMethod("OnPackageManagerResolve", BindingFlags.Static | BindingFlags.NonPublic, null);
-			method_SelectPackageAndFilter_1 = CreateMethod("SelectPackageAndFilter", BindingFlags.Static | BindingFlags.NonPublic, typeof(string),typeof(PackageFilterTab?),typeof(bool),typeof(string));
+			method_SetupCollection_1 = CreateMethod("SetupCollection", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupStatusbar_1 = CreateMethod("SetupStatusbar", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupToolbar_1 = CreateMethod("SetupToolbar", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupSearchToolbar_1 = CreateMethod("SetupSearchToolbar", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupPackageList_1 = CreateMethod("SetupPackageList", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupPackageDetails_1 = CreateMethod("SetupPackageDetails", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_SetupSelection_1 = CreateMethod("SetupSelection", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnCloseError_1 = CreateMethod("OnCloseError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Package));
+			method_OnOperationError_1 = CreateMethod("OnOperationError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Package),typeof(Error));
+			method_OnTogglePreviewChange_1 = CreateMethod("OnTogglePreviewChange", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnFilterChange_1 = CreateMethod("OnFilterChange", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilter));
+			method_OnCheckInternetReachability_1 = CreateMethod("OnCheckInternetReachability", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnListFocusChange_1 = CreateMethod("OnListFocusChange", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnToolbarFocusChange_1 = CreateMethod("OnToolbarFocusChange", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnSearchChange_1 = CreateMethod("OnSearchChange", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
+			method_OnPackagesLoaded_1 = CreateMethod("OnPackagesLoaded", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_FetchListOfflineCacheForAllWindows_1 = CreateMethod("FetchListOfflineCacheForAllWindows", BindingFlags.Static | BindingFlags.NonPublic, null);
+			method_ShowPackageManagerWindow_1 = CreateMethod("ShowPackageManagerWindow", BindingFlags.Static | BindingFlags.NonPublic, typeof(MenuCommand));
 		}
 		partial void Initialize();
-		public string mPackageToSelectOnLoaded
-		{
-			get => field_mPackageToSelectOnLoaded.GetValue();
-			set => field_mPackageToSelectOnLoaded.SetValue(value);
-		}
-		public PackageFilterTab mFilterToSelectAfterLoad
+		public PackageCollection Collection
 		{
 			get
 			{
-				object _temp = (int)field_mFilterToSelectAfterLoad.GetValue();
-				return (PackageFilterTab) _temp;
+				object _temp = field_Collection.GetValue();
+				return _temp == null ? null : new PackageCollection(_temp);
 			}
-			set => field_mFilterToSelectAfterLoad.SetValue((int)value);
+			set => field_Collection.SetValue(value.Instance);
 		}
-		public float mSplitPaneLeftWidth
-		{
-			get => field_mSplitPaneLeftWidth.GetValue();
-			set => field_mSplitPaneLeftWidth.SetValue(value);
-		}
-		public PackageManagerWindow sWindow
+		public PackageSearchFilter SearchFilter
 		{
 			get
 			{
-				object _temp = field_sWindow.GetValue();
-				return _temp == null ? null : new PackageManagerWindow(_temp);
+				object _temp = field_SearchFilter.GetValue();
+				return _temp == null ? null : new PackageSearchFilter(_temp);
 			}
-			set => field_sWindow.SetValue(value.Instance);
+			set => field_SearchFilter.SetValue(value.Instance);
 		}
-		public VisualElementCache cache
+		public SelectionManager SelectionManager
 		{
 			get
 			{
-				object _temp = field_cache.GetValue();
+				object _temp = field_SelectionManager.GetValue();
+				return _temp == null ? null : new SelectionManager(_temp);
+			}
+			set => field_SelectionManager.SetValue(value.Instance);
+		}
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public string PackageToSelectAfterLoad
+		{
+			get => field_PackageToSelectAfterLoad.GetValue();
+			set => field_PackageToSelectAfterLoad.SetValue(value);
+		}
+		public bool SkipFetchCacheForAllWindows
+		{
+			get => field_SkipFetchCacheForAllWindows.GetValue();
+			set => field_SkipFetchCacheForAllWindows.SetValue(value);
+		}
+		public VisualElementCache Cache
+		{
+			get
+			{
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => field_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public PackageList packageList
+		public PackageList PackageList
 		{
 			get
 			{
-				object _temp = property_packageList.GetValue();
+				object _temp = property_PackageList.GetValue();
 				return _temp == null ? null : new PackageList(_temp);
 			}
 		}
-		public PackageDetails packageDetails
+		public PackageDetails PackageDetails
 		{
 			get
 			{
-				object _temp = property_packageDetails.GetValue();
+				object _temp = property_PackageDetails.GetValue();
 				return _temp == null ? null : new PackageDetails(_temp);
 			}
 		}
-		public PackageManagerToolbar packageManagerToolbar
+		public PackageManagerToolbar PackageManagerToolbar
 		{
 			get
 			{
-				object _temp = property_packageManagerToolbar.GetValue();
+				object _temp = property_PackageManagerToolbar.GetValue();
 				return _temp == null ? null : new PackageManagerToolbar(_temp);
 			}
 		}
-		public PackageStatusBar packageStatusbar
+		public PackageStatusBar PackageStatusbar
 		{
 			get
 			{
-				object _temp = property_packageStatusbar.GetValue();
+				object _temp = property_PackageStatusbar.GetValue();
 				return _temp == null ? null : new PackageStatusBar(_temp);
-			}
-		}
-		public SplitView mainContainer
-		{
-			get
-			{
-				object _temp = property_mainContainer.GetValue();
-				return _temp == null ? null : new SplitView(_temp);
 			}
 		}
 		public void OnEnable()
 		{
 			method_OnEnable_1.Invoke();
 		}
-		public void OnAttachToPanel(AttachToPanelEvent evt)
-		{
-			method_OnAttachToPanel_1.Invoke(evt);
-		}
-		public void OnDetachFromPanel(DetachFromPanelEvent evt)
-		{
-			method_OnDetachFromPanel_1.Invoke(evt);
-		}
-		public void OnValidateCommandEvent(ValidateCommandEvent evt)
-		{
-			method_OnValidateCommandEvent_1.Invoke(evt);
-		}
-		public void OnExecuteCommandEvent(ExecuteCommandEvent evt)
-		{
-			method_OnExecuteCommandEvent_1.Invoke(evt);
-		}
-		public void OnFocusChanged(bool focus)
-		{
-			method_OnFocusChanged_1.Invoke(focus);
-		}
 		public void OnDisable()
 		{
 			method_OnDisable_1.Invoke();
 		}
-		public void OnDestroy()
+		public void SetupCollection()
 		{
-			method_OnDestroy_1.Invoke();
+			method_SetupCollection_1.Invoke();
 		}
-		public void OnRefreshOperationFinish(PackageFilterTab tab)
+		public void SetupStatusbar()
 		{
-			method_OnRefreshOperationFinish_1.Invoke((int)tab);
+			method_SetupStatusbar_1.Invoke();
 		}
-		public void OnRefreshOperationStart()
+		public void SetupToolbar()
 		{
-			method_OnRefreshOperationStart_1.Invoke();
+			method_SetupToolbar_1.Invoke();
 		}
-		public void DisableToolbarIfRefreshInProgress(PackageFilterTab? tab)
+		public void SetupSearchToolbar()
 		{
-			method_DisableToolbarIfRefreshInProgress_1.Invoke(tab);
+			method_SetupSearchToolbar_1.Invoke();
 		}
-		public void OnRefreshOperationError(Error error)
+		public void SetupPackageList()
 		{
-			method_OnRefreshOperationError_1.Invoke(error);
+			method_SetupPackageList_1.Invoke();
 		}
-		public void OpenURL(string url)
+		public void SetupPackageDetails()
 		{
-			method_OpenURL_1.Invoke(url);
+			method_SetupPackageDetails_1.Invoke();
 		}
-		public void OpenPackageManager(string packageNameOrDisplayName)
+		public void SetupSelection()
 		{
-			method_OpenPackageManager_1.Invoke(packageNameOrDisplayName);
+			method_SetupSelection_1.Invoke();
 		}
-		public void OnPackageManagerResolve()
+		public void OnCloseError(Package package)
 		{
-			method_OnPackageManagerResolve_1.Invoke();
+			method_OnCloseError_1.Invoke(package);
 		}
-		public void SelectPackageAndFilter(string packageIdOrDisplayName,PackageFilterTab? filterTab,bool refresh,string searchText)
+		public void OnOperationError(Package package,Error error)
 		{
-			method_SelectPackageAndFilter_1.Invoke(packageIdOrDisplayName,filterTab,refresh,searchText);
+			method_OnOperationError_1.Invoke(package,error);
+		}
+		public void OnTogglePreviewChange()
+		{
+			method_OnTogglePreviewChange_1.Invoke();
+		}
+		public void OnFilterChange(PackageFilter filter)
+		{
+			method_OnFilterChange_1.Invoke((int)filter);
+		}
+		public void OnCheckInternetReachability()
+		{
+			method_OnCheckInternetReachability_1.Invoke();
+		}
+		public void OnListFocusChange()
+		{
+			method_OnListFocusChange_1.Invoke();
+		}
+		public void OnToolbarFocusChange()
+		{
+			method_OnToolbarFocusChange_1.Invoke();
+		}
+		public void OnSearchChange(string searchText)
+		{
+			method_OnSearchChange_1.Invoke(searchText);
+		}
+		public void OnPackagesLoaded()
+		{
+			method_OnPackagesLoaded_1.Invoke();
+		}
+		public void FetchListOfflineCacheForAllWindows()
+		{
+			method_FetchListOfflineCacheForAllWindows_1.Invoke();
+		}
+		public void ShowPackageManagerWindow(MenuCommand item)
+		{
+			method_ShowPackageManagerWindow_1.Invoke(item);
 		}
 		public static Type GetOriginalType()
 		{

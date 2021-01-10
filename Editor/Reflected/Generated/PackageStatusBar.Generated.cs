@@ -17,21 +17,24 @@ using UnityEngine.UIElements.UIR;
 using UnityEngine.Yoga;
 namespace TNRD.PackageManager.Reflected
 {
-	public sealed partial class PackageStatusBar : ReflectiveVisualElementClass
+	public sealed partial class PackageStatusBar : ReflectiveClass
 	{
-		private ReflectiveField<string> field_kOfflineErrorMessage;
-		private ReflectiveField<string[]> field_mLastErrorMessages;
-		private ReflectiveProperty property_cache;
-		private ReflectiveProperty property_loadingSpinner;
-		private ReflectiveProperty<Label> property_errorIcon;
-		private ReflectiveProperty<Label> property_statusLabel;
-		private ReflectiveProperty<Button> property_refreshButton;
-		private ReflectiveMethod method_OnEnable_1;
-		private ReflectiveMethod method_OnDisable_1;
-		private ReflectiveMethod method_OnInternetReachabilityChange_1;
-		private ReflectiveMethod method_GetUpdateTimeLabel_1;
-		private ReflectiveMethod method_SetUpdateTimeLabel_1;
+		private ReflectiveEvent event_OnCheckInternetReachability;
+		private ReflectiveField<VisualElement> field_root;
+		private ReflectiveField<string> field_LastErrorMessage;
+		private ReflectiveField<string> field_LastUpdateTime;
+		private ReflectiveField field_operationsInProgress;
+		private ReflectiveField<Action> field_OnCheckInternetReachability;
+		private ReflectiveProperty property_Cache;
+		private ReflectiveProperty<VisualElement> property_LoadingSpinnerContainer;
+		private ReflectiveProperty property_LoadingSpinner;
+		private ReflectiveProperty<Label> property_ErrorIcon;
+		private ReflectiveProperty<Label> property_StatusLabel;
+		private ReflectiveMethod method_Setup_1;
+		private ReflectiveMethod method_SetUpdateTimeMessage_1;
 		private ReflectiveMethod method_UpdateStatusMessage_1;
+		private ReflectiveMethod method_OnOperationError_1;
+		private ReflectiveMethod method_CheckInternetReachability_1;
 		private ReflectiveMethod method_SetStatusMessage_1;
 		public PackageStatusBar(object instance) : base(instance)
 		{
@@ -45,84 +48,108 @@ namespace TNRD.PackageManager.Reflected
 		}
 		private void Construct()
 		{
-			field_kOfflineErrorMessage = CreateField<string>("kOfflineErrorMessage", BindingFlags.Static | BindingFlags.NonPublic);
-			field_mLastErrorMessages = CreateField<string[]>("mLastErrorMessages", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_cache = CreateProperty("cache", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_loadingSpinner = CreateProperty("loadingSpinner", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_errorIcon = CreateProperty<Label>("errorIcon", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_statusLabel = CreateProperty<Label>("statusLabel", BindingFlags.Instance | BindingFlags.NonPublic);
-			property_refreshButton = CreateProperty<Button>("refreshButton", BindingFlags.Instance | BindingFlags.NonPublic);
-			method_OnEnable_1 = CreateMethod("OnEnable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnDisable_1 = CreateMethod("OnDisable", BindingFlags.Instance | BindingFlags.Public, null);
-			method_OnInternetReachabilityChange_1 = CreateMethod("OnInternetReachabilityChange", BindingFlags.Instance | BindingFlags.NonPublic, typeof(bool));
-			method_GetUpdateTimeLabel_1 = CreateMethod("GetUpdateTimeLabel", BindingFlags.Static | BindingFlags.NonPublic, typeof(long));
-			method_SetUpdateTimeLabel_1 = CreateMethod("SetUpdateTimeLabel", BindingFlags.Instance | BindingFlags.NonPublic, typeof(string));
-			method_UpdateStatusMessage_1 = CreateMethod("UpdateStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageFilterTab));
+			event_OnCheckInternetReachability = CreateEvent("OnCheckInternetReachability", BindingFlags.Instance | BindingFlags.Public);
+			field_root = CreateField<VisualElement>("root", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_LastErrorMessage = CreateField<string>("LastErrorMessage", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_LastUpdateTime = CreateField<string>("LastUpdateTime", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_operationsInProgress = CreateField("operationsInProgress", BindingFlags.Instance | BindingFlags.NonPublic);
+			field_OnCheckInternetReachability = CreateField<Action>("OnCheckInternetReachability", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_Cache = CreateProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_LoadingSpinnerContainer = CreateProperty<VisualElement>("LoadingSpinnerContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_LoadingSpinner = CreateProperty("LoadingSpinner", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_ErrorIcon = CreateProperty<Label>("ErrorIcon", BindingFlags.Instance | BindingFlags.NonPublic);
+			property_StatusLabel = CreateProperty<Label>("StatusLabel", BindingFlags.Instance | BindingFlags.NonPublic);
+			method_Setup_1 = CreateMethod("Setup", BindingFlags.Instance | BindingFlags.Public, typeof(PackageCollection));
+			method_SetUpdateTimeMessage_1 = CreateMethod("SetUpdateTimeMessage", BindingFlags.Instance | BindingFlags.Public, typeof(string));
+			method_UpdateStatusMessage_1 = CreateMethod("UpdateStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, null);
+			method_OnOperationError_1 = CreateMethod("OnOperationError", BindingFlags.Instance | BindingFlags.NonPublic, typeof(Error));
+			method_CheckInternetReachability_1 = CreateMethod("CheckInternetReachability", BindingFlags.Instance | BindingFlags.NonPublic, null);
 			method_SetStatusMessage_1 = CreateMethod("SetStatusMessage", BindingFlags.Instance | BindingFlags.NonPublic, typeof(PackageStatusBar_StatusType),typeof(string));
 		}
 		partial void Initialize();
-		public string kOfflineErrorMessage
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		/// <returns>Delegate to be used for unsubscribing</returns>
+		public Delegate SubscribeToOnCheckInternetReachability(Delegate @delegate)
 		{
-			get => field_kOfflineErrorMessage.GetValue();
-			set => field_kOfflineErrorMessage.SetValue(value);
+			return event_OnCheckInternetReachability.Subscribe(@delegate);
 		}
-		public string[] mLastErrorMessages
+		/// <summary>
+		/// Event type: System.Action
+		/// </summary>
+		public void UnsubscribeFromOnCheckInternetReachability(Delegate @delegate)
 		{
-			get => field_mLastErrorMessages.GetValue();
-			set => field_mLastErrorMessages.SetValue(value);
+			event_OnCheckInternetReachability.Unsubscribe(@delegate);
 		}
-		public VisualElementCache cache
+		public VisualElement root
+		{
+			get => field_root.GetValue();
+			set => field_root.SetValue(value);
+		}
+		public string LastErrorMessage
+		{
+			get => field_LastErrorMessage.GetValue();
+			set => field_LastErrorMessage.SetValue(value);
+		}
+		public string LastUpdateTime
+		{
+			get => field_LastUpdateTime.GetValue();
+			set => field_LastUpdateTime.SetValue(value);
+		}
+		public Action OnCheckInternetReachability
+		{
+			get => field_OnCheckInternetReachability.GetValue();
+			set => field_OnCheckInternetReachability.SetValue(value);
+		}
+		public VisualElementCache Cache
 		{
 			get
 			{
-				object _temp = property_cache.GetValue();
+				object _temp = property_Cache.GetValue();
 				return _temp == null ? null : new VisualElementCache(_temp);
 			}
-			set => property_cache.SetValue(value.Instance);
+			set => property_Cache.SetValue(value.Instance);
 		}
-		public LoadingSpinner loadingSpinner
+		public VisualElement LoadingSpinnerContainer
+		{
+			get => property_LoadingSpinnerContainer.GetValue();
+		}
+		public LoadingSpinner LoadingSpinner
 		{
 			get
 			{
-				object _temp = property_loadingSpinner.GetValue();
+				object _temp = property_LoadingSpinner.GetValue();
 				return _temp == null ? null : new LoadingSpinner(_temp);
 			}
 		}
-		public Label errorIcon
+		public Label ErrorIcon
 		{
-			get => property_errorIcon.GetValue();
+			get => property_ErrorIcon.GetValue();
 		}
-		public Label statusLabel
+		public Label StatusLabel
 		{
-			get => property_statusLabel.GetValue();
+			get => property_StatusLabel.GetValue();
 		}
-		public Button refreshButton
+		public void Setup(PackageCollection collection)
 		{
-			get => property_refreshButton.GetValue();
+			method_Setup_1.Invoke(collection);
 		}
-		public void OnEnable()
+		public void SetUpdateTimeMessage(string lastUpdateTime)
 		{
-			method_OnEnable_1.Invoke();
+			method_SetUpdateTimeMessage_1.Invoke(lastUpdateTime);
 		}
-		public void OnDisable()
+		public void UpdateStatusMessage()
 		{
-			method_OnDisable_1.Invoke();
+			method_UpdateStatusMessage_1.Invoke();
 		}
-		public void OnInternetReachabilityChange(bool value)
+		public void OnOperationError(Error error)
 		{
-			method_OnInternetReachabilityChange_1.Invoke(value);
+			method_OnOperationError_1.Invoke(error);
 		}
-		public string GetUpdateTimeLabel(long timestamp)
+		public void CheckInternetReachability()
 		{
-			return (string) method_GetUpdateTimeLabel_1.Invoke(timestamp);
-		}
-		public void SetUpdateTimeLabel(string lastUpdateTime)
-		{
-			method_SetUpdateTimeLabel_1.Invoke(lastUpdateTime);
-		}
-		public void UpdateStatusMessage(PackageFilterTab tab)
-		{
-			method_UpdateStatusMessage_1.Invoke((int)tab);
+			method_CheckInternetReachability_1.Invoke();
 		}
 		public void SetStatusMessage(PackageStatusBar_StatusType status,string message)
 		{
