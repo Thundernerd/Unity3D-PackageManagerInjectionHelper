@@ -9,7 +9,6 @@ public static class ZipExtractor
     [MenuItem("TNRD/Package Manager/Extract Injector")]
     private static void Init()
     {
-        return;
         string zipPath = GetZipPath(out string unityVersion);
         if (string.IsNullOrEmpty(zipPath))
         {
