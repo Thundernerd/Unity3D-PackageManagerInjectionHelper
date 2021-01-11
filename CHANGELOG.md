@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.0] - 2021-01-11
+### Added
+- Zip file for 2019.1
+
 ## [2.0.0] - 2021-01-10
 ### Added
 - Installer
