@@ -1,8 +1,12 @@
 # Changelog
 
+## [2.2.3] - 2021-01-25
+### Fixed
+- Updated all 2019 zips with a fix for when the package manager window gets docked/undocked
+
 ## [2.2.2] - 2021-01-25
 ### Changed
-- Updated all 2019 zip with a fix for getting the Root of the injected visual element
+- Updated all 2019 zips with a fix for getting the Root of the injected visual element
 
 ## [2.2.1] - 2021-01-14
 ### Changed
