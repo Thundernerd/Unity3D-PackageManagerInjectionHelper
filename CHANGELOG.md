@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.2] - 2021-01-25
+### Changed
+- Updated all 2019 zip with a fix for getting the Root of the injected visual element
+
 ## [2.2.1] - 2021-01-14
 ### Changed
 - Updated 2019.1 zip

@@ -58,5 +58,21 @@ namespace TNRD.PackageManager.Injection
 
             return path;
         }
+
+#if TNRD_DEV
+        [MenuItem("TNRD/Update Zip")]
+        private static void UpdateZip()
+        {
+            string[] directories = Directory.GetDirectories("Assets/TNRD/Package Manager/Injection", "*", SearchOption.TopDirectoryOnly);
+            foreach (string directory in directories)
+            {
+                string path = directory.Replace("\\", "/");
+                string zipName = path.Substring(path.LastIndexOf('/') + 1);
+                string zipPath = path;
+                FastZip fastZip = new FastZip();
+                fastZip.CreateZip($"Packages/net.tnrd.packagemanagerinjectionhelper/Editor/Zips/{zipName}.zip", zipPath, true, null);
+            }
+        }
+#endif
     }
 }

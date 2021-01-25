@@ -1,6 +1,6 @@
 {
   "name": "net.tnrd.packagemanagerinjection",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "displayName": "Package Manager Injection Helper",
   "description": "A set of classes that allow you to inject your own code into the Package Manager Window",
   "unity": "2019.1",
@@ -19,7 +19,7 @@
     "url": "https://www.tnrd.net"
   },
   "dependencies": {
-    "net.tnrd.reflectives": "1.0.1",
+    "net.tnrd.reflectives": "1.1.1",
     "net.tnrd.safeevent": "1.2.1"
   }
 }
