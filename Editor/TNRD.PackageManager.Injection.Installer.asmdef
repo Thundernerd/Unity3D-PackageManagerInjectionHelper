@@ -1,6 +1,8 @@
 {
     "name": "TNRD.PackageManager.Injection.Installer",
-    "references": [],
+    "references": [
+        "TNRD.ScriptingDefineUtility"
+    ],
     "includePlatforms": [
         "Editor"
     ],

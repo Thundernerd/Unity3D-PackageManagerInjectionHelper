@@ -1,19 +1,23 @@
 ﻿using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
+using TNRD.Utilities;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace TNRD.PackageManager.Injection
 {
     internal static class Installer
     {
-        [InitializeOnLoadMethod]
-        [MenuItem("TNRD/Package Manager/Extract Injector")]
+        private const string SYMBOL = "PACKAGE_MANAGER_INJECTION";
+
+        [InitializeOnLoadMethod, DidReloadScripts, MenuItem("TNRD/Package Manager/Extract Injector")]
         private static void Init()
         {
             string zipPath = GetZipPath(out string unityVersion);
             if (string.IsNullOrEmpty(zipPath))
             {
+                ScriptingDefineUtility.Remove(SYMBOL);
                 Debug.LogError("This version of Unity is not supported by the Package Manager Injection Helper");
                 return;
             }
@@ -22,23 +26,16 @@ namespace TNRD.PackageManager.Injection
 
             if (Directory.Exists(outputPath) && Directory.GetFiles(outputPath, "PackageManagerInjectionHelper.cs", SearchOption.AllDirectories).Length == 1)
             {
+                if (!ScriptingDefineUtility.Contains(SYMBOL))
+                {
+                    ScriptingDefineUtility.Add(SYMBOL);
+                }
+
                 return;
             }
 
-            string injectionDirectoryPath = Path.Combine(Application.dataPath, "TNRD", "Package Manager", "Injection");
-            if (Directory.Exists(injectionDirectoryPath))
-            {
-                string[] directories = Directory.GetDirectories(injectionDirectoryPath);
-                foreach (string directory in directories)
-                {
-                    Directory.Delete(directory, true);
-                }
-            }
-
-            string fullPath = Path.GetFullPath(zipPath);
-            FastZip fastZip = new FastZip();
-            fastZip.ExtractZip(fullPath, outputPath, null);
-            AssetDatabase.Refresh();
+            RemoveExisting();
+            ExtractNew(zipPath, outputPath);
         }
 
         private static string GetZipPath(out string unityVersion)
@@ -57,6 +54,27 @@ namespace TNRD.PackageManager.Injection
             }
 
             return path;
+        }
+
+        private static void RemoveExisting()
+        {
+            string injectionDirectoryPath = Path.Combine(Application.dataPath, "TNRD", "Package Manager", "Injection");
+            if (Directory.Exists(injectionDirectoryPath))
+            {
+                string[] directories = Directory.GetDirectories(injectionDirectoryPath);
+                foreach (string directory in directories)
+                {
+                    Directory.Delete(directory, true);
+                }
+            }
+        }
+
+        private static void ExtractNew(string zipPath, string outputPath)
+        {
+            string fullPath = Path.GetFullPath(zipPath);
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip(fullPath, outputPath, null);
+            AssetDatabase.Refresh();
         }
 
 #if TNRD_DEV
