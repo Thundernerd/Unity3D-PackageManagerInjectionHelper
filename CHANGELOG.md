@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.3.0] - 2021-02-15
+### Added
+- Adding/removing scripting symbol based on whether or not a zip has been extracted
+
 ## [2.2.3] - 2021-01-25
 ### Fixed
 - Updated all 2019 zips with a fix for when the package manager window gets docked/undocked
